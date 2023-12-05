@@ -31,8 +31,13 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+              <Link to= "/Signup" className="nav-links" onClick={handleClick}>
                 Sign Up
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to= "/Login" className="nav-links" onClick={handleClick}>
+                Log In
               </Link>
             </li>
           </ul>

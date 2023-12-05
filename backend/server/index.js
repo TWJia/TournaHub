@@ -57,6 +57,25 @@ const verifyApplicant = (req, res, next) => {
     }
 }
 
+const verifyCollaborator = (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token){
+        return res.json("Token is missing")
+    } else {
+        jwt.verify(token, "jwt-secret-key", (err,decoded) => {
+            if(err) {
+                return res.json("Error with token")
+            } else {
+                if (decoded.usertype === "collaborator") {
+                    next()
+                } else {
+                    return res.json("User is not a collaborator")
+                }
+            }
+        })
+    }
+}
+
 const verifyTournamentOrganizer = (req, res, next) => {
     const token = req.cookies.token;
     if (!token){
@@ -120,6 +139,10 @@ app.get('/DashboardSA', verifySysAdmin , (req,res ) => {
 })
 
 app.get('/DashboardA', verifyApplicant , (req,res ) => {
+    res.json("Login is successful")
+})
+
+app.get('/DashboardC', verifyCollaborator , (req,res ) => {
     res.json("Login is successful")
 })
 

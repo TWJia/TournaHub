@@ -22,6 +22,10 @@ function Login() {
                     window.localStorage.setItem("loggedInA", true)
                     navigate('/DashboardA')
                 }
+                else if (res.data.usertype === "collaborator") {
+                    window.localStorage.setItem("loggedInC", true)
+                    navigate('/DashboardC')
+                }
                 else if (res.data.usertype === "tournamentorganizer") {
                     window.localStorage.setItem("loggedInTO", true)
                     navigate('/DashboardTO')

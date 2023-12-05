@@ -80,6 +80,7 @@ function Signup(){
                 >
                     <option value="systemadministrator">System Administrator</option>
                     <option value="applicant">Applicant</option>
+                    <option value="collaborator">Collaborator</option>
                     <option value="tournamentorganizer">Tournament Organizer</option>
                     <option value="eventcoordinator">Event Coordinator</option>
                     <option value="sponsor">Sponsor</option>

@@ -5,18 +5,20 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const UserModel = require('./models/Users')
-
+const TournamentModel = require('./models/Tournaments')
+const { ObjectId } = require('mongodb');
 
 const app = express()
 app.use(express.json())
 app.use(cors({
         origin: ["http://localhost:5173"],
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "PUT"],
         credentials: true
 }))
 app.use(cookieParser())
 
-mongoose.connect("mongodb://localhost:27017/TournaHub")
+
+mongoose.connect("mongodb+srv://javen25:test123@cluster0.w6hlo1h.mongodb.net/TournaHub?retryWrites=true&w=majority")
 
 //Middlewares
 const verifySysAdmin = (req, res, next) => {
@@ -189,7 +191,51 @@ app.post('/register', (req,res) => {
     }).catch(err => console.log(err.message))
 })
 
+// app.get('/getTournaments', (req, res) => {
+//     res.send('Hello, this is the tournaments endpoint!');
+// });
+
+app.get("/getTournaments", (req, res) => {
+    TournamentModel.find({})
+        .then(function(tournaments) {
+            res.json(tournaments)
+        })
+        .catch(function(err) {
+            console.error("Error fetching tournaments:", err)
+            res.Status(500).json({ error: "Internal Server Error" })
+        //res.json(err)
+    })
+})
+
+app.put("/updateTournamentStatus/:tournamentId", async (req, res) => {
+    try {
+        const tournamentId = req.params.tournamentId;
+        const newStatus = req.body.newStatus;
+
+        // Validate if the new status is provided
+        if (!newStatus) {
+            return res.Status(400).json({ error: "New status is required" });
+        }
+
+        const updatedTournament = await TournamentModel.findByIdAndUpdate(
+            tournamentId,
+            { Status: newStatus }, 
+            { new: true }
+        );
+
+        if (!updatedTournament) {
+            return res.Status(404).json({ error: "Tournament not found" });
+        }
+
+        res.json(updatedTournament);
+    } catch (err) {
+        console.error("Error updating tournament status:", err);
+        res.Status(500).json({ error: "Internal Server Error", message: err.message });
+    }
+});
+
 //Validation message to see if connection is successful
 app.listen(3001, () => {
     console.log("server is running")
 }) 
+

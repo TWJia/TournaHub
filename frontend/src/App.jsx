@@ -11,6 +11,7 @@ import DashboardC from "./components/DashboardC";
 import DashboardTO from "./components/DashboardTO";
 import DashboardEC from "./components/DashboardEC";
 import DashboardS from "./components/DashboardS";
+import DashboardCPendingCollaboration from "./components/DashboardCPendingCollaboration";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -39,6 +40,8 @@ export default function App() {
           <Route path="/DashboardTO" element={<DashboardTO />} />
           <Route path="/DashboardEC" element={<DashboardEC />} />
           <Route path="/DashboardS" element={<DashboardS />} />
+
+          <Route path="/DashboardCPendingCollaboration" element={<DashboardCPendingCollaboration />} />
         </Routes>
       </Router>
     </div>

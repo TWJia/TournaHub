@@ -23,6 +23,21 @@ export default function NavbarSA() {
             <MenuIcon />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
+          <li className="nav-item">
+              <Link to= "/CreateSport" className="nav-links" onClick={handleClick}>
+                Create Sport
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to= "/ManageSports" className="nav-links" onClick={handleClick}>
+                Manage Sports
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to= "/ManageUsers" className="nav-links" onClick={handleClick}>
+                Manage Users
+              </Link>
+            </li>
             <li className="nav-item">
                 <a href="/" className="nav-links" onClick={() => Logout()}>
                   LogOut

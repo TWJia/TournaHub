@@ -6,6 +6,11 @@ import Home from "./components/Home";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import DashboardSA from "./components/DashboardSA";
+import CreateSport from "./components/CreateSport";
+import ManageSports from "./components/ManageSports";
+import UpdateSports from "./components/UpdateSports";
+import ManageUsers from "./components/ManageUsers";
+import UpdateUsers from "./components/UpdateUsers";
 import DashboardA from "./components/DashboardA";
 import DashboardC from "./components/DashboardC";
 import DashboardTO from "./components/DashboardTO";
@@ -35,6 +40,11 @@ export default function App() {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/DashboardSA" element={<DashboardSA />} />
+          <Route path="/CreateSport" element={<CreateSport />} />
+          <Route path="/ManageSports" element={<ManageSports />} />
+          <Route path="/UpdateSports/:id" element={<UpdateSports />} />
+          <Route path="/ManageUsers" element={<ManageUsers />} />
+          <Route path="/UpdateUsers/:id" element={<UpdateUsers />} />
           <Route path="/DashboardA" element={<DashboardA />} />
           <Route path="/DashboardC" element={<DashboardC />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />

@@ -5,22 +5,25 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const UserModel = require('./models/Users')
+const SportsModel =  require('./models/Sports')
 const TournamentModel = require('./models/Tournaments')
 const { ObjectId } = require('mongodb');
 
 const app = express()
+const PORT = 3001
 app.use(express.json())
 app.use(cors({
         origin: ["http://localhost:5173"],
-        methods: ["GET", "POST", "PUT"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true
 }))
 app.use(cookieParser())
 
+// Edit the connection string to connect to YOUR instance of MongoDB
+mongoose.connect("mongodb://localhost:27017/TournaHub")
 
-mongoose.connect("mongodb+srv://javen25:test123@cluster0.w6hlo1h.mongodb.net/TournaHub?retryWrites=true&w=majority")
-
-//Middlewares
+// Middlewares
+// Login Middlewares
 const verifySysAdmin = (req, res, next) => {
     const token = req.cookies.token;
     if (!token){
@@ -136,6 +139,7 @@ const verifySponsor = (req, res, next) => {
 }
 
 //APIs
+//Login APIs
 app.get('/DashboardSA', verifySysAdmin , (req,res ) => {
     res.json("Login is successful")
 })
@@ -165,6 +169,10 @@ app.post('/login', (req, res) => {
     UserModel.findOne({email: email})
     .then(user => {
         if (user) {
+            if (user.isActive === "Suspended"){
+                return res.json("User is suspended")
+            }
+            else {
             bcrypt.compare(password, user.password, (err, response) => {
                 if (response) {
                     const token = jwt.sign({email: user.email, usertype: user.usertype},
@@ -175,12 +183,13 @@ app.post('/login', (req, res) => {
                     return res.json("The password is incorrect")
                 }
             })    
-        } else {
+        }} else {
             return res.json("No record existed")
         }
     })
 })
 
+// Register API
 app.post('/register', (req,res) => {
     const {name, email, password, usertype} = req.body;
     bcrypt.hash(password, 10)
@@ -190,6 +199,104 @@ app.post('/register', (req,res) => {
         .catch(err => res.json(err))
     }).catch(err => console.log(err.message))
 })
+
+// System Administrator APis
+// Manage Sports APIs
+app.get("/ManageSports", (req, res) => {
+    SportsModel.find({})
+    .then(sports => res.json(sports))
+    .catch(err => res.json(err))
+})
+
+app.get('/getSport/:id', (req, res) => {
+    const id = req.params.id;
+    SportsModel.findById({_id:id})
+    .then(sports => res.json(sports))
+    .catch(err => res.json(err))
+})
+
+app.put('/updateSport/:id', (req,res) => {
+    const id = req.params.id
+    SportsModel.findByIdAndUpdate({_id: id}, 
+        {name: req.body.name, 
+         format: req.body.format})
+    .then(sports => res.json(sports))
+    .catch(err => res.json(err))
+})
+
+app.delete('/deleteSport/:id', (req,res) => {
+    const id = req.params.id;
+    SportsModel.findByIdAndDelete({_id: id})
+    .then(res => res.json(err))
+    .catch(err => res.json(err))
+})
+
+app.get('/searchSports/:name', (req, res) => {
+    const { name } = req.params;
+    SportsModel.find({ name: { $regex: new RegExp(name, 'i') } })
+    .then((sports) => res.json(sports))
+    .catch((err) => res.json(err));
+  });
+  
+
+app.post("/CreateSport", (req, res) => {
+    SportsModel.create(req.body)
+    .then(sports => res.json(sports))
+    .catch(err => res.json(err))
+})
+// Manage Users APIs
+app.get("/ManageUsers", (req, res) => {
+    UserModel.find({})
+    .then(users => res.json(users))
+    .catch(err => res.json(err))
+})
+
+app.get('/getUser/:id', (req, res) => {
+    const id = req.params.id;
+    UserModel.findById({_id:id})
+    .then(users => res.json(users))
+    .catch(err => res.json(err))
+})
+
+app.put('/updateUser/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            { _id: id },
+            {
+                name: req.body.name,
+                email: req.body.email,
+                usertype: req.body.usertype,
+                isActive: req.body.isActive,
+                password: await bcrypt.hash(req.body.password, 10),
+            },
+            { new: true }
+        );
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.put('/suspendUser/:id', (req,res) => {
+    const id = req.params.id;
+    const suspended = "Suspended";
+    UserModel.findByIdAndUpdate({_id: id}, {
+        isActive: suspended
+    })
+    .then(res => res.json(err))
+    .catch(err => res.json(err))
+})
+
+app.get('/searchUsers/:name', (req, res) => {
+    const { name } = req.params;
+    UserModel.find({ name: { $regex: new RegExp(name, 'i') } })
+    .then((sports) => res.json(sports))
+    .catch((err) => res.json(err));
+  });
+//
 
 // app.get('/getTournaments', (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');
@@ -235,7 +342,8 @@ app.put("/updateTournamentStatus/:tournamentId", async (req, res) => {
 });
 
 //Validation message to see if connection is successful
-app.listen(3001, () => {
-    console.log("server is running")
-}) 
+app.listen(PORT, function(err){
+    if (err) console.log("Error in server setup")
+    console.log("Server listening on Port", PORT);
+})
 

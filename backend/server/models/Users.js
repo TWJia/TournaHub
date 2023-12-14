@@ -2,9 +2,10 @@ const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
     name: String,
-    email: String,
+    email: {type: String, unique: true},
     password: String,
-    usertype: String
+    usertype: String,
+    isActive: {type: String, default: 'Active'}
 })
 
 const UserModel= mongoose.model("user", UserSchema)

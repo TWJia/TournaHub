@@ -69,7 +69,7 @@ function Signup(){
             </div>
             <div className="mb-3">
                 <label htmlFor="usertype">
-                    <strong>Usertype</strong>
+                    <strong>User Type</strong>
                 </label>
                 <select
                     type="select"

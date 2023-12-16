@@ -17,6 +17,7 @@ import DashboardTO from "./components/DashboardTO";
 import DashboardEC from "./components/DashboardEC";
 import DashboardS from "./components/DashboardS";
 import DashboardCPendingCollaboration from "./components/DashboardCPendingCollaboration";
+import UpdateProfile from "./components/Applicant/UpdateProfile";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -29,14 +30,26 @@ export default function App() {
     <div className="App">
       <Router>
         <Routes>
-        <Route path="/" element={ loginSA ? <DashboardSA /> :
-                                  loginA ? <DashboardA /> :
-                                  loginC ? <DashboardC /> :
-                                  loginTO ? <DashboardTO /> :
-                                  loginEC ? <DashboardEC /> :
-                                  loginS ? <DashboardS /> :
-                                  <Home />
-                                } />
+          <Route
+            path="/"
+            element={
+              loginSA ? (
+                <DashboardSA />
+              ) : loginA ? (
+                <DashboardA />
+              ) : loginC ? (
+                <DashboardC />
+              ) : loginTO ? (
+                <DashboardTO />
+              ) : loginEC ? (
+                <DashboardEC />
+              ) : loginS ? (
+                <DashboardS />
+              ) : (
+                <Home />
+              )
+            }
+          />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/DashboardSA" element={<DashboardSA />} />
@@ -45,13 +58,17 @@ export default function App() {
           <Route path="/UpdateSports/:id" element={<UpdateSports />} />
           <Route path="/ManageUsers" element={<ManageUsers />} />
           <Route path="/UpdateUsers/:id" element={<UpdateUsers />} />
-          <Route path="/DashboardA" element={<DashboardA />} />
+          <Route path="/home" element={<DashboardA />} />
+          <Route path="/UpdateProfile" element={<UpdateProfile />} />
           <Route path="/DashboardC" element={<DashboardC />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />
           <Route path="/DashboardEC" element={<DashboardEC />} />
           <Route path="/DashboardS" element={<DashboardS />} />
 
-          <Route path="/DashboardCPendingCollaboration" element={<DashboardCPendingCollaboration />} />
+          <Route
+            path="/DashboardCPendingCollaboration"
+            element={<DashboardCPendingCollaboration />}
+          />
         </Routes>
       </Router>
     </div>

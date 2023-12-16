@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavbarA from "./NavbarA";
+import NavbarA from "./Applicant/NavbarA";
+import ApplicantHome from "./Applicant/ApplicantHome";
 
 function DashboardA() {
   const [verify, setVerify] = useState("");
@@ -10,16 +11,17 @@ function DashboardA() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3001/DashboardA')
-      .then(res => {
+    axios
+      .get("http://localhost:3001/home")
+      .then((res) => {
         if (res.data === "Login is successful") {
           setVerify("Welcome! You are logged in as an Applicant");
         } else {
           // navigate back to homepage
-          navigate('/');
+          navigate("/");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, [navigate]);
@@ -27,7 +29,9 @@ function DashboardA() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/getCurrentUser');
+        const response = await axios.get(
+          "http://localhost:3001/getCurrentUser"
+        );
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -54,6 +58,7 @@ function DashboardA() {
           <p>Email: {user.email}</p>
         </div>
       )}
+      <ApplicantHome />
     </div>
   );
 }

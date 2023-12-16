@@ -200,6 +200,31 @@ app.post('/register', (req,res) => {
     }).catch(err => console.log(err.message))
 })
 
+// Retrieve current user information
+app.get('/getCurrentUser', (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json("Token is missing");
+    } else {
+        jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+            if (err) {
+                return res.json("Error with token");
+            } else {
+                UserModel.findOne({ email: decoded.email })
+                    .then(user => {
+                        if (user) {
+                            res.json(user);
+                        } else {
+                            return res.json("Error");
+                        }
+                    })
+                    .catch(err => res.json(err));
+            }
+        });
+    }
+});
+
+
 // System Administrator APis
 // Manage Sports APIs
 app.get("/ManageSports", (req, res) => {

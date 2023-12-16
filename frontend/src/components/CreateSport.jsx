@@ -47,7 +47,7 @@ function CreateSport() {
               onChange={(e) => setFormat(e.target.value)}
             />
           </div>
-          <button className="btn btn-success">Submit</button>
+          <button className="btn btn-success">Create</button>
         </form>
       </div>
     </div>

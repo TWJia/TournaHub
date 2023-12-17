@@ -18,6 +18,9 @@ import DashboardEC from "./components/DashboardEC";
 import DashboardS from "./components/DashboardS";
 import DashboardCPendingCollaboration from "./components/DashboardCPendingCollaboration";
 import UpdateProfile from "./components/Applicant/UpdateProfile";
+import DisplaySchedule from "./components/Applicant/DisplaySchedule";
+import NewsDetails from "./components/Applicant/NewsDetails";
+import MatchResult from "./components/Applicant/MatchResult";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -59,7 +62,10 @@ export default function App() {
           <Route path="/ManageUsers" element={<ManageUsers />} />
           <Route path="/UpdateUsers/:id" element={<UpdateUsers />} />
           <Route path="/home" element={<DashboardA />} />
+          <Route path="/home/news/:newsId" component={<NewsDetails />} />
           <Route path="/UpdateProfile" element={<UpdateProfile />} />
+          <Route path="/TournamentSchedule" element={<DisplaySchedule />} />
+          <Route path="/MatchResult" element={<MatchResult />} />
           <Route path="/DashboardC" element={<DashboardC />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />
           <Route path="/DashboardEC" element={<DashboardEC />} />

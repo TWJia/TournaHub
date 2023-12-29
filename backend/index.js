@@ -8,6 +8,31 @@ const UserModel = require("./models/Users");
 const SportsModel = require("./models/Sports");
 const TournamentModel = require("./models/Tournaments");
 const { ObjectId } = require("mongodb");
+const { MongoClient } = require("mongodb");
+const uri = "mongodb+srv://TournaHub:123qwe@tournahub.ze12x0s.mongodb.net/";
+
+// Options for the MongoClient
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+// Create a MongoClient and connect to MongoDB Atlas
+const client = new MongoClient(uri, options);
+
+async function connect() {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB Atlas");
+
+    // Your application logic goes here
+  } finally {
+    // Ensure the client is closed when your application terminates
+    await client.close();
+  }
+}
+
+// Call the connect function to establish a connection
+connect();
 
 const app = express();
 const PORT = 3001;

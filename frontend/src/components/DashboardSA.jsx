@@ -13,7 +13,9 @@ function DashboardSA() {
     axios.get('http://localhost:3001/DashboardSA')
       .then(res => {
         if (res.data === "Login is successful") {
+          // Set and store verify in localStorage
           setVerify("Welcome! You are logged in as a System Administrator");
+          localStorage.setItem('verify', "Welcome! You are logged in as a System Administrator");
         } else {
           // navigate back to homepage
           navigate('/');
@@ -27,8 +29,29 @@ function DashboardSA() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/getCurrentUser');
-        setUser(response.data);
+        // Check if user data is stored in localStorage
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          // If not, fetch user data from the server
+          const response = await axios.get('http://localhost:3001/getCurrentUser');
+          setUser(response.data);
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
+
+        // Check if verify is stored in localStorage
+        const storedVerify = localStorage.getItem('verify');
+        if (storedVerify) {
+          setVerify(storedVerify);
+        } else {
+          // If not, fetch user data from the server
+          const verifyResponse = await axios.get('http://localhost:3001/DashboardSA');
+          setVerify("Welcome! You are logged in as a System Administrator");
+          // Store verify in localStorage
+          localStorage.setItem('verify', "Welcome! You are logged in as a System Administrator");
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -59,3 +82,4 @@ function DashboardSA() {
 }
 
 export default DashboardSA;
+

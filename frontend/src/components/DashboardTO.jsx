@@ -13,7 +13,9 @@ function DashboardTO() {
     axios.get('http://localhost:3001/DashboardTO')
       .then(res => {
         if (res.data === "Login is successful") {
+          // Set and store verify in localStorage
           setVerify("Welcome! You are logged in as a Tournament Organizer");
+          localStorage.setItem('verify', "Welcome! You are logged in as a Tournament Organizer");
         } else {
           // navigate back to homepage
           navigate('/');
@@ -27,8 +29,17 @@ function DashboardTO() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/getCurrentUser');
-        setUser(response.data);
+        // Check if user data is stored in localStorage
+        const storedUser = localStorage.getItem('userTO');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          // If not, fetch user data from the server
+          const response = await axios.get('http://localhost:3001/getCurrentUser');
+          setUser(response.data);
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
       } catch (error) {
         console.log(error);
       } finally {

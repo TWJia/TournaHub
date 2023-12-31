@@ -5,7 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 function UpdateSports() {
     const {id} = useParams()
     const [name, setName] = useState('')
-    const [format, setFormat] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -19,7 +18,7 @@ function UpdateSports() {
   
     const Update = (e) => {
       e.preventDefault();
-      axios.put('http://localhost:3001/updateSport/'+id, {name, format})
+      axios.put('http://localhost:3001/updateSport/'+id, {name})
         .then(result => {
           console.log(result)
           alert('Sport updated successfully')
@@ -41,16 +40,6 @@ function UpdateSports() {
               className="form-control"
               value={name}
               onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="">Format</label>
-            <input
-              type="text"
-              placeholder="Enter Format"
-              className="form-control"
-              value={format}
-              onChange={(e) => setFormat(e.target.value)}
             />
           </div>
           <button type ="submit" className="btn btn-success">Update</button>

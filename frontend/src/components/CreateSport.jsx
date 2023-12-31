@@ -7,13 +7,12 @@ import NavbarSA from "./NavbarSA";
 function CreateSport() {
 
     const [name, setName] = useState()
-    const [format, setFormat] = useState()
     const navigate = useNavigate()
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3001/CreateSport', {name, format})
+        axios.post('http://localhost:3001/CreateSport', {name})
         .then(result => {
           console.log(result)
           alert('Sport created successfully')
@@ -36,15 +35,6 @@ function CreateSport() {
               placeholder="Enter Name"
               className="form-control"
               onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="">Format</label>
-            <input
-              type="text"
-              placeholder="Enter Format"
-              className="form-control"
-              onChange={(e) => setFormat(e.target.value)}
             />
           </div>
           <button className="btn btn-success">Create</button>

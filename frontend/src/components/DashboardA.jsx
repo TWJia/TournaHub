@@ -15,7 +15,9 @@ function DashboardA() {
       .get("http://localhost:3001/home")
       .then((res) => {
         if (res.data === "Login is successful") {
-          setVerify("Welcome! You are logged in as an Applicant");
+          // Set and store verify in localStorage
+          setVerify("Welcome! You are logged in as an User");
+          localStorage.setItem('verify', "Welcome! You are logged in as an User");
         } else {
           // navigate back to homepage
           navigate("/");
@@ -29,10 +31,17 @@ function DashboardA() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/getCurrentUser"
-        );
-        setUser(response.data);
+        // Check if user data is stored in localStorage
+        const storedUser = localStorage.getItem('userA');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          // If not, fetch user data from the server
+          const response = await axios.get("http://localhost:3001/getCurrentUser");
+          setUser(response.data);
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -50,7 +59,7 @@ function DashboardA() {
   return (
     <div>
       <NavbarA />
-      <p>Dashboard: Applicant</p>
+      <p>Dashboard: User</p>
       <p>{verify}</p>
       {user && (
         <div>
@@ -64,3 +73,4 @@ function DashboardA() {
 }
 
 export default DashboardA;
+

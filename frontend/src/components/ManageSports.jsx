@@ -43,7 +43,7 @@ function ManageSports() {
     if (window.confirm('Confirm deletion?')) {
       try {
         await axios.delete(`http://localhost:3001/deleteSport/${id}`);
-        window.location.reload();
+        window.location.reload()
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +61,6 @@ function ManageSports() {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Format</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -70,7 +69,6 @@ function ManageSports() {
                 ? sports.map((sport) => (
                     <tr key={sport._id}>
                       <td>{sport.name}</td>
-                      <td>{sport.format}</td>
                       <td>
                         <Link to={`/UpdateSports/${sport._id}`} className="btn btn-success">
                           Update
@@ -87,7 +85,6 @@ function ManageSports() {
                 : filteredSports.map((sport) => (
                     <tr key={sport._id}>
                       <td>{sport.name}</td>
-                      <td>{sport.format}</td>
                       <td>
                         <Link to={`/UpdateSports/${sport._id}`} className="btn btn-success">
                           Update

@@ -43,12 +43,12 @@ function ManageUsers() {
     if (window.confirm('Confirm suspension?')) {
       try {
         await axios.put(`http://localhost:3001/suspendUser/${id}`);
-        window.location.reload();
+        window.location.reload()
       } catch (error) {
         console.log(error);
       }
     }
-  };
+  }
 
   return (
     <>

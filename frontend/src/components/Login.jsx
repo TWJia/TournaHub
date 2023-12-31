@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -18,18 +19,12 @@ function Login() {
           if (res.data.usertype === "systemadministrator") {
             window.localStorage.setItem("loggedInSA", true);
             navigate("/DashboardSA");
-          } else if (res.data.usertype === "applicant") {
+          } else if (res.data.usertype === "user") {
             window.localStorage.setItem("loggedInA", true);
             navigate("/home");
-          } else if (res.data.usertype === "collaborator") {
-            window.localStorage.setItem("loggedInC", true);
-            navigate("/DashboardC");
           } else if (res.data.usertype === "tournamentorganizer") {
             window.localStorage.setItem("loggedInTO", true);
             navigate("/DashboardTO");
-          } else if (res.data.usertype === "eventcoordinator") {
-            window.localStorage.setItem("loggedInEC", true);
-            navigate("/DashboardEC");
           } else if (res.data.usertype === "sponsor") {
             window.localStorage.setItem("loggedInS", true);
             navigate("/DashboardS");
@@ -76,6 +71,10 @@ function Login() {
             Login
           </button>
         </form>
+        <p>Don't have an Account?</p>
+        <Link to="/Signup" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
+          Register
+        </Link>
       </div>
     </div>
   );

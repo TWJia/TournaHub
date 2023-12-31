@@ -4,6 +4,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const multer = require('multer')
 const UserModel = require("./models/Users");
 const SportsModel = require("./models/Sports");
 const TournamentModel = require("./models/Tournaments");
@@ -45,14 +46,30 @@ app.use(
   })
 );
 app.use(cookieParser());
+// Used for getting the PDF files for verification
+app.use("/verify", express.static("verify"))
 
-// Edit the connection string to connect to YOUR instance of MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/TournaHub", {
+// Connection String is set to connect to the Tournahub Database in MongoDB Atlas
+mongoose.connect("mongodb+srv://TournaHub:123qwe@tournahub.ze12x0s.mongodb.net/Tournahub", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 // Middlewares
+// Multer file upload locations
+const verifyStorage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, './verify')
+  },
+  filename: function (req, file, cb){
+    const uniqueSuffix = Date.now()
+    cb(null, uniqueSuffix + file.originalname)
+  }
+})
+
+const verifyUpload = multer({storage: verifyStorage})
+
+//
 // Login Middlewares
 const verifySysAdmin = (req, res, next) => {
   const token = req.cookies.token;
@@ -73,7 +90,7 @@ const verifySysAdmin = (req, res, next) => {
   }
 };
 
-const verifyApplicant = (req, res, next) => {
+const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
     return res.json("Token is missing");
@@ -82,29 +99,10 @@ const verifyApplicant = (req, res, next) => {
       if (err) {
         return res.json("Error with token");
       } else {
-        if (decoded.usertype === "applicant") {
+        if (decoded.usertype === "user") {
           next();
         } else {
-          return res.json("User is not an applicant");
-        }
-      }
-    });
-  }
-};
-
-const verifyCollaborator = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.json("Token is missing");
-  } else {
-    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-      if (err) {
-        return res.json("Error with token");
-      } else {
-        if (decoded.usertype === "collaborator") {
-          next();
-        } else {
-          return res.json("User is not a collaborator");
+          return res.json("User is not an user");
         }
       }
     });
@@ -124,25 +122,6 @@ const verifyTournamentOrganizer = (req, res, next) => {
           next();
         } else {
           return res.json("User is not a tournament organizer");
-        }
-      }
-    });
-  }
-};
-
-const verifyEventCoordinator = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.json("Token is missing");
-  } else {
-    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-      if (err) {
-        return res.json("Error with token");
-      } else {
-        if (decoded.usertype === "eventcoordinator") {
-          next();
-        } else {
-          return res.json("User is not an event coordinator");
         }
       }
     });
@@ -174,11 +153,7 @@ app.get("/DashboardSA", verifySysAdmin, (req, res) => {
   res.json("Login is successful");
 });
 
-app.get("/home", verifyApplicant, (req, res) => {
-  res.json("Login is successful");
-});
-
-app.get("/DashboardC", verifyCollaborator, (req, res) => {
+app.get("/home", verifyUser, (req, res) => {
   res.json("Login is successful");
 });
 
@@ -186,9 +161,6 @@ app.get("/DashboardTO", verifyTournamentOrganizer, (req, res) => {
   res.json("Login is successful");
 });
 
-app.get("/DashboardEC", verifyEventCoordinator, (req, res) => {
-  res.json("Login is successful");
-});
 
 app.get("/DashboardS", verifySponsor, (req, res) => {
   res.json("Login is successful");
@@ -200,6 +172,8 @@ app.post("/login", (req, res) => {
     if (user) {
       if (user.isActive === "Suspended") {
         return res.json("User is suspended");
+      } else if (user.isActive === "Pending") {
+        return res.json("User is pending verification");
       } else {
         bcrypt.compare(password, user.password, (err, response) => {
           if (response) {
@@ -214,23 +188,33 @@ app.post("/login", (req, res) => {
               usertype: user.usertype,
             });
           } else {
+            // Handle incorrect password
             return res.json("The password is incorrect");
           }
         });
       }
     } else {
+      // Handle case where no user is found
       return res.json("No record existed");
     }
   });
 });
 
+
 // Register API
-app.post("/register", (req, res) => {
-  const { name, email, password, usertype } = req.body;
+app.post("/register", verifyUpload.single("verification"), (req, res) => {
+  const { name, email, password, gender, dob, skillLevel, interestedSport, usertype } = req.body;
+  let verification = '';
+
+  // Check if a file was uploaded
+  if (req.file && req.file.filename) {
+    verification = req.file.filename;
+  }
+
   bcrypt
     .hash(password, 10)
     .then((hash) => {
-      UserModel.create({ name, email, password: hash, usertype })
+      UserModel.create({ name, email, password: hash, gender, dob, skillLevel, interestedSport, verification, usertype })
         .then((users) => res.json(users))
         .catch((err) => res.json(err));
     })
@@ -280,7 +264,7 @@ app.put("/updateSport/:id", (req, res) => {
   const id = req.params.id;
   SportsModel.findByIdAndUpdate(
     { _id: id },
-    { name: req.body.name, format: req.body.format }
+    { name: req.body.name}
   )
     .then((sports) => res.json(sports))
     .catch((err) => res.json(err));
@@ -308,6 +292,12 @@ app.post("/CreateSport", (req, res) => {
 // Manage Users APIs
 app.get("/ManageUsers", (req, res) => {
   UserModel.find({})
+    .then((users) => res.json(users))
+    .catch((err) => res.json(err));
+});
+
+app.get("/PendingUsers", (req, res) => {
+  UserModel.find({isActive: "Pending" })
     .then((users) => res.json(users))
     .catch((err) => res.json(err));
 });
@@ -348,6 +338,19 @@ app.put("/suspendUser/:id", (req, res) => {
     { _id: id },
     {
       isActive: suspended,
+    }
+  )
+    .then((res) => res.json(err))
+    .catch((err) => res.json(err));
+});
+
+app.put("/approveUser/:id", (req, res) => {
+  const id = req.params.id;
+  const approved = "Active";
+  UserModel.findByIdAndUpdate(
+    { _id: id },
+    {
+      isActive: approved,
     }
   )
     .then((res) => res.json(err))

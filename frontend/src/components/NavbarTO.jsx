@@ -4,8 +4,17 @@ import "./Navbar.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "./images/Tournahub.png";
 
-export default function NavbarTO() {
+import {useNavigate} from 'react-router-dom';
+
+export default function NavbarC() {
   const [click, setClick] = useState(false);
+
+  const navigate = useNavigate();
+  const navigateToDashboardTOPendingCollaboration = () => {
+    //navigate to /DashboardCPendingCollaboration
+    navigate('/DashboardTOPendingCollaboration');
+  };
+
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
@@ -23,6 +32,11 @@ export default function NavbarTO() {
             <MenuIcon />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
+            <li className="nav-item">
+              <a className="nav-links" onClick={navigateToDashboardTOPendingCollaboration}>
+                Collaboration
+              </a>
+            </li>
             <li className="nav-item">
                 <a href="/" className="nav-links" onClick={() => Logout()}>
                   LogOut

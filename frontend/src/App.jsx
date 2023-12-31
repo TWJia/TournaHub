@@ -11,12 +11,11 @@ import ManageSports from "./components/ManageSports";
 import UpdateSports from "./components/UpdateSports";
 import ManageUsers from "./components/ManageUsers";
 import UpdateUsers from "./components/UpdateUsers";
+import VerifyUsers from "./components/verifyUsers";
 import DashboardA from "./components/DashboardA";
-import DashboardC from "./components/DashboardC";
 import DashboardTO from "./components/DashboardTO";
-import DashboardEC from "./components/DashboardEC";
 import DashboardS from "./components/DashboardS";
-import DashboardCPendingCollaboration from "./components/DashboardCPendingCollaboration";
+import DashboardTOPendingCollaboration from "./components/DashboardTOPendingCollaboration";
 import UpdateProfile from "./components/Applicant/UpdateProfile";
 import DisplaySchedule from "./components/Applicant/DisplaySchedule";
 import NewsDetails from "./components/Applicant/NewsDetails";
@@ -25,9 +24,7 @@ import MatchResult from "./components/Applicant/MatchResult";
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
   const loginA = window.localStorage.getItem("loggedInA");
-  const loginC = window.localStorage.getItem("loggedInC");
   const loginTO = window.localStorage.getItem("loggedInTO");
-  const loginEC = window.localStorage.getItem("loggedInEC");
   const loginS = window.localStorage.getItem("loggedInS");
   return (
     <div className="App">
@@ -40,12 +37,8 @@ export default function App() {
                 <DashboardSA />
               ) : loginA ? (
                 <DashboardA />
-              ) : loginC ? (
-                <DashboardC />
               ) : loginTO ? (
                 <DashboardTO />
-              ) : loginEC ? (
-                <DashboardEC />
               ) : loginS ? (
                 <DashboardS />
               ) : (
@@ -60,20 +53,19 @@ export default function App() {
           <Route path="/ManageSports" element={<ManageSports />} />
           <Route path="/UpdateSports/:id" element={<UpdateSports />} />
           <Route path="/ManageUsers" element={<ManageUsers />} />
+          <Route path="/verifyUsers" element={<VerifyUsers />} />
           <Route path="/UpdateUsers/:id" element={<UpdateUsers />} />
           <Route path="/home" element={<DashboardA />} />
           <Route path="/home/news/:newsId" component={<NewsDetails />} />
           <Route path="/UpdateProfile" element={<UpdateProfile />} />
           <Route path="/TournamentSchedule" element={<DisplaySchedule />} />
           <Route path="/MatchResult" element={<MatchResult />} />
-          <Route path="/DashboardC" element={<DashboardC />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />
-          <Route path="/DashboardEC" element={<DashboardEC />} />
           <Route path="/DashboardS" element={<DashboardS />} />
 
           <Route
-            path="/DashboardCPendingCollaboration"
-            element={<DashboardCPendingCollaboration />}
+            path="/DashboardTOPendingCollaboration"
+            element={<DashboardTOPendingCollaboration />}
           />
         </Routes>
       </Router>

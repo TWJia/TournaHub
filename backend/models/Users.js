@@ -5,7 +5,22 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, unique: true},
     password: String,
     usertype: String,
-    isActive: {type: String, default: 'Active'}
+    gender: String,
+    dob: String,
+    interestedSport: String,
+    skillLevel: String,
+    isActive: {
+        type: String,
+        default: function () {
+          // Check the usertype and set the default value accordingly
+          if (this.usertype === 'tournamentorganizer' || this.usertype === 'sponsor') {
+            return 'Pending';
+          } else {
+            return 'Active';
+          }
+        },
+    }, 
+    verification: String
 })
 
 const UserModel= mongoose.model("user", UserSchema)

@@ -178,7 +178,7 @@ app.post("/login", (req, res) => {
         bcrypt.compare(password, user.password, (err, response) => {
           if (response) {
             const token = jwt.sign(
-              { email: user.email, usertype: user.usertype },
+              { email: user.email, usertype: user.usertype, id:user._id },
               "jwt-secret-key",
               { expiresIn: "1d" }
             );
@@ -231,7 +231,7 @@ app.get("/getCurrentUser", (req, res) => {
       if (err) {
         return res.json("Error with token");
       } else {
-        UserModel.findOne({ email: decoded.email })
+        UserModel.findOne({ _id: decoded.id })
           .then((user) => {
             if (user) {
               res.json(user);

@@ -1,66 +1,31 @@
 import React, { useEffect, useState } from "react";
 import NavbarA from "./NavbarA";
-
-// const NewsDetails = ({ match }) => {
-//   const [news, setNews] = useState([]);
-
-//   //   useEffect(() => {
-//   //     // Fetch the specific news item using match.params.newsId
-//   //     const newsId = match.params.newsId;
-//   //     // Perform fetch or use the existing data source to get the news details
-//   //     const fetchedNews = fetch("src/components/Applicant/fakeNewsData.json");
-//   //     setNews(fetchedNews);
-//   //   }, [match.params.newsId]);
-
-//   useEffect(() => {
-//     const newsId = match.params.newsId;
-
-//     // Fetch the data using fetch
-//     fetch("src/components/Applicant/fakeNewsData.json")
-//       .then((response) => response.json())
-//       .then((data) => {
-//         // Filter the data based on the newsId
-//         const selectedNews = data.find(
-//           (news) => news.newsId === parseInt(newsId)
-//         );
-//         setNews(selectedNews);
-//       })
-//       .catch((error) => console.error("Error fetching news:", error));
-//   }, [match.params.newsId]);
-
-//   return (
-//     <div>
-//       {news ? (
-//         <div>
-//           <NavbarA />
-//           <h2>{news.title}</h2>
-//           <img className="fixed-size-image" src={news.image} alt={news.title} />
-//           <p>{news.description}</p>
-//         </div>
-//       ) : (
-//         <p>Loading...</p>
-//       )}
-//     </div>
-//   );
-// };
-// export default NewsDetail;
+import { useParams } from "react-router-dom";
+import newsData from "./fakeNewsData.json";
+import axios from "axios";
 
 const NewsDetails = ({ match }) => {
   const [news, setNews] = useState(null);
+  const { newsId } = useParams();
 
   useEffect(() => {
     // Fetch the specific news item using match.params.newsId
-    const newsId = match.params.newsId;
     // Load your news data from the JSON file or API
-    fetch("src/components/Applicant/fakeNewsData.json")
-      .then((response) => response.json())
-      .then((data) => {
-        // Find the news item with the matching newsId
-        const selectedNews = data.find((item) => item.newsId === newsId);
-        setNews(selectedNews);
-      })
-      .catch((error) => console.error("Error fetching news:", error));
-  }, [match.params.newsId]);
+    // Find the news item with the matching newsId
+    getNewsDetailsById();
+  }, [newsId]);
+
+  const getNewsDetailsById = async () => {
+    try {
+      const { status, data } = await axios.get(
+        `http://localhost:3001/api/news/byid/${newsId}`
+      );
+      console.log(data);
+      setNews(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -68,8 +33,8 @@ const NewsDetails = ({ match }) => {
       {news ? (
         <div>
           <h2>{news.title}</h2>
-          <img src={news.image} alt={news.title} />
-          <p>{news.description}</p>
+          <img width={"200px"} src={news.image} alt={news.title} />
+          <p>{news.content}</p>
         </div>
       ) : (
         <p>Loading...</p>

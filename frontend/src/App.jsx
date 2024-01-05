@@ -20,6 +20,8 @@ import UpdateProfile from "./components/Applicant/UpdateProfile";
 import DisplaySchedule from "./components/Applicant/DisplaySchedule";
 import NewsDetails from "./components/Applicant/NewsDetails";
 import MatchResult from "./components/Applicant/MatchResult";
+import NewsForm from "./components/Applicant/NewsForm";
+import RatingAndReview from "./components/Applicant/RatingAndReview";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -46,6 +48,9 @@ export default function App() {
               )
             }
           />
+          <Route path="/home/news/:newsId" element={<NewsDetails />} />
+          <Route path="/UploadNews" element={<NewsForm />} />
+          <Route path="/RatingAndReview" element={<RatingAndReview />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/DashboardSA" element={<DashboardSA />} />
@@ -56,7 +61,6 @@ export default function App() {
           <Route path="/verifyUsers" element={<VerifyUsers />} />
           <Route path="/UpdateUsers/:id" element={<UpdateUsers />} />
           <Route path="/home" element={<DashboardA />} />
-          <Route path="/home/news/:newsId" component={<NewsDetails />} />
           <Route path="/UpdateProfile" element={<UpdateProfile />} />
           <Route path="/TournamentSchedule" element={<DisplaySchedule />} />
           <Route path="/MatchResult" element={<MatchResult />} />

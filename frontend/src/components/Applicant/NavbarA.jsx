@@ -40,6 +40,12 @@ export default function NavbarA() {
           <Link to={`/Apply`} className="nav-links">
             Apply
           </Link>
+          <Link to={`/RatingAndReview`} className="nav-links">
+            Rating
+          </Link>
+          <Link to={`/UploadNews`} className="nav-links">
+            Upload News
+          </Link>
           <div className="menu-icon" onClick={handleClick}>
             <MenuIcon />
           </div>

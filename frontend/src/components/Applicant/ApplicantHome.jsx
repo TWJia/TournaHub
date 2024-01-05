@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "./ApplicantHome.css";
+import axios from "axios";
 const ApplicantHome = () => {
   const [newsData, setNewsData] = useState([]);
 
   useEffect(() => {
     // Fetch news data from your API or local JSON file
-    fetch("src/components/Applicant/fakeNewsData.json")
-      .then((response) => response.json())
-      .then((data) => setNewsData(data))
-      .catch((error) => console.error("Error fetching news data:", error));
+    fetchAllNews();
   }, []);
+
+  const fetchAllNews = async () => {
+    try {
+      const { status, data } = await axios.get(
+        "http://localhost:3001/api/news/all"
+      );
+
+      setNewsData(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleTitleClick = (newsId) => {
     // Ensure newsId is valid before navigating
@@ -42,8 +52,8 @@ const ApplicantHome = () => {
       <h2>Latest News</h2>
 
       {newsData.map((news) => (
-        <div key={news.newsId}>
-          <h3 onClick={() => handleTitleClick(news.newsId)}>
+        <div key={news._id}>
+          <h3 onClick={() => handleTitleClick(news._id)}>
             <img
               className="fixed-size-image"
               src={news.image}
@@ -51,7 +61,7 @@ const ApplicantHome = () => {
             />
             {news.title}
           </h3>
-          <p>{news.description}</p>
+          <p>{news.content}</p>
         </div>
       ))}
     </div>

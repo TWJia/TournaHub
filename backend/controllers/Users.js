@@ -1,4 +1,5 @@
 const UserModel = require("../models/Users");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const handleManageUser = (req, res) => {
   UserModel.find({})

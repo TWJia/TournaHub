@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SportsSearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
@@ -20,4 +20,4 @@ const SportsSearchBar = ({ onSearch }) => {
   );
 };
 
-export default SportsSearchBar;
+export default SearchBar;

@@ -49,6 +49,17 @@ router.get("/byid/:id", async (req, res) => {
   }
 });
 
+// this endpoint gets one news article that matches the search filter by title
+router.get("/search/:title", async (req, res) => {
+  try {
+    const title = req.params.title;
+    const news = await NewsModel.find({ title: { $regex: new RegExp(title, "i") } });
+    res.status(200).json({ message: news, success: true });
+  } catch (error) {
+    res.status(500).json({ message: "could not fetch news", success: false });
+  }
+});
+
 router.delete("/:newsId", async (req, res) => {
   const newsId = req.params.newsId;
   try {

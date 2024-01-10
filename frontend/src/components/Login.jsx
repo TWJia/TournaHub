@@ -71,6 +71,9 @@ function Login() {
             Login
           </button>
         </form>
+        <Link to="/ForgetPassword">
+          Forget Password
+        </Link>
         <p>Don't have an Account?</p>
         <Link to="/Signup" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
           Register

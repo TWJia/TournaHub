@@ -1,6 +1,8 @@
 const UserModel = require("../models/Users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
+const { response } = require("express");
 
 const handleLogin = (req, res) => {
   const { email, password } = req.body;
@@ -95,4 +97,61 @@ const getCurrentUser = (req, res) => {
     });
   }
 };
-module.exports = { handleLogin, handleRegister, getCurrentUser };
+
+const forgetPassword = (req,res) => {
+  const {email} = req.body;
+  UserModel.findOne({email: email})
+  .then(user => {
+    if (!user) {
+      return res.send({Status: "User does not exist"})
+    }
+    const fPWToken = jwt.sign({id: user._id}, "jwt-secret-key", {expiresIn: "1d"})
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'tournahub004@gmail.com',
+        pass: 'pdcb pdeb vpgb lnrt'
+      }
+    });
+    
+    var mailOptions = {
+      from: 'tournahub004@gmail.com',
+      to: user.email,
+      subject: 'Reset Password - Tournahub',
+      text: `http://localhost:5173/ResetPassword/${user._id}/${fPWToken}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        return res.send({Status: "Success"})
+      }
+    });
+  })
+}
+
+const resetPassword = (req,res) => {
+  const {id, token} = req.params
+  const {password} = req.body
+
+  jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+    if (err) {
+      return res.json({Status: "Error with Token"})
+    }
+    else {
+      bcrypt.hash(password, 10)
+      .then(hash => {
+        UserModel.findByIdAndUpdate({_id: id}, {password: hash})
+        .then(u => res.send({Status: "Success"}))
+        .catch(err =>  res.send({Status: err}))
+      })
+      .catch((err) => console.log(err.message));
+    }
+  })
+}
+
+module.exports = { handleLogin, handleRegister, getCurrentUser, forgetPassword, resetPassword };

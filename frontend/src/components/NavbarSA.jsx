@@ -10,6 +10,8 @@ export default function NavbarSA() {
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
     window.localStorage.removeItem("loggedInSA")
+    window.localStorage.removeItem("verify")
+    window.localStorage.removeItem("user")
   }
 
   return (
@@ -24,6 +26,9 @@ export default function NavbarSA() {
           </Link>
           <Link to={`/ManageSports`} className="nav-links">
             Manage Sport
+          </Link>
+          <Link to={`/ManageNewsArticles`} className="nav-links">
+            Manage News
           </Link>
           <Link to={`/ManageUsers`} className="nav-links">
             Manage Users

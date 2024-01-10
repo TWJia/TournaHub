@@ -8,6 +8,8 @@ const {
   handleRegister,
   getCurrentUser,
   handleLogin,
+  forgetPassword,
+  resetPassword,
 } = require("./controllers/Auth");
 const {
   handleManageSports,
@@ -96,6 +98,9 @@ app.post("/login", handleLogin);
 app.post("/register", verifyUpload.single("verification"), handleRegister);
 // Retrieve current user information
 app.get("/getCurrentUser", getCurrentUser);
+// Forget/Reset Password
+app.post("/forgetPassword", forgetPassword);
+app.post("/resetPassword/:id/:token", resetPassword);
 
 // System Administrator APis
 // Manage Sports APIs

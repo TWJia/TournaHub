@@ -4,8 +4,8 @@ const NewsSchema = new mongoose.Schema({
   title: String,
   author: String,
   content: String,
-  image: String,
   category: String,
+  photo: { type: String },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",

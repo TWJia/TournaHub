@@ -58,6 +58,8 @@ app.use("/verify", express.static("verify"));
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
 app.use("/api/news", require("./routes/News"));
+app.use("/images", express.static("images"));
+
 // Middlewares
 // Multer file upload locations
 const verifyStorage = multer.diskStorage({

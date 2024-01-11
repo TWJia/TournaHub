@@ -13,17 +13,25 @@ const NewsForm = () => {
     title: "",
     content: "",
     author: "",
-    image: "",
+    photo: "",
+    user: "null",
   });
 
   const handleInputChange = (e) => {
-    setnewsData((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
+    setnewsData({
+      ...newsData,
+      [e.target.name]: e.target.value,
     });
   };
+
+  const handleImage = (e) => {
+    setnewsData({
+      ...newsData,
+      photo: e.target.files[0],
+    });
+    console.log(newsData.photo);
+  };
+
   const fetchData = async () => {
     try {
       const { data } = await axios.get("http://localhost:3001/getCurrentUser");
@@ -48,24 +56,35 @@ const NewsForm = () => {
     fetchData();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const category = document.querySelector('select[name="category"]').value;
-      setnewsData({
-        ...newsData,
-        category: category,
-      });
-      const { status } = await axios.post(
+      const formData = new FormData();
+      formData.append("title", newsData.title);
+      formData.append("author", newsData.author);
+      formData.append("content", newsData.content);
+      formData.append("category", newsData.category);
+      formData.append("photo", newsData.photo);
+      formData.append("user", newsData.user._id);
+
+      const response = await axios.post(
         "http://localhost:3001/api/news/create",
-        newsData
+        formData
       );
-      if (status === 200) {
-        alert("News created successfully!");
-      } else {
-        alert("Failed to create news. Please try again.");
-      }
+
+      console.log(response.data);
+
+      setnewsData({
+        category: "",
+        title: "",
+        content: "",
+        author: "",
+        photo: "",
+        user: "null",
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error submitting the form:", error);
     }
   };
 
@@ -105,12 +124,13 @@ const NewsForm = () => {
         onChange={handleInputChange}
       />
       <input
-        type="text"
+        type="file"
+        accept=".png, .jpg, .jpeg"
         src=""
         alt=""
-        name="image"
-        placeholder="paste image url "
-        onChange={handleInputChange}
+        name="photo"
+        placeholder="paste photo"
+        onChange={handleImage}
       />
       <button onClick={handleSubmit}>Submit</button>
     </div>

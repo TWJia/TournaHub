@@ -5,7 +5,7 @@ import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import { useParams } from "react-router";
 import axios from "axios";
-
+import NavbarA from "./NavbarA";
 const RatingAndReview = () => {
   const [value, setValue] = useState(0);
   const [reviews, setReviews] = useState([]);
@@ -78,6 +78,7 @@ const RatingAndReview = () => {
 
   return (
     <>
+      <NavbarA />
       <div className="topic">
         <h2 className="book_now_text">Rate us!</h2>
         <Box

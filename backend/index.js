@@ -8,6 +8,8 @@ const {
   handleRegister,
   getCurrentUser,
   handleLogin,
+  forgetPassword,
+  resetPassword,
 } = require("./controllers/Auth");
 const {
   handleManageSports,
@@ -71,6 +73,8 @@ app.use("/verify", express.static("verify"));
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
 app.use("/api/news", require("./routes/News"));
+app.use("/images", express.static("images"));
+
 // Middlewares
 // Multer file upload locations
 const verifyStorage = multer.diskStorage({
@@ -111,6 +115,9 @@ app.post("/login", handleLogin);
 app.post("/register", verifyUpload.single("verification"), handleRegister);
 // Retrieve current user information
 app.get("/getCurrentUser", getCurrentUser);
+// Forget/Reset Password
+app.post("/forgetPassword", forgetPassword);
+app.post("/resetPassword/:id/:token", resetPassword);
 
 // System Administrator APis
 // Manage Sports APIs

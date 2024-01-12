@@ -56,7 +56,7 @@ const ApplicantHome = () => {
           <h3 onClick={() => handleTitleClick(news._id)}>
             <img
               className="fixed-size-image"
-              src={news.image}
+              src={`http://localhost:3001/images/${news.photo}`}
               alt={news.title}
             />
             {news.title}

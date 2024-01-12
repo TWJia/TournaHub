@@ -1,66 +1,136 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import NavbarA from "./NavbarA";
 
 const NewsForm = () => {
+  // const [image, setImage] = useState("");
+  const [sports, setSports] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [newsData, setnewsData] = useState({
     category: "",
     title: "",
     content: "",
-
-    image: "",
+    author: "",
+    photo: "",
+    user: "null",
   });
 
   const handleInputChange = (e) => {
-    setnewsData((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
+    setnewsData({
+      ...newsData,
+      [e.target.name]: e.target.value,
     });
   };
-  const handleSubmit = async () => {
+
+  const handleImage = (e) => {
+    setnewsData({
+      ...newsData,
+      photo: e.target.files[0],
+    });
+    console.log(newsData.photo);
+  };
+
+  const fetchData = async () => {
     try {
-      const { status } = await axios.post(
-        "http://localhost:3001/api/news/create",
-        newsData
-      );
+      const { data } = await axios.get("http://localhost:3001/getCurrentUser");
+      setUser(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const fetchSports = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/ManageSports");
+        setSports(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSports();
+    fetchData();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("title", newsData.title);
+      formData.append("author", newsData.author);
+      formData.append("content", newsData.content);
+      formData.append("category", newsData.category);
+      formData.append("photo", newsData.photo);
+      formData.append("user", newsData.user._id);
+
+      const response = await axios.post(
+        "http://localhost:3001/api/news/create",
+        formData
+      );
+
+      console.log(response.data);
+
+      setnewsData({
+        category: "",
+        title: "",
+        content: "",
+        author: "",
+        photo: "",
+        user: "null",
+      });
+    } catch (error) {
+      console.error("Error submitting the form:", error);
     }
   };
 
   return (
     <div>
-      <h1>new form </h1>
+      <NavbarA />
+      <h1>Write a new article:</h1>
       <form action="">
-        <select name="category" id="" onChange={handleInputChange}>
-          <option value="category">category</option>
-          <option value="Soccer">Soccer</option>
-          <option value="Badminton">Badminton</option>
-          <option value="Basketball">Basketball</option>
+        <h6>Select sport category:</h6>
+        <select type="select" name="category" onChange={handleInputChange}>
+          {sports.map((sport) => (
+            <option key={sport.id} value={sport.name}>
+              {sport.name}
+            </option>
+          ))}
         </select>
       </form>
       <input
         type="text"
         name="title"
         id=""
-        placeholder="enter a title"
+        placeholder="Enter a title"
+        onChange={handleInputChange}
+      />
+      <input
+        type="text"
+        name="author"
+        id=""
+        placeholder="Enter Author name"
         onChange={handleInputChange}
       />
       <input
         type="text"
         name="content"
         id=""
-        placeholder="enter the content"
+        placeholder="Enter the article content"
         onChange={handleInputChange}
       />
       <input
-        type="text"
+        type="file"
+        accept=".png, .jpg, .jpeg"
         src=""
         alt=""
-        name="image"
-        placeholder="paste image url "
-        onChange={handleInputChange}
+        name="photo"
+        placeholder="paste photo"
+        onChange={handleImage}
       />
       <button onClick={handleSubmit}>Submit</button>
     </div>

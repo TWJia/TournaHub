@@ -11,6 +11,17 @@ const handleGetSingleSport = (req, res) => {
     .then((sports) => res.json(sports))
     .catch((err) => res.json(err));
 };
+const handleGetSports = (req, res) => {
+  SportsModel.find({})
+    .then(function (sports) {
+      res.json(sports);
+    })
+    .catch(function (err) {
+      console.error("Error fetching sports:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      //res.json(err)
+    });
+};
 const handleUpdateSport = (req, res) => {
   const id = req.params.id;
   SportsModel.findByIdAndUpdate({ _id: id }, { name: req.body.name })
@@ -37,6 +48,7 @@ const handleCreateSport = (req, res) => {
 module.exports = {
   handleManageSports,
   handleGetSingleSport,
+  handleGetSports,
   handleUpdateSport,
   handleDeleteSport,
   handleCreateSport,

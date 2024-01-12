@@ -14,6 +14,10 @@ export default function NavbarC() {
     //navigate to /DashboardCPendingCollaboration
     navigate('/DashboardTOPendingCollaboration');
   };
+  const navigateToViewTournament= () => {
+    //navigate to /DashboardCPendingCollaboration
+    navigate('/Tournament');
+  };
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -32,6 +36,11 @@ export default function NavbarC() {
             <MenuIcon />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
+          <li className="nav-item">
+              <a className="nav-links" onClick={navigateToViewTournament}>
+                Tournament
+              </a>
+            </li>
             <li className="nav-item">
               <a className="nav-links" onClick={navigateToDashboardTOPendingCollaboration}>
                 Collaboration

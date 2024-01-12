@@ -70,8 +70,8 @@ function DashboardCPendingCollaboration() {
             <tbody>
               {currentTournaments.map(tournament => (
                  <tr key={tournament._id}>
-                  <td>{tournament["Tournament Name"]}</td>
-                  <td>{tournament["Tournament Details"]}</td>
+                  <td>{tournament.tournamentName}</td>
+                  <td>{tournament.tournamentDetails}</td>
                   <td>{tournament.status}</td>
                   <td>
                   <button onClick={() => setCurrentTab("accepted")}>Accept</button>

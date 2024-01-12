@@ -12,6 +12,7 @@ const {
 const {
   handleManageSports,
   handleGetSingleSport,
+  handleGetSports,
   handleUpdateSport,
   handleDeleteSport,
   handleSearchSport,
@@ -33,9 +34,23 @@ const {
 const {
   handleGetTournaments,
   UpdateTournamentStatus,
+  handleCreateTournament,
+  handleGetSingleTournament,
+  handleDeleteTournament,
 } = require("./controllers/Tournaments");
+const {
+  handleCreateMatches,
+  handleGetMatches,
+  handleUpdateMatches,
+} = require("./controllers/Matches");
+const {
+  handleCreateRankingTable,
+  handleGetRankingTable,
+} = require("./controllers/RankingTable");
 
 const app = express();
+app.use(cors());
+
 const PORT = 3001;
 app.use(express.json());
 app.use(
@@ -102,6 +117,7 @@ app.get("/getCurrentUser", getCurrentUser);
 app.get("/ManageSports", handleManageSports);
 
 app.get("/getSport/:id", handleGetSingleSport);
+app.get("/getSports", handleGetSports);
 
 app.put("/updateSport/:id", handleUpdateSport);
 app.delete("/deleteSport/:id", handleDeleteSport);
@@ -125,9 +141,20 @@ app.get("/searchUsers/:name", searchUsers);
 //     res.send('Hello, this is the tournaments endpoint!');
 // });
 
+app.post('/CreateTournament', handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
+app.get("/getTournamentDetails/:id", handleGetSingleTournament);
+app.delete("/deleteTournament/:id", handleDeleteTournament);
+
+app.post('/CreateMatches', handleCreateMatches);
+app.get("/getMatches/:tournamentId", handleGetMatches);
+app.put("/updateMatches/:id", handleUpdateMatches);
 
 app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
+
+app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
+app.post('/CreateRankingTable', handleCreateRankingTable);
+
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

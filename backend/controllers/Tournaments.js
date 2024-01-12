@@ -1,4 +1,12 @@
 const TournamentModel = require("../models/Tournaments");
+const MatchesModel = require("../models/Matches");
+const RankingTableModel = require("../models/RankingTable");
+
+const handleCreateTournament = (req, res) => {
+  TournamentModel.create(req.body)
+    .then((tournaments) => res.json(tournaments))
+    .catch((err) => res.json(err));
+};
 
 const handleGetTournaments = (req, res) => {
   TournamentModel.find({})
@@ -7,10 +15,52 @@ const handleGetTournaments = (req, res) => {
     })
     .catch(function (err) {
       console.error("Error fetching tournaments:", err);
-      res.Status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
       //res.json(err)
     });
 };
+
+const handleGetSingleTournament = (req, res) => {
+  const id = req.params.id;
+  TournamentModel.findById({ _id: id })
+    .then((tournaments) => res.json(tournaments))
+    .catch((err) => res.json(err));
+};
+
+// const handleDeleteTournament = (req, res) => {
+//   const id = req.params.id;
+//   TournamentModel.findByIdAndDelete({ _id: id })
+//     .then((res) => res.json(res))
+//     .catch((err) => res.json(err));
+// };
+
+const handleDeleteTournament = async (req, res) => {
+  const tournamentId = req.params.id;
+
+  try {
+    // Delete the tournament
+    const deletedTournament = await TournamentModel.findByIdAndDelete({ _id: tournamentId });
+
+    // If the tournament is deleted successfully, delete associated matches and ranking tables
+    if (deletedTournament) {
+      // Delete matches associated with the tournament
+      await MatchesModel.deleteMany({ tournamentId: deletedTournament._id });
+
+      // Delete ranking tables associated with the tournament
+      await RankingTableModel.deleteMany({ tournamentId: deletedTournament._id });
+
+      res.json({ message: 'Tournament, matches, and ranking tables deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Tournament not found' });
+    }
+  } catch (err) {
+    console.error('Error deleting tournament and associated data:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
 
 const UpdateTournamentStatus = async (req, res) => {
   try {
@@ -41,4 +91,11 @@ const UpdateTournamentStatus = async (req, res) => {
   }
 };
 
-module.exports = { handleGetTournaments, UpdateTournamentStatus };
+
+module.exports = { 
+  handleGetTournaments,
+  UpdateTournamentStatus, 
+  handleCreateTournament, 
+  handleGetSingleTournament,
+  handleDeleteTournament,
+};

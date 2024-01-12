@@ -7,6 +7,7 @@ const NewsForm = () => {
   const [sports, setSports] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [allNews, setAllNews] = useState([]);
 
   const [newsData, setnewsData] = useState({
     category: "",
@@ -54,6 +55,7 @@ const NewsForm = () => {
 
     fetchSports();
     fetchData();
+    fetchAllNews();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -85,6 +87,30 @@ const NewsForm = () => {
       });
     } catch (error) {
       console.error("Error submitting the form:", error);
+    }
+  };
+
+  const fetchAllNews = async () => {
+    try {
+      const { data, status } = await axios.get(
+        "http://localhost:3001/api/news/all"
+      );
+      setAllNews(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteNews = async (newsId) => {
+    try {
+      const { status } = await axios.delete(
+        `http://localhost:3001/api/news/${newsId}`
+      );
+      if (status === 200) {
+        fetchAllNews();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -133,6 +159,25 @@ const NewsForm = () => {
         onChange={handleImage}
       />
       <button onClick={handleSubmit}>Submit</button>
+      <div>
+        {allNews.map((newss) => {
+          return (
+            <>
+              <div>
+                <p>{newss.user?.name}</p>
+                <h5>{newss.title}</h5>
+                <p>Category: {newss.category}</p>
+                <h6>{newss.content}</h6>
+                {user?._id === newss.user?._id && (
+                  <button onClick={() => handleDeleteNews(newss._id)}>
+                    Delete
+                  </button>
+                )}
+              </div>
+            </>
+          );
+        })}
+      </div>
     </div>
   );
 };

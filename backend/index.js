@@ -50,9 +50,8 @@ const {
   handleGetRankingTable,
 } = require("./controllers/RankingTable");
 
-const app = express();
-app.use(cors());
 
+const app = express();
 const PORT = 3001;
 app.use(express.json());
 app.use(

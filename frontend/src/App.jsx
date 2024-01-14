@@ -20,6 +20,20 @@ import UpdateProfile from "./components/Applicant/UpdateProfile";
 import DisplaySchedule from "./components/Applicant/DisplaySchedule";
 import NewsDetails from "./components/Applicant/NewsDetails";
 import MatchResult from "./components/Applicant/MatchResult";
+<<<<<<< Updated upstream
+=======
+import NewsForm from "./components/Applicant/NewsForm";
+import RatingAndReview from "./components/Applicant/RatingAndReview";
+import CreateTournament from './components/CreateTournament';
+import Tournament from './components/Tournament';
+import ViewTournamentDetails from './components/ViewTournamentDetails';
+import UpdateTournament from './components/UpdateTournament';
+import AddMatches from './components/AddMatches';
+import UpdateMatches from './components/UpdateMatches';
+import CreateRankingTable from './components/CreateRankingTable';
+import ViewApplicants from './components/ViewApplicants';
+
+>>>>>>> Stashed changes
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -62,6 +76,23 @@ export default function App() {
           <Route path="/MatchResult" element={<MatchResult />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />
           <Route path="/DashboardS" element={<DashboardS />} />
+<<<<<<< Updated upstream
+=======
+          <Route path="/CreateTournament" element={<CreateTournament />} />
+          <Route path="/Tournament" element={<Tournament />} />
+          <Route path="/ViewTournamentDetails/:id" element={<ViewTournamentDetails />} />
+          <Route path="/ViewTournamentDetails" element={<ViewTournamentDetails />} />
+          <Route path="/UpdateTournament/:id" element={<UpdateTournament />} />
+          <Route path="/UpdateTournament" element={<UpdateTournament />} />
+          <Route path="/AddMatches" element={<AddMatches />} />
+          <Route path="/AddMatches/:tournamentId" element={<AddMatches />} />
+          <Route path="/UpdateMatches" element={<UpdateMatches />} />
+          <Route path="/UpdateMatches/:id" element={<UpdateMatches />} />
+          <Route path="/CreateRankingTable" element={<CreateRankingTable />} />
+          <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />
+          <Route path="/ViewApplicants" element={<ViewApplicants />} />
+          <Route path="/ViewApplicants/:tournamentId" element={<ViewApplicants />} />
+>>>>>>> Stashed changes
 
           <Route
             path="/DashboardTOPendingCollaboration"

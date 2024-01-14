@@ -12,6 +12,7 @@ const { ObjectId } = require("mongodb");
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://TournaHub:123qwe@tournahub.ze12x0s.mongodb.net/";
 
+<<<<<<< Updated upstream
 // Options for the MongoClient
 const options = {
   useNewUrlParser: true,
@@ -34,6 +35,55 @@ async function connect() {
 
 // Call the connect function to establish a connection
 connect();
+=======
+const {
+  handleRegister,
+  getCurrentUser,
+  handleLogin,
+  forgetPassword,
+  resetPassword,
+} = require("./controllers/Auth");
+const {
+  handleManageSports,
+  handleGetSingleSport,
+  handleGetSports,
+  handleUpdateSport,
+  handleDeleteSport,
+  handleSearchSport,
+  handleCreateSport,
+} = require("./controllers/sports");
+const {
+  handleManageUser,
+  getPendingUsers,
+  getSingleUser,
+  updateUser,
+  suspendedUsers,
+  approveUser,
+  searchUsers,
+  verifySponsor,
+  verifyTournamentOrganizer,
+  verifyUser,
+  verifySysAdmin,
+} = require("./controllers/Users");
+const {
+  handleGetTournaments,
+  UpdateTournamentStatus,
+  handleCreateTournament,
+  handleGetSingleTournament,
+  handleDeleteTournament,
+  handleUpdateTournament,
+} = require("./controllers/Tournaments");
+const {
+  handleCreateMatches,
+  handleGetMatches,
+  handleUpdateMatches,
+} = require("./controllers/Matches");
+const {
+  handleCreateRankingTable,
+  handleGetRankingTable,
+} = require("./controllers/RankingTable");
+
+>>>>>>> Stashed changes
 
 const app = express();
 const PORT = 3001;
@@ -369,6 +419,7 @@ app.get("/searchUsers/:name", (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');
 // });
 
+<<<<<<< Updated upstream
 app.get("/getTournaments", (req, res) => {
   TournamentModel.find({})
     .then(function (tournaments) {
@@ -380,6 +431,13 @@ app.get("/getTournaments", (req, res) => {
       //res.json(err)
     });
 });
+=======
+app.post('/CreateTournament', handleCreateTournament);
+app.get("/getTournaments", handleGetTournaments);
+app.get("/getTournamentDetails/:id", handleGetSingleTournament);
+app.put("/updateTournament/:id", handleUpdateTournament);
+app.delete("/deleteTournament/:id", handleDeleteTournament);
+>>>>>>> Stashed changes
 
 app.put("/updateTournamentStatus/:tournamentId", async (req, res) => {
   try {

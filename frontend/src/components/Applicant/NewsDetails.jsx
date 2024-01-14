@@ -39,6 +39,7 @@ const NewsDetails = ({ match }) => {
       {news ? (
         <div>
           <h2>{news.title}</h2>
+          <h6>{news.category}</h6>
           <div className="singleCol d-flex justify-content-evenly">
             <a href="https://facebook.com">
               <button className="FBWording">

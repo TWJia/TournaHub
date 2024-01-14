@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import NavbarA from "./NavbarA";
 
 const NewsForm = () => {
@@ -8,6 +8,11 @@ const NewsForm = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [allNews, setAllNews] = useState([]);
+  const title = useRef(null);
+  const author = useRef(null);
+  const content = useRef(null);
+  const photo = useRef(null);
+  const category = useRef("");
 
   const [newsData, setnewsData] = useState({
     category: "",
@@ -18,6 +23,12 @@ const NewsForm = () => {
     user: "null",
   });
 
+  // const handleInputChange = (e) => {
+  //   setnewsData({
+  //     ...newsData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
   const handleInputChange = (e) => {
     setnewsData({
       ...newsData,
@@ -68,11 +79,16 @@ const NewsForm = () => {
       formData.append("content", newsData.content);
       formData.append("category", newsData.category);
       formData.append("photo", newsData.photo);
-      formData.append("user", newsData.user._id);
+      formData.append("user", user._id);
 
       const response = await axios.post(
         "http://localhost:3001/api/news/create",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Make sure to set the content type
+          },
+        }
       );
 
       console.log(response.data);
@@ -85,10 +101,50 @@ const NewsForm = () => {
         photo: "",
         user: "null",
       });
+      title.current.value = "";
+      content.current.value = "";
+      author.current.value = "";
+      photo.current.value = "";
+      category.current.value = "";
+
+      // Fetch all news after successful submission
+      fetchAllNews();
     } catch (error) {
       console.error("Error submitting the form:", error);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("title", newsData.title);
+  //     formData.append("author", newsData.author);
+  //     formData.append("content", newsData.content);
+  //     formData.append("category", newsData.category);
+  //     formData.append("photo", newsData.photo);
+  //     formData.append("user", newsData.user._id);
+
+  //     const response = await axios.post(
+  //       "http://localhost:3001/api/news/create",
+  //       formData
+  //     );
+
+  //     console.log(response.data);
+
+  //     setnewsData({
+  //       category: "",
+  //       title: "",
+  //       content: "",
+  //       author: "",
+  //       photo: "",
+  //       user: "null",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error submitting the form:", error);
+  //   }
+  // };
 
   const fetchAllNews = async () => {
     try {
@@ -101,16 +157,34 @@ const NewsForm = () => {
     }
   };
 
+  // const handleDeleteNews = async (newsId) => {
+  //   try {
+  //     const { status } = await axios.delete(
+  //       `http://localhost:3001/api/news/${newsId}`
+  //     );
+  //     if (status === 200) {
+  //       fetchAllNews();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const handleDeleteNews = async (newsId) => {
     try {
+      console.log("Deleting news with ID:", newsId);
+
       const { status } = await axios.delete(
         `http://localhost:3001/api/news/${newsId}`
       );
+
+      console.log("Delete status:", status);
+
       if (status === 200) {
         fetchAllNews();
       }
     } catch (error) {
-      console.log(error);
+      console.log("Delete error:", error);
     }
   };
 
@@ -120,7 +194,18 @@ const NewsForm = () => {
       <h1>Write a new article:</h1>
       <form action="">
         <h6>Select sport category:</h6>
-        <select type="select" name="category" onChange={handleInputChange}>
+        <select
+          type="select"
+          name="category"
+          onChange={handleInputChange}
+          ref={category}
+        >
+          {/* Placeholder or instruction option */}
+          <option ref={category} value="" disabled selected>
+            Select category
+          </option>
+
+          {/* Actual options from the sports array */}
           {sports.map((sport) => (
             <option key={sport.id} value={sport.name}>
               {sport.name}
@@ -129,6 +214,7 @@ const NewsForm = () => {
         </select>
       </form>
       <input
+        ref={title}
         type="text"
         name="title"
         id=""
@@ -136,6 +222,7 @@ const NewsForm = () => {
         onChange={handleInputChange}
       />
       <input
+        ref={author}
         type="text"
         name="author"
         id=""
@@ -143,6 +230,7 @@ const NewsForm = () => {
         onChange={handleInputChange}
       />
       <input
+        ref={content}
         type="text"
         name="content"
         id=""
@@ -150,6 +238,7 @@ const NewsForm = () => {
         onChange={handleInputChange}
       />
       <input
+        ref={photo}
         type="file"
         accept=".png, .jpg, .jpeg"
         src=""

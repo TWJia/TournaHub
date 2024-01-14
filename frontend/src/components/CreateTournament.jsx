@@ -11,6 +11,7 @@ function CreateTournament() {
   const [tournamentDetails, settournamentDetails] = useState('');
   const [tournamentNumberofplayers, settournamentNumberofplayers] = useState('');
   const [tournamentNumberofmatches, settournamentNumberofmatches] = useState('');
+  const [tournamentStatus, settournamentStatus] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +28,8 @@ function CreateTournament() {
     e.preventDefault();
     axios
       .post('http://localhost:3001/CreateTournament', 
-      { tournamentName, tournamentSport, tournamentFormat, tournamentDetails, tournamentNumberofplayers, tournamentNumberofmatches })
+      { tournamentName, tournamentSport, tournamentFormat, tournamentDetails, 
+        tournamentNumberofplayers, tournamentNumberofmatches, tournamentStatus })
       .then((result) => {
         console.log(result);
         alert('Tournament created successfully');
@@ -109,6 +111,15 @@ function CreateTournament() {
                 placeholder=""
                 className="form-control"
                 onChange={(e) => settournamentNumberofmatches(e.target.value)}
+              />
+            </div>
+            <div className="mb-2">
+              <input
+                type="text"
+                id="tournamentStatus"
+                value="Open for Application"
+                className="form-control"
+                onChange={(e) => settournamentStatus(e.target.value)}
               />
             </div>
             <button type="submit" className="btn btn-success">

@@ -7,8 +7,11 @@ const TournamentSchema = new mongoose.Schema({
     tournamentSport: String,
     tournamentFormat: String,
     tournamentDetails: String,
+    tournamentStartDate: Date,
+    tournamentEndDate: Date,
     tournamentNumberofplayers: String,
     tournamentNumberofmatches: String,
+    tournamentStatus: String,
     Status: String
 })
 

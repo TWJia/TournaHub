@@ -64,7 +64,10 @@ function ViewTournamentDetails() {
 <div>
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
+          <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
+          <p>Number of Players: {tournamentDetails.tournamentNumberofplayers}</p>
+          <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
           {/* Display other tournament details as needed */}
           <h1>Matches</h1>
           {Array.isArray(matchDetails) && matchDetails.length > 0 ? (

@@ -73,8 +73,10 @@ function ViewTournament() {
             <tr>
               <th>Tournament Name</th>
               <th>Sport</th>
-              <th>Details</th>
+              <th>Format</th>
+              <th>Number of Matches</th>
               <th>Actions</th>
+              <th>Tournament Status</th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +84,8 @@ function ViewTournament() {
               <tr key={tournament._id} style={{ borderBottom: '1px solid #ddd' }}>
                 <td style={{ padding: '10px' }}>{tournament.tournamentName}</td>
                 <td style={{ padding: '10px' }}>{tournament.tournamentSport}</td>
-                <td style={{ padding: '10px' }}>{tournament.tournamentDetails}</td>
+                <td style={{ padding: '10px' }}>{tournament.tournamentFormat}</td>
+                <td style={{ padding: '10px' }}>{tournament.tournamentNumberofmatches}</td>
                 <td style={{ padding: '10px' }}>
                 <button
                 onClick={() => handleNavigateToVewTournamentDeatils(tournament._id)}
@@ -115,6 +118,7 @@ function ViewTournament() {
                     Delete
                   </button>
                   </td>
+                  <td style={{ padding: '10px' }}>{tournament.tournamentStatus}</td>
                 </tr>
               ))}
             </tbody>

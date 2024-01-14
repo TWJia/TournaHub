@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const MatchesSchema = new mongoose.Schema({
     tournamentId: String,
     MatchNumber: String,
+    MatchName: String,
+    DateandTime: Date,
     Player1: String,
     Player2: String,
     Player1_Score: String,

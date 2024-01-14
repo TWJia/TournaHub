@@ -50,6 +50,10 @@ const {
   handleGetRankingTable,
 } = require("./controllers/RankingTable");
 
+<<<<<<< Updated upstream
+=======
+const app = express();
+>>>>>>> Stashed changes
 
 const app = express();
 const PORT = 3001;

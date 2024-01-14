@@ -334,11 +334,38 @@ app.get("/searchSports/:name", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.post("/CreateSport", (req, res) => {
-  SportsModel.create(req.body)
-    .then((sports) => res.json(sports))
-    .catch((err) => res.json(err));
+// app.post("/CreateSport", (req, res) => {
+//   SportsModel.create(req.body)
+//     .then((sports) => res.json(sports))
+//     .catch((err) => res.json(err));
+// });
+
+// app.post("/CreateSport", async (req, res) => {
+//   try {
+//     console.log("Request Body:", req.body); // Log the request body
+
+//     const { name, selectedFormats } = req.body;
+
+//     if (!name || !selectedFormats || !Array.isArray(selectedFormats)) {
+//       return res.status(400).json({ error: 'Invalid request body' });
+//     }
+
+//     const sports = await SportsModel.create({ name, tournamentFormats: selectedFormats });
+//     res.json(sports);
+//   } catch (err) {
+//     res.status(500).json({ error: 'Failed to create sport', details: err });
+//   }
+// });
+app.post('/CreateSport', (req, res) => {
+  const { name, tournamentFormats } = req.body;
+  res.send({ success: true, message: 'Sport created successfully' });
 });
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+
 // Manage Users APIs
 app.get("/ManageUsers", (req, res) => {
   UserModel.find({})

@@ -35,6 +35,7 @@ const {
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
+  handleUpdateTournament,
   UpdateTournamentStatus,
   handleCreateTournament,
   handleGetSingleTournament,
@@ -49,11 +50,6 @@ const {
   handleCreateRankingTable,
   handleGetRankingTable,
 } = require("./controllers/RankingTable");
-
-<<<<<<< Updated upstream
-=======
-const app = express();
->>>>>>> Stashed changes
 
 const app = express();
 const PORT = 3001;
@@ -154,6 +150,7 @@ app.get("/searchUsers/:name", searchUsers);
 app.post('/CreateTournament', handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
 app.get("/getTournamentDetails/:id", handleGetSingleTournament);
+app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
 
 app.post('/CreateMatches', handleCreateMatches);

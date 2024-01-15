@@ -54,6 +54,11 @@ function ViewTournamentDetails() {
         setLoadingRankingTable(false);
       });
   }, [id]);
+  
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
+  };
 
   return (
     <div>
@@ -66,8 +71,11 @@ function ViewTournamentDetails() {
           <p>Sport: {tournamentDetails.tournamentSport}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
+          <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>
+          <p>End Date: {formatDate(tournamentDetails.tournamentEndDate)}</p>
           <p>Number of Players: {tournamentDetails.tournamentNumberofplayers}</p>
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
+          <p>Tornament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
           <h1>Matches</h1>
           {Array.isArray(matchDetails) && matchDetails.length > 0 ? (

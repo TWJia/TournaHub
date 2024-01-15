@@ -27,13 +27,6 @@ const handleGetSingleTournament = (req, res) => {
     .catch((err) => res.json(err));
 };
 
-// const handleDeleteTournament = (req, res) => {
-//   const id = req.params.id;
-//   TournamentModel.findByIdAndDelete({ _id: id })
-//     .then((res) => res.json(res))
-//     .catch((err) => res.json(err));
-// };
-
 const handleDeleteTournament = async (req, res) => {
   const tournamentId = req.params.id;
 
@@ -59,6 +52,28 @@ const handleDeleteTournament = async (req, res) => {
   }
 };
 
+const handleUpdateTournament = (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  console.log('Updating tournament with ID:', id);
+  console.log('Updated data:', updatedData);
+
+  TournamentModel.findByIdAndUpdate(id, updatedData, { new: true })
+    .then((updatedTournament) => {
+      if (!updatedTournament) {
+        console.log('Tournament not found');
+        return res.status(404).json({ error: 'Tournament not found' });
+      }
+      console.log('Tournament updated successfully:', updatedTournament);
+      res.json(updatedTournament);
+
+    })
+    .catch((err) => {
+      console.error('Error updating Tournament:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+};
 
 
 
@@ -98,4 +113,5 @@ module.exports = {
   handleCreateTournament, 
   handleGetSingleTournament,
   handleDeleteTournament,
+  handleUpdateTournament
 };

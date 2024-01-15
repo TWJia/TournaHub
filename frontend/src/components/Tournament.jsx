@@ -8,7 +8,7 @@ function ViewTournament() {
     const [tournaments, setTournaments] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const handleNavigateToVewTournamentDeatils = (tournamentId) => {
+    const handleNavigateToViewTournamentDeatils = (tournamentId) => {
       navigate(`/ViewTournamentDetails/${tournamentId}`);
     };
     const handleNavigateToCreateTournament = () => {
@@ -22,6 +22,12 @@ function ViewTournament() {
       };
       const handleNavigateToCreateRankingTable = (tournamentId) => {
         navigate(`/CreateRankingTable/${tournamentId}`);
+      };
+      const handleNavigateToUpdateTournament = (tournamentId) => {
+        navigate(`/UpdateTournament/${tournamentId}`);
+      };
+      const handleNavigateViewApplicants = (tournamentId) => {
+        navigate(`/ViewApplicants/${tournamentId}`);
       };
       
       
@@ -77,6 +83,7 @@ function ViewTournament() {
               <th>Number of Matches</th>
               <th>Actions</th>
               <th>Tournament Status</th>
+              <th>Applications</th>
             </tr>
           </thead>
           <tbody>
@@ -88,10 +95,16 @@ function ViewTournament() {
                 <td style={{ padding: '10px' }}>{tournament.tournamentNumberofmatches}</td>
                 <td style={{ padding: '10px' }}>
                 <button
-                onClick={() => handleNavigateToVewTournamentDeatils(tournament._id)}
+                onClick={() => handleNavigateToViewTournamentDeatils(tournament._id)}
                 className="btn btn-sm btn-info mr-2"
                 >
                 View
+                </button>
+                <button
+                onClick={() => handleNavigateToUpdateTournament(tournament._id)}
+                className="btn btn-sm btn-warning mr-2"
+                >
+                Edit Tournament
                 </button>
                   <button
                     onClick={() => handleNavigateToAddMatches(tournament._id)}
@@ -119,6 +132,13 @@ function ViewTournament() {
                   </button>
                   </td>
                   <td style={{ padding: '10px' }}>{tournament.tournamentStatus}</td>
+                  <td style={{ padding: '10px' }}>
+                    <button onClick={() => handleNavigateViewApplicants(tournament._id)}
+                    className="btn btn-sm btn-info"
+                    >
+                      View
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -28,9 +28,11 @@ import RatingAndReview from "./components/Applicant/RatingAndReview";
 import CreateTournament from './components/CreateTournament';
 import Tournament from './components/Tournament';
 import ViewTournamentDetails from './components/ViewTournamentDetails';
+import UpdateTournament from './components/UpdateTournament';
 import AddMatches from './components/AddMatches';
 import UpdateMatches from './components/UpdateMatches';
 import CreateRankingTable from './components/CreateRankingTable';
+import ViewApplicants from './components/ViewApplicants';
 
 
 export default function App() {
@@ -83,12 +85,16 @@ export default function App() {
           <Route path="/Tournament" element={<Tournament />} />
           <Route path="/ViewTournamentDetails/:id" element={<ViewTournamentDetails />} />
           <Route path="/ViewTournamentDetails" element={<ViewTournamentDetails />} />
+          <Route path="/UpdateTournament/:id" element={<UpdateTournament />} />
+          <Route path="/UpdateTournament" element={<UpdateTournament />} />
           <Route path="/AddMatches" element={<AddMatches />} />
           <Route path="/AddMatches/:tournamentId" element={<AddMatches />} />
           <Route path="/UpdateMatches" element={<UpdateMatches />} />
           <Route path="/UpdateMatches/:id" element={<UpdateMatches />} />
           <Route path="/CreateRankingTable" element={<CreateRankingTable />} />
           <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />
+          <Route path="/ViewApplicants" element={<ViewApplicants />} />
+          <Route path="/ViewApplicants/:tournamentId" element={<ViewApplicants />} />
 
           <Route
             path="/DashboardTOPendingCollaboration"

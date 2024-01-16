@@ -6,6 +6,9 @@ import NavbarTO from "./NavbarTO";
 function AddMatches() {
     const { tournamentId } = useParams();
     const [MatchNumber, setMatchNumber] = useState('');
+    const [MatchName, setMatchName] = useState('');
+    const [MatchDate, setMatchDate] = useState('');
+    const [MatchTime, setMatchTime] = useState('');
     const [Player1, setPlayer1] = useState('');
     const [Player2, setPlayer2] = useState('');
     const [Player1_Score, setPlayer1_Score] = useState('');
@@ -17,7 +20,7 @@ function AddMatches() {
       e.preventDefault();
       axios
         .post('http://localhost:3001/CreateMatches', 
-        { tournamentId, MatchNumber, Player1, Player2, Player1_Score, Player2_Score, Winner })
+        { tournamentId, MatchNumber, MatchName, MatchDate, MatchTime, Player1, Player2, Player1_Score, Player2_Score, Winner })
         .then((result) => {
           console.log(result);
           alert('Match created successfully');
@@ -48,9 +51,39 @@ function AddMatches() {
                 <input
                   type="text"
                   id="MatchNumber"
-                  placeholder="Enter Name"
+                  placeholder="Enter Match Number"
                   className="form-control"
                   onChange={(e) => setMatchNumber(e.target.value)}
+                />
+              </div>
+              <div className="mb-2">
+                <label htmlFor="MatchName">Match Name</label>
+                <input
+                  type="text"
+                  id="MatchName"
+                  placeholder="Enter Match Name"
+                  className="form-control"
+                  onChange={(e) => setMatchName(e.target.value)}
+                />
+              </div>
+              <div className="mb-2">
+                <label htmlFor="MatchDate">Match Date</label>
+                <input
+                  type="Date"
+                  id="MatchDate"
+                  placeholder="Enter Match Date"
+                  className="form-control"
+                  onChange={(e) => setMatchDate(e.target.value)}
+                />
+              </div>
+              <div className="mb-2">
+                <label htmlFor="MatchTime">Match Time</label>
+                <input
+                  type="Time"
+                  id="MatchTime"
+                  placeholder="Enter Match Time"
+                  className="form-control"
+                  onChange={(e) => setMatchTime(e.target.value)}
                 />
               </div>
               <div className="mb-2">

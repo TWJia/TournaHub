@@ -82,11 +82,15 @@ function ViewTournamentDetails() {
             matchDetails.map((match, index) => (
               <div key={index}>
                 <p>Match {match.MatchNumber}</p>
+                <p>Match Name: {match.MatchName}</p>
+                <p>Match Date: {formatDate(match.MatchDate)}</p>
+                <p>Match Time: {match.MatchTime}</p>
                 <p>Player 1: {match.Player1}</p>
                 <p>Player 2: {match.Player2}</p>
                 <p>Player 1 Score: {match.Player1_Score}</p>
                 <p>Player 2 Score: {match.Player2_Score}</p>
                 <p>Winner: {match.Winner}</p>
+                <p>----------------------------------------</p>
                 {/* Display other match details as needed */}
               </div>
               

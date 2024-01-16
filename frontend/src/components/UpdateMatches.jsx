@@ -61,7 +61,38 @@ function UpdateMatches() {
           <form>
             {matchDetails.map((match, index) => (
               <div key={index}>
-                <h2>Match {match.MatchNumber}</h2>
+                <h2>
+                  Match Number:{' '}
+                  <input
+                    type="text"
+                    value={updatedMatches[index]?.MatchNumber || match.MatchNumber}
+                    onChange={(e) => handleInputChange(e, match._id, 'MatchNumber')}
+                  />
+                </h2>
+                <p>
+                  Match Name:{' '}
+                  <input
+                    type="text"
+                    value={updatedMatches[index]?.MatchName || match.MatchName}
+                    onChange={(e) => handleInputChange(e, match._id, 'MatchName')}
+                  />
+                </p>
+                <p>
+                  Match Date:{' '}
+                  <input
+                    type="date"
+                    value={updatedMatches[index]?.MatchDate || match.MatchDate}
+                    onChange={(e) => handleInputChange(e, match._id, 'MatchDate')}
+                  />
+                </p>
+                <p>
+                  Match Time:{' '}
+                  <input
+                    type="time"
+                    value={updatedMatches[index]?.MatchTime || match.MatchTime}
+                    onChange={(e) => handleInputChange(e, match._id, 'MatchTime')}
+                  />
+                </p>
                 <p>
                   Player 1:{' '}
                   <input

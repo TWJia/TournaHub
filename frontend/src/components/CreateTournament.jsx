@@ -4,6 +4,8 @@ import axios from 'axios';
 import NavbarTO from "./NavbarTO";
 
 function CreateTournament() {
+  const [user, setUser] = useState(null);
+  const [organizerId, setorganizerId] = useState('');
   const [tournamentName, settournamentName] = useState('');
   const [tournamentSport, settournamentSport] = useState('');
   const [sportsList, setSportsList] = useState([]);
@@ -14,7 +16,39 @@ function CreateTournament() {
   const [tournamentNumberofplayers, settournamentNumberofplayers] = useState('');
   const [tournamentNumberofmatches, settournamentNumberofmatches] = useState('');
   const [tournamentStatus, settournamentStatus] = useState('');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const storedUser = localStorage.getItem('userTO');
+  //       console.log('Stored User:', storedUser);
+  
+  //       if (storedUser && storedUser !== "Token is missing") {
+  //         setUser(JSON.parse(storedUser));
+  //       } else {
+  //         const response = await axios.get('http://localhost:3001/getCurrentUser');
+  //         console.log('Server Response:', response);
+  
+  //         if (response.data && response.data._id) {
+  //           setUser(response.data);
+  //           localStorage.setItem('userTO', JSON.stringify(response.data)); // Store user data
+  //         } else {
+  //           console.error('Invalid user data received from the server');
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log('Error fetching user data:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, []);
+  
+
 
   useEffect(() => {
     // Fetch the list of sports from the database
@@ -47,7 +81,8 @@ function CreateTournament() {
     e.preventDefault();
     axios
       .post('http://localhost:3001/CreateTournament', 
-      { tournamentName, tournamentSport, tournamentFormat, tournamentDetails, 
+      { organizerId, 
+        tournamentName, tournamentSport, tournamentFormat, tournamentDetails, 
         tournamentStartDate, tournamentEndDate, 
         tournamentNumberofplayers, tournamentNumberofmatches, 
         tournamentStatus: 'Open for Application' })
@@ -66,6 +101,17 @@ function CreateTournament() {
         <div className="w-50 bg-white rounded p-3">
           <form onSubmit={handleSubmit}>
             <h2>Create Tournament</h2>
+
+  <div className="mb-2">
+  <label htmlFor="organizerId">Organizer ID</label>
+  <input
+    type="text"
+    id="organizerId"
+    className="form-control"
+    defaultValue={user ? user._id : ''}
+    readOnly
+  />
+</div>
             <div className="mb-2">
               <label htmlFor="tournamentName">Name</label>
               <input
@@ -125,6 +171,7 @@ function CreateTournament() {
                 type="date"
                 id="settournamentStartDate"
                 className="form-control"
+                value={tournamentStartDate}
                 onChange={(e) => settournamentStartDate(e.target.value)}
               />
             </div>
@@ -140,11 +187,16 @@ function CreateTournament() {
             <div className="mb-2">
               <label htmlFor="tournamentNumberofplayers">Number of players</label>
               <input
-                type="text"
+                type="number" // Use type="number" for numeric input
                 id="tournamentNumberofplayers"
                 placeholder="Enter Number of Players"
                 className="form-control"
-                onChange={(e) => settournamentNumberofplayers(e.target.value)}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  if (!isNaN(value)) {
+                    settournamentNumberofplayers(value);
+                  }
+                }}
               />
             </div>
              <div className="mb-2">

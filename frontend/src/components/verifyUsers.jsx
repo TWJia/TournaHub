@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import NavbarSA from './NavbarSA';
-import SearchBar from './SearchBarSA';
+import './tableContainer.css'
 
 function VerifyUsers() {
   const [users, setUsers] = useState([]);
@@ -38,11 +38,13 @@ function VerifyUsers() {
 
   return (
     <>
+      <div>
       <NavbarSA />
+      </div>
       <div className="d-flex vh-100 justify-content-center align-items-center">
         <div className="w-50 bg-white rounded p-3">
           <h2>Verify Users</h2>
-          <table className="table">
+          <table className="tableContainer">
             <thead>
               <tr>
                 <th>Name</th>

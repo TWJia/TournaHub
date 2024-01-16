@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import NavbarSA from './NavbarSA';
 import SearchBar from './SearchBarSA';
 
+
 function ManageSports() {
   const [sports, setSports] = useState([]);
   const [filteredSports, setFilteredSports] = useState([]);
@@ -52,7 +53,9 @@ function ManageSports() {
 
   return (
     <>
+      <div>
       <NavbarSA />
+      </div>
       <div className="d-flex vh-100 justify-content-center align-items-center">
         <div className="w-50 bg-white rounded p-3">
         <h2>Manage Sports</h2>

@@ -23,6 +23,8 @@ export default function NavbarC() {
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
     window.localStorage.removeItem("loggedInTO")
+    window.localStorage.removeItem("verify")
+    window.localStorage.removeItem("user")
   }
 
   return (

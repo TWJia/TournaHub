@@ -6,9 +6,11 @@ import ApplicantHome from "./Applicant/ApplicantHome";
 
 function DashboardA() {
   const [verify, setVerify] = useState("");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
+
 
   useEffect(() => {
     axios

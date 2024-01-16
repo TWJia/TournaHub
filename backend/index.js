@@ -50,6 +50,11 @@ const {
   handleCreateRankingTable,
   handleGetRankingTable,
 } = require("./controllers/RankingTable");
+const {
+  IconPayment,
+  ArticlePayment,
+  UploadSponsorIcon
+} = require("./controllers/Sponsor");
 
 const app = express();
 const PORT = 3001;
@@ -68,6 +73,9 @@ require("./utils/db");
 
 // Used for getting the PDF files for verification
 app.use("/verify", express.static("verify"));
+// Used for getting the Sponsor Icon images
+app.use("/sponsoricon", express.static("sponsoricon"));
+
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -76,6 +84,7 @@ app.use("/images", express.static("images"));
 
 // Middlewares
 // Multer file upload locations
+//For verification
 const verifyStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./verify");
@@ -87,8 +96,22 @@ const verifyStorage = multer.diskStorage({
 });
 
 const verifyUpload = multer({ storage: verifyStorage });
+//For sponsor icons
+const sponsorIconStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./sponsoricon");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname);
+  },
+});
+
+const sponsorIconUpload = multer({ storage: sponsorIconStorage });
 
 //APIs
+//Testing
+
 //Reviews API
 
 //Login APIs
@@ -162,6 +185,10 @@ app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
 app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
 app.post('/CreateRankingTable', handleCreateRankingTable);
 
+//Sponsor API
+app.post('/create-checkout-session-icon', IconPayment);
+app.post('/create-checkout-session-article', ArticlePayment);
+app.post("/upload-sponsor-icon", sponsorIconUpload.single("icon"), UploadSponsorIcon);
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

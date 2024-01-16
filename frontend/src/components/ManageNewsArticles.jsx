@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import NavbarSA from './NavbarSA';
 import SearchBar from './SearchBarSA';
+import './tableContainer.css'
 
 function ManageNewsArticles() {
   const [news, setNews] = useState([]);
@@ -51,12 +52,14 @@ function ManageNewsArticles() {
 
   return (
     <>
+      <div>
       <NavbarSA />
+      </div>
       <div className="d-flex vh-100 justify-content-center align-items-center">
         <div className="w-50 bg-white rounded p-3">
         <h2>Manage News Articles</h2>
         <SearchBar onSearch={handleSearch} />
-          <table className="table">
+          <table className="tableContainer">
             <thead>
               <tr>
                 <th>Title</th>

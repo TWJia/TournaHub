@@ -1,0 +1,13 @@
+.tableContainer{
+    background-color: rgb(247, 247, 247);
+    border-radius: 20px;
+    height: 244px;
+    padding: 0 10px 10px 10px;
+    overflow: scroll;
+}
+
+Table thead{
+    position: sticky;
+    top: 0px;
+    margin: 0 0 0 0;
+}

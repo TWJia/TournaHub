@@ -10,6 +10,8 @@ export default function NavbarS() {
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
     window.localStorage.removeItem("loggedInS")
+    window.localStorage.removeItem("verify")
+    window.localStorage.removeItem("user")
   }
 
   return (
@@ -22,6 +24,9 @@ export default function NavbarS() {
           <div className="menu-icon" onClick={handleClick}>
             <MenuIcon />
           </div>
+          <Link to={`/SponsorshipModels`} className="nav-links">
+            Sponsorship
+          </Link>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
                 <a href="/" className="nav-links" onClick={() => Logout()}>

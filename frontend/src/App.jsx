@@ -33,6 +33,9 @@ import AddMatches from './components/AddMatches';
 import UpdateMatches from './components/UpdateMatches';
 import CreateRankingTable from './components/CreateRankingTable';
 import ViewApplicants from './components/ViewApplicants';
+import SponsorshipModels from './components/SponsorshipModels';
+import PaymentSuccess from './components/PaymentSuccess';
+import UploadSponsorIcon from './components/UploadSponsorIcon';
 
 
 export default function App() {
@@ -95,6 +98,9 @@ export default function App() {
           <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />
           <Route path="/ViewApplicants" element={<ViewApplicants />} />
           <Route path="/ViewApplicants/:tournamentId" element={<ViewApplicants />} />
+          <Route path="/SponsorshipModels" element={<SponsorshipModels />} />
+          <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+          <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
 
           <Route
             path="/DashboardTOPendingCollaboration"

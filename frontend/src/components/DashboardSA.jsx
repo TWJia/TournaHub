@@ -8,6 +8,7 @@ function DashboardSA() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     axios.get('http://localhost:3001/DashboardSA')

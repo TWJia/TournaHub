@@ -67,7 +67,7 @@ const approveUser = (req, res) => {
 const searchUsers = (req, res) => {
   const { name } = req.params;
   UserModel.find({ name: { $regex: new RegExp(name, "i") } })
-    .then((sports) => res.json(sports))
+    .then((users) => res.json(users))
     .catch((err) => res.json(err));
   //
 };
@@ -145,6 +145,18 @@ const verifyUser = (req, res, next) => {
       });
     }
   };
+
+  const countUsers = (req, res) => {
+    UserModel.countDocuments({})
+      .then((users) => {
+        res.json(users);
+      })
+      .catch((err) => {
+        console.error('Error counting users:', err);
+        res.json(err);
+      });
+  };
+
 module.exports = {
   verifyTournamentOrganizer,
   handleManageUser,
@@ -157,4 +169,5 @@ module.exports = {
   verifySponsor,
   verifyUser,
   verifySysAdmin,
+  countUsers
 };

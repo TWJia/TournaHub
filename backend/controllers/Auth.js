@@ -16,7 +16,7 @@ const handleLogin = (req, res) => {
         bcrypt.compare(password, user.password, (err, response) => {
           if (response) {
             const token = jwt.sign(
-              { email: user.email, usertype: user.usertype, id: user._id },
+              { email: user.email, usertype: user.usertype, id: user._id, interestedSport: user.interestedSport},
               "jwt-secret-key",
               { expiresIn: "1d" }
             );

@@ -106,6 +106,17 @@ const UpdateTournamentStatus = async (req, res) => {
   }
 };
 
+const countTournaments = (req, res) => {
+  TournamentModel.countDocuments({})
+      .then((tournaments) => {
+        res.json(tournaments);
+      })
+      .catch((err) => {
+        console.error('Error counting users:', err);
+        res.json(err);
+      });
+}
+
 
 module.exports = { 
   handleGetTournaments,
@@ -113,5 +124,6 @@ module.exports = {
   handleCreateTournament, 
   handleGetSingleTournament,
   handleDeleteTournament,
-  handleUpdateTournament
+  handleUpdateTournament,
+  countTournaments
 };

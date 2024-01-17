@@ -76,6 +76,17 @@ const IconPayment = async (req, res) => {
       .then((sponsoricon) => res.json(sponsoricon))
       .catch((err) => res.json(err));
   };
+
+  
+  const fetchSponsorIconsHomePage = async (req, res) => {
+    try {
+      const sponsorIcons = await SponsorIconModel.aggregate([{ $sample: { size: 3 } }]);
+      res.json(sponsorIcons);
+    } catch (error) {
+      console.error('Error fetching sponsor icons:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
   
 
-  module.exports = { IconPayment, ArticlePayment, UploadSponsorIcon };
+  module.exports = { IconPayment, ArticlePayment, UploadSponsorIcon, fetchSponsorIconsHomePage};

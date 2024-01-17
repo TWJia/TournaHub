@@ -58,4 +58,15 @@ router.delete("/:reviewsId", async (req, res) => {
   }
 });
 
+// this endpoint will get 3 random review for the homepage
+router.get('/fetch-reviews-homepage', async (req, res) => {
+  try {
+    const reviews = await ReviewModel.aggregate([{ $sample: { size: 3 } }]);
+    res.json(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;

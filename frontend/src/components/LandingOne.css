@@ -1,0 +1,11 @@
+.flex-container {
+    display: flex;
+    background-color: inset 0 0 0 800px rgba(0, 0, 0, 0.4);
+  }
+  
+  .flex-container > div {
+    background-color: inset 0 0 0 800px rgba(0, 0, 0, 0.4);
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+  }

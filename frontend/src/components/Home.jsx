@@ -8,8 +8,12 @@ import LandingOne from "./LandingOne";
 export default function Home() {
   return (
     <div>
-      <Navbar />
-      <LandingOne />
+      <div> 
+        <Navbar /> 
+      </div>
+      <div> 
+        <LandingOne />
+      </div>
     </div>
   );
 }

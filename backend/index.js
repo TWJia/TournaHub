@@ -32,6 +32,7 @@ const {
   verifyTournamentOrganizer,
   verifyUser,
   verifySysAdmin,
+  countUsers
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
@@ -40,6 +41,7 @@ const {
   handleCreateTournament,
   handleGetSingleTournament,
   handleDeleteTournament,
+  countTournaments
 } = require("./controllers/Tournaments");
 const {
   handleCreateMatches,
@@ -53,7 +55,8 @@ const {
 const {
   IconPayment,
   ArticlePayment,
-  UploadSponsorIcon
+  UploadSponsorIcon,
+  fetchSponsorIconsHomePage
 } = require("./controllers/Sponsor");
 
 const app = express();
@@ -189,6 +192,12 @@ app.post('/CreateRankingTable', handleCreateRankingTable);
 app.post('/create-checkout-session-icon', IconPayment);
 app.post('/create-checkout-session-article', ArticlePayment);
 app.post("/upload-sponsor-icon", sponsorIconUpload.single("icon"), UploadSponsorIcon);
+
+//Homepage API
+app.get('/count-user', countUsers);
+app.get('/count-tournaments', countTournaments);
+//currently bugged
+app.get('/fetch-sponsor-icons', fetchSponsorIconsHomePage)
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

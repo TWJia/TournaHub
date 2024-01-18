@@ -20,6 +20,7 @@ function CreateTournament() {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,7 +96,7 @@ function CreateTournament() {
           <form onSubmit={handleSubmit}>
             <h2>Create Tournament</h2>
 
-            <div className="mb-2">
+  <div className="mb-2">
   <label htmlFor="organizerId">Organizer ID</label>
   <input
     type="text"

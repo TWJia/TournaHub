@@ -28,7 +28,9 @@ function UpdateTournament() {
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString('en-GB', options);
+    const formattedDate = new Date(dateString).toLocaleDateString('en-GB', options);
+    const [day, month, year] = formattedDate.split('/');
+    return `${year}-${month}-${day}`;
   };
 
   const updateTournament = (e, tournamentId) => {

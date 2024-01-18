@@ -18,36 +18,29 @@ function CreateTournament() {
   const [tournamentStatus, settournamentStatus] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const storedUser = localStorage.getItem('userTO');
-  //       console.log('Stored User:', storedUser);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/getCurrentUser"
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   
-  //       if (storedUser && storedUser !== "Token is missing") {
-  //         setUser(JSON.parse(storedUser));
-  //       } else {
-  //         const response = await axios.get('http://localhost:3001/getCurrentUser');
-  //         console.log('Server Response:', response);
-  
-  //         if (response.data && response.data._id) {
-  //           setUser(response.data);
-  //           localStorage.setItem('userTO', JSON.stringify(response.data)); // Store user data
-  //         } else {
-  //           console.error('Invalid user data received from the server');
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log('Error fetching user data:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  
-  //   fetchData();
-  // }, []);
-  
+  useEffect(() => {
+    // Set the initial value of organizerId when the component mounts
+    setorganizerId(user ? user._id : '');
+  }, [user]);
 
 
   useEffect(() => {
@@ -102,13 +95,14 @@ function CreateTournament() {
           <form onSubmit={handleSubmit}>
             <h2>Create Tournament</h2>
 
-  <div className="mb-2">
+            <div className="mb-2">
   <label htmlFor="organizerId">Organizer ID</label>
   <input
     type="text"
     id="organizerId"
     className="form-control"
-    defaultValue={user ? user._id : ''}
+    value={user ? user._id : ''}
+    onChange={(e) => setorganizerId(e.target.value)}
     readOnly
   />
 </div>

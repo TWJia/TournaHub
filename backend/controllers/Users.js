@@ -1,6 +1,19 @@
 const UserModel = require("../models/Users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+
+const handleGetAllUser = (req, res) => {
+  UserModel.find({})
+    .then(function (users) {
+      res.json(users);
+    })
+    .catch(function (err) {
+      console.error("Error fetching users:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      //res.json(err)
+    });
+};
+
 const handleManageUser = (req, res) => {
   UserModel.find({})
     .then((users) => res.json(users))
@@ -158,6 +171,7 @@ const verifyUser = (req, res, next) => {
   };
 
 module.exports = {
+  handleGetAllUser,
   verifyTournamentOrganizer,
   handleManageUser,
   getPendingUsers,

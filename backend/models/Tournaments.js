@@ -12,7 +12,6 @@ const TournamentSchema = new mongoose.Schema({
     tournamentNumberofplayers: String,
     tournamentNumberofmatches: String,
     tournamentStatus: String,
-    Status: String
 })
 
 const TournamentModel= mongoose.model("tournaments", TournamentSchema)

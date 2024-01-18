@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarTO from "./NavbarTO";
+import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
   const [tournamentDetails, setTournamentDetails] = useState({});
@@ -60,6 +61,49 @@ function ViewTournamentDetails() {
     return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
+  const exportMatches = () => {
+    // Create a new instance of jsPDF
+    const pdfDoc = new jsPDF();
+  
+    // Add content to the PDF
+    pdfDoc.text(`${tournamentDetails.tournamentName} Matches`, 20, 10);
+  
+    if (Array.isArray(matchDetails) && matchDetails.length > 0) {
+      let startY = 20; // Initial y-coordinate
+  
+      matchDetails.forEach((match) => {
+        // Calculate required space for each line
+        const lines = [
+          `Match ${match.MatchNumber}`,
+          `Match Name: ${match.MatchName}`,
+          `Match Date: ${match.MatchDate}`,
+          `Match Time: ${match.MatchTime}`,
+          `Player 1: ${match.Player1}`,
+          `Player 2: ${match.Player2}`,
+          `${match.Player1} Score: ${match.Player1_Score}`,
+          `${match.Player2} Score: ${match.Player2_Score}`,
+          `Winner: ${match.Winner}`,
+        ];
+  
+        // Add lines to the PDF
+        lines.forEach((line) => {
+          pdfDoc.text(line, 20, startY);
+          startY += 10; // Adjust as needed for line spacing
+        });
+  
+        // Add space between matches
+        startY += 10;
+      });
+    } else {
+      pdfDoc.text("No match details available.", 20, 20);
+    }
+  
+    // Save the PDF file
+    pdfDoc.save(`${tournamentDetails.tournamentName} Matches.pdf`);
+  };
+  
+
+
   return (
     <div>
       <NavbarTO />
@@ -91,14 +135,14 @@ function ViewTournamentDetails() {
                 <p>Player 2 Score: {match.Player2_Score}</p>
                 <p>Winner: {match.Winner}</p>
                 <p>----------------------------------------</p>
+
                 {/* Display other match details as needed */}
               </div>
-              
             ))
-
           ) : (
             <p>No match details available.</p>
           )}
+          <button onClick={exportMatches}>Export Matches</button>
           <div>
             <h1>Ranking Table</h1>
             {Array.isArray(rankingTableDetails) && rankingTableDetails.length > 0 ? (

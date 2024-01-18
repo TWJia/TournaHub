@@ -8,8 +8,41 @@ function UpdateTournament() {
   const [updatedTournaments, setUpdatedTournaments] = useState([]);
   const [loadingTournament, setLoadingTournament] = useState(true);
   const [sportsList, setSportsList] = useState([]);
+  const [tournamentFormat, settournamentFormat] = useState('');
+  const [tournamentNumberofplayers, settournamentNumberofplayers] = useState('');
+  const [tournamentNumberofmatches, settournamentNumberofmatches] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // const calculateNumberOfMatches = (format, numberOfPlayers) => {
+  //   if (format === 'Single Elimination') {
+  //     return numberOfPlayers - 1;
+  //   } else if (format === 'Double Elimination') {
+  //     return (numberOfPlayers - 1) * 2 + 1;
+  //   }
+  //   // Add more conditions for other formats as needed
+  //   return 0; // Default value if format is not recognized
+  // };
+  const calculateNumberOfMatches = (format, numberOfPlayers) => {
+    const parsedNumberOfPlayers = parseInt(numberOfPlayers, 10);
+  
+    if (isNaN(parsedNumberOfPlayers)) {
+      console.error('Error: Unable to parse number of players to an integer.', numberOfPlayers);
+      return 0;  // Default value when parsing fails
+    }  
+    if (format === 'Single Elimination') {
+      return parsedNumberOfPlayers - 1;
+    } else if (format === 'Double Elimination') {
+      return (parsedNumberOfPlayers - 1) * 2 + 1;
+    }
+  
+    // Add more conditions for other formats as needed
+    return 0; // Default value if format is not recognized
+  };
+
+
+
+
 
   useEffect(() => {
     axios
@@ -52,12 +85,51 @@ function UpdateTournament() {
 
   const handleInputChange = (e, tournamentId, field) => {
     const value = e.target.value;
+  
     setUpdatedTournaments((prevTournaments) =>
       prevTournaments.map((tournament) =>
         tournament._id === tournamentId ? { ...tournament, [field]: value } : tournament
       )
     );
+  
+    setUpdatedTournaments((prevTournaments) =>
+      prevTournaments.map((tournament) => {
+        if (field === 'tournamentNumberofplayers') {
+          const parsedValue = parseInt(value, 10);
+          const updatedMatches = calculateNumberOfMatches(
+            tournament.tournamentFormat || '',
+            parsedValue
+          );
+  
+          return {
+            ...tournament,
+            tournamentNumberofplayers: parsedValue,
+            tournamentNumberofmatches: updatedMatches,
+          };
+        }
+  
+        if (field === 'tournamentFormat') {
+          const updatedMatches = calculateNumberOfMatches(
+            value,
+            tournament.tournamentNumberofplayers || 0
+          );
+  
+          return {
+            ...tournament,
+            tournamentFormat: value,
+            tournamentNumberofmatches: updatedMatches,
+          };
+        }
+  
+        return tournament;
+      })
+    );
   };
+  
+  
+  
+
+
   useEffect(() => {
     // Fetch the list of sports from the database
     axios
@@ -95,11 +167,14 @@ function UpdateTournament() {
           </select>
           
           <p>Format:</p>
-          <input
+          <select
             type="text"
             value={updatedTournaments.find((tournament) => tournament._id === id)?.tournamentFormat || ''}
             onChange={(e) => handleInputChange(e, id, 'tournamentFormat')}
-          />
+          >
+            <option value="Single Elimination">Single Elimination</option>
+            <option value="Double Elimination">Double Elimination</option>
+          </select>
 
           <p>Details:</p>
           <input
@@ -128,12 +203,16 @@ function UpdateTournament() {
             value={updatedTournaments.find((tournament) => tournament._id === id)?.tournamentNumberofplayers || ''}
             onChange={(e) => handleInputChange(e, id, 'tournamentNumberofplayers')}
           />
-
-          <p>Number of Matches:</p>
+          
+          <p>Calculated Number of Matches:</p>
           <input
             type="text"
-            value={updatedTournaments.find((tournament) => tournament._id === id)?.tournamentNumberofmatches || ''}
+            value={calculateNumberOfMatches(
+            updatedTournaments.find((tournament) => tournament._id === id)?.tournamentFormat || '',
+            updatedTournaments.find((tournament) => tournament._id === id)?.tournamentNumberofplayers || ''
+            )}
             onChange={(e) => handleInputChange(e, id, 'tournamentNumberofmatches')}
+            disabled
           />
           
           <p>Tournament Status:</p>

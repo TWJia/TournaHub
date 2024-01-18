@@ -29,6 +29,10 @@ function ViewTournament() {
       const handleNavigateViewApplicants = (tournamentId) => {
         navigate(`/ViewApplicants/${tournamentId}`);
       };
+      const handleNavigateInvitationPage = (tournamentId) => {
+        navigate(`/InvitationPage/${tournamentId}`);
+      };
+
       
       
       useEffect(() => {
@@ -84,6 +88,7 @@ function ViewTournament() {
               <th>Actions</th>
               <th>Tournament Status</th>
               <th>Applications</th>
+              <th>Send Invite</th>
             </tr>
           </thead>
           <tbody>
@@ -137,6 +142,13 @@ function ViewTournament() {
                     className="btn btn-sm btn-info"
                     >
                       View
+                    </button>
+                  </td>
+                  <td style={{ padding: '10px' }}>
+                    <button onClick={() => handleNavigateInvitationPage(tournament._id)}
+                    className="btn btn-sm btn-info"
+                    >
+                      Invite
                     </button>
                   </td>
                 </tr>

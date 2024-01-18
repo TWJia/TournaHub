@@ -21,6 +21,7 @@ const {
   handleCreateSport,
 } = require("./controllers/sports");
 const {
+  handleGetAllUser,
   handleManageUser,
   getPendingUsers,
   getSingleUser,
@@ -58,6 +59,9 @@ const {
   UploadSponsorIcon,
   fetchSponsorIconsHomePage
 } = require("./controllers/Sponsor");
+const {
+  handleCreateStatus,
+} = require("./controllers/Status");
 
 const app = express();
 const PORT = 3001;
@@ -169,6 +173,8 @@ app.put("/suspendUser/:id", suspendedUsers);
 app.put("/approveUser/:id", approveUser);
 app.get("/searchUsers/:name", searchUsers);
 
+app.get("/getAllUser", handleGetAllUser);
+
 // app.get('/getTournaments', (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');
 // });
@@ -187,6 +193,10 @@ app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
 
 app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
 app.post('/CreateRankingTable', handleCreateRankingTable);
+//
+app.post('/CreateStatus', handleCreateStatus);
+
+
 
 //Sponsor API
 app.post('/create-checkout-session-icon', IconPayment);

@@ -96,13 +96,13 @@ function CreateTournament() {
           <form onSubmit={handleSubmit}>
             <h2>Create Tournament</h2>
 
-  <div className="mb-2">
+            <div className="mb-2">
   <label htmlFor="organizerId">Organizer ID</label>
   <input
     type="text"
     id="organizerId"
     className="form-control"
-    value={user ? user._id : ''}
+    value={organizerId}
     onChange={(e) => setorganizerId(e.target.value)}
     readOnly
   />

@@ -33,7 +33,7 @@ const {
   verifyTournamentOrganizer,
   verifyUser,
   verifySysAdmin,
-  countUsers
+  countUsers,
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
@@ -42,7 +42,10 @@ const {
   handleCreateTournament,
   handleGetSingleTournament,
   handleDeleteTournament,
-  countTournaments
+  countTournaments,
+  applyForTournament,
+  getOpenTournaments,
+  reviewTournamentApplications,
 } = require("./controllers/Tournaments");
 const {
   handleCreateMatches,
@@ -57,11 +60,9 @@ const {
   IconPayment,
   ArticlePayment,
   UploadSponsorIcon,
-  fetchSponsorIconsHomePage
+  fetchSponsorIconsHomePage,
 } = require("./controllers/Sponsor");
-const {
-  handleCreateStatus,
-} = require("./controllers/Status");
+const { handleCreateStatus } = require("./controllers/Status");
 
 const app = express();
 const PORT = 3001;
@@ -82,7 +83,6 @@ require("./utils/db");
 app.use("/verify", express.static("verify"));
 // Used for getting the Sponsor Icon images
 app.use("/sponsoricon", express.static("sponsoricon"));
-
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -179,35 +179,41 @@ app.get("/getAllUser", handleGetAllUser);
 //     res.send('Hello, this is the tournaments endpoint!');
 // });
 
-app.post('/CreateTournament', handleCreateTournament);
+app.post("/CreateTournament", handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
 app.get("/getTournamentDetails/:id", handleGetSingleTournament);
 app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
+//User: Application API
+app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
+app.get("/getOpenTournaments", getOpenTournaments);
+app.post("/reviewTournamentApplications/:id", reviewTournamentApplications);
 
-app.post('/CreateMatches', handleCreateMatches);
+app.post("/CreateMatches", handleCreateMatches);
 app.get("/getMatches/:tournamentId", handleGetMatches);
 app.put("/updateMatches/:id", handleUpdateMatches);
 
 app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
 
 app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
-app.post('/CreateRankingTable', handleCreateRankingTable);
+app.post("/CreateRankingTable", handleCreateRankingTable);
 //
-app.post('/CreateStatus', handleCreateStatus);
-
-
+app.post("/CreateStatus", handleCreateStatus);
 
 //Sponsor API
-app.post('/create-checkout-session-icon', IconPayment);
-app.post('/create-checkout-session-article', ArticlePayment);
-app.post("/upload-sponsor-icon", sponsorIconUpload.single("icon"), UploadSponsorIcon);
+app.post("/create-checkout-session-icon", IconPayment);
+app.post("/create-checkout-session-article", ArticlePayment);
+app.post(
+  "/upload-sponsor-icon",
+  sponsorIconUpload.single("icon"),
+  UploadSponsorIcon
+);
 
 //Homepage API
-app.get('/count-user', countUsers);
-app.get('/count-tournaments', countTournaments);
+app.get("/count-user", countUsers);
+app.get("/count-tournaments", countTournaments);
 //currently bugged
-app.get('/fetch-sponsor-icons', fetchSponsorIconsHomePage)
+app.get("/fetch-sponsor-icons", fetchSponsorIconsHomePage);
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

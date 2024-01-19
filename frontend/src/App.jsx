@@ -25,19 +25,19 @@ import NewsDetails from "./components/Applicant/NewsDetails";
 import MatchResult from "./components/Applicant/MatchResult";
 import NewsForm from "./components/Applicant/NewsForm";
 import RatingAndReview from "./components/Applicant/RatingAndReview";
-import CreateTournament from './components/CreateTournament';
-import Tournament from './components/Tournament';
-import ViewTournamentDetails from './components/ViewTournamentDetails';
-import UpdateTournament from './components/UpdateTournament';
-import AddMatches from './components/AddMatches';
-import UpdateMatches from './components/UpdateMatches';
-import CreateRankingTable from './components/CreateRankingTable';
-import ViewApplicants from './components/ViewApplicants';
-import InvitationPage from './components/InvitationPage';
-import SponsorshipModels from './components/SponsorshipModels';
-import PaymentSuccess from './components/PaymentSuccess';
-import UploadSponsorIcon from './components/UploadSponsorIcon';
-
+import CreateTournament from "./components/CreateTournament";
+import Tournament from "./components/Tournament";
+import ViewTournamentDetails from "./components/ViewTournamentDetails";
+import UpdateTournament from "./components/UpdateTournament";
+import AddMatches from "./components/AddMatches";
+import UpdateMatches from "./components/UpdateMatches";
+import CreateRankingTable from "./components/CreateRankingTable";
+import ViewApplicants from "./components/ViewApplicants";
+import InvitationPage from "./components/InvitationPage";
+import SponsorshipModels from "./components/SponsorshipModels";
+import PaymentSuccess from "./components/PaymentSuccess";
+import UploadSponsorIcon from "./components/UploadSponsorIcon";
+import TournamentApplication from "./components/Applicant/TournamentApplication";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -83,12 +83,19 @@ export default function App() {
           <Route path="/UpdateProfile" element={<UpdateProfile />} />
           <Route path="/TournamentSchedule" element={<DisplaySchedule />} />
           <Route path="/MatchResult" element={<MatchResult />} />
+          <Route path="/Apply" element={<TournamentApplication />} />
           <Route path="/DashboardTO" element={<DashboardTO />} />
           <Route path="/DashboardS" element={<DashboardS />} />
           <Route path="/CreateTournament" element={<CreateTournament />} />
           <Route path="/Tournament" element={<Tournament />} />
-          <Route path="/ViewTournamentDetails/:id" element={<ViewTournamentDetails />} />
-          <Route path="/ViewTournamentDetails" element={<ViewTournamentDetails />} />
+          <Route
+            path="/ViewTournamentDetails/:id"
+            element={<ViewTournamentDetails />}
+          />
+          <Route
+            path="/ViewTournamentDetails"
+            element={<ViewTournamentDetails />}
+          />
           <Route path="/UpdateTournament/:id" element={<UpdateTournament />} />
           <Route path="/UpdateTournament" element={<UpdateTournament />} />
           <Route path="/AddMatches" element={<AddMatches />} />
@@ -96,16 +103,24 @@ export default function App() {
           <Route path="/UpdateMatches" element={<UpdateMatches />} />
           <Route path="/UpdateMatches/:id" element={<UpdateMatches />} />
           <Route path="/CreateRankingTable" element={<CreateRankingTable />} />
-          <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />
+          <Route
+            path="/CreateRankingTable/:tournamentId"
+            element={<CreateRankingTable />}
+          />
           <Route path="/ViewApplicants" element={<ViewApplicants />} />
-          <Route path="/ViewApplicants/:tournamentId" element={<ViewApplicants />} />
+          <Route
+            path="/ViewApplicants/:tournamentId"
+            element={<ViewApplicants />}
+          />
           <Route path="/InvitationPage" element={<InvitationPage />} />
-          <Route path="/InvitationPage/:tournamentId" element={<InvitationPage />} />
+          <Route
+            path="/InvitationPage/:tournamentId"
+            element={<InvitationPage />}
+          />
           <Route path="/SponsorshipModels" element={<SponsorshipModels />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
           <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
-          
-          
+
           <Route
             path="/DashboardTOPendingCollaboration"
             element={<DashboardTOPendingCollaboration />}

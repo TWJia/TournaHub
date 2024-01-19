@@ -7,7 +7,6 @@ function InvitationPage() {
 
     const [userDetails, setUserDetails] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState("");
-    const [inviteEmail, setInviteEmail] = useState("");
     const [tournamentId, setTournamentId] = useState(""); // New state for tournament ID
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -45,6 +44,7 @@ function InvitationPage() {
         axios
           .post('http://localhost:3001/CreateStatus', { 
             tournamentId: tournamentId, 
+            userId: user.id,
             collaboratorStatus: 'Pending', })
           .then((result) => {
             console.log(result);

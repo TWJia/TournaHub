@@ -2,6 +2,7 @@ const NewsModel = require("../models/News");
 const multer = require("multer");
 const path = require("path");
 const router = require("express").Router();
+const CommentModel = require("../models/Comments");
 
 // Multer upload images locations
 const storage = multer.diskStorage({
@@ -131,6 +132,76 @@ router.delete("/:newsId", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "could not delete news", success: false });
+  }
+});
+
+// Create a comment--------------------------------------------------------------------------
+router.post("/create/:newsId", async (req, res) => {
+  try {
+    const { text, user } = req.body;
+    const newsId = req.params.newsId;
+
+    const newComment = new CommentModel({
+      comments: text,
+      user,
+    });
+
+    await newComment.save();
+
+    // Add the comment to the corresponding news article
+    await NewsModel.findByIdAndUpdate(
+      newsId,
+      { $push: { comments: newComment._id } },
+      { new: true }
+    );
+
+    res.json({ comment: newComment, message: "Comment added successfully" });
+  } catch (error) {
+    console.error("Error in /create route:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Get comments for a specific news article
+router.get("/:newsId", async (req, res) => {
+  try {
+    const newsId = req.params.newsId;
+    const news = await NewsModel.findById(newsId).populate(["comments"]);
+    console.log("getting single news", news);
+    res.json({ comments: news.comments });
+  } catch (error) {
+    console.error("Error in /:newsId route:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Delete a comment
+router.delete("/:commentId", async (req, res) => {
+  const commentId = req.params.commentId;
+
+  try {
+    // Find the comment and get its associated newsId
+    const comments = await CommentModel.findById(commentId);
+    const newsId = comments.news;
+
+    // Remove the comment from CommentModel
+    await CommentModel.findByIdAndDelete(commentId);
+
+    // Remove the comment reference from the corresponding news article
+    await NewsModel.findByIdAndUpdate(
+      newsId,
+      { $pull: { comments: commentId } },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ message: "comment deleted successfully", success: true });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "could not delete comment", success: false });
   }
 });
 

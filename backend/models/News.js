@@ -11,6 +11,12 @@ const NewsSchema = new mongoose.Schema({
     ref: "user",
   },
   postDate: { type: Date, default: Date.now },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comment",
+    },
+  ],
 });
 
 const NewsModel = mongoose.model("news", NewsSchema);

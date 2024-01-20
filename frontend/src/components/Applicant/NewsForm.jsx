@@ -13,7 +13,7 @@ const NewsForm = () => {
   const content = useRef(null);
   const photo = useRef(null);
   const category = useRef("");
-  const [organizerId, setorganizerId] = useState("");
+  // const [organizerId, setorganizerId] = useState("");
 
   const [newsData, setnewsData] = useState({
     category: "",
@@ -21,7 +21,9 @@ const NewsForm = () => {
     content: "",
     author: "",
     photo: "",
-    user: "null",
+    // user: "null",
+    // user: user ? user._id : "",
+    user: user ? { _id: user._id, name: user.name } : null,
   });
 
   const handleInputChange = (e) => {
@@ -30,10 +32,10 @@ const NewsForm = () => {
       [e.target.name]: e.target.value,
     });
   };
-  useEffect(() => {
-    // Set the initial value of organizerId when the component mounts
-    setorganizerId(user ? user._id : "");
-  }, [user]);
+  // useEffect(() => {
+  //   // Set the initial value of organizerId when the component mounts
+  //   setorganizerId(user ? user._id : "");
+  // }, [user]);
 
   const handleImage = (e) => {
     setnewsData({
@@ -80,14 +82,20 @@ const NewsForm = () => {
       formData.append("content", newsData.content);
       formData.append("category", newsData.category);
       formData.append("photo", newsData.photo);
-      formData.append("user", user._id);
+      // formData.append("user", user._id);
+      // formData.append("user", user ? user._id : "");
+      // formData.append("user", user ? user._id : "");
+      if (user) {
+        formData.append("user", user._id);
+        formData.append("name", user.name);
+      }
 
       const response = await axios.post(
         "http://localhost:3001/api/news/create",
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Make sure to set the content type
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -100,7 +108,9 @@ const NewsForm = () => {
         content: "",
         author: "",
         photo: "",
-        user: "null",
+        // user: "null",
+        // user: user ? user._id : "",
+        user: user ? { _id: user._id, name: user.name } : null,
       });
       title.current.value = "";
       content.current.value = "";
@@ -156,6 +166,66 @@ const NewsForm = () => {
       console.log("Delete error:", error);
     }
   };
+  //Handles edit of article------------------------------------
+  const [editArticleData, setEditArticleData] = useState({
+    id: null,
+    title: "",
+    author: "",
+    content: "",
+    category: "",
+    photo: null,
+  });
+
+  const handleEdit = (article) => {
+    setEditArticleData({
+      id: article._id,
+      title: article.title,
+      author: article.author,
+      content: article.content,
+      category: article.category,
+      photo: article.photo,
+    });
+  };
+
+  const handleUpdate = async (newsId) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", editArticleData.title);
+      formData.append("author", editArticleData.author);
+      formData.append("content", editArticleData.content);
+      formData.append("category", editArticleData.category);
+      formData.append("photo", editArticleData.photo);
+
+      const response = await axios.put(
+        `http://localhost:3001/api/news/edit/${newsId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      // Fetch all news after successful update
+      await fetchAllNews();
+
+      // Clear the editArticleData after successful update
+      setEditArticleData({
+        id: null,
+        title: "",
+        author: "",
+        content: "",
+        category: "",
+        photo: null,
+      });
+    } catch (error) {
+      console.error("Error updating the article:", error);
+    }
+  };
+
+  //-------------------------------------------------------------
 
   return (
     <div>
@@ -218,12 +288,13 @@ const NewsForm = () => {
       />
       <button onClick={handleSubmit}>Submit</button>
       <div>
-        {allNews.map((newss) => {
+        {/* {allNews.map((newss) => {
           return (
             <>
               <div>
-                <p>{newss.user?.name}</p>
                 <h5>{newss.title}</h5>
+                console.log(newss.user);
+                <p>{newss.user?.name}</p>
                 <p>Category: {newss.category}</p>
                 <h6>{newss.content}</h6>
                 {user?._id === newss.user?._id && (
@@ -234,8 +305,116 @@ const NewsForm = () => {
               </div>
             </>
           );
+        })} */}
+        {/* {allNews.map((news) => {
+          return (
+            <div key={news._id}>
+              <h5>{news.title}</h5>
+              <p>{news.user?.name}</p>
+              <p>Category: {news.category}</p>
+              <h6>{news.content}</h6>
+              {user?._id === news.user?._id && (
+                <button onClick={() => handleDeleteNews(news._id)}>
+                  Delete
+                </button>
+              )}
+            </div>
+          );
         })}
       </div>
+    </div>
+  );
+}; */}
+        {allNews.map((news) => (
+          <div key={news._id}>
+            <h5>{news.title}</h5>
+            <p>{news.user?.name}</p>
+            <p>Category: {news.category}</p>
+            <h6>{news.content}</h6>
+            {user?._id === news.user?._id && (
+              <div>
+                <button onClick={() => handleDeleteNews(news._id)}>
+                  Delete
+                </button>
+                {/* Add a button to trigger the handleEdit function */}
+                <button onClick={() => handleEdit(news)}>Edit</button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      {/* Add a form for editing articles */}
+      {editArticleData.id && (
+        <div>
+          <h2>Edit Article</h2>
+          <form onSubmit={handleUpdate}>
+            <input
+              type="text"
+              name="title"
+              value={editArticleData.title}
+              onChange={(e) =>
+                setEditArticleData({
+                  ...editArticleData,
+                  title: e.target.value,
+                })
+              }
+            />
+            <input
+              type="text"
+              name="author"
+              value={editArticleData.author}
+              onChange={(e) =>
+                setEditArticleData({
+                  ...editArticleData,
+                  author: e.target.value,
+                })
+              }
+            />
+            <textarea
+              name="content"
+              value={editArticleData.content}
+              onChange={(e) =>
+                setEditArticleData({
+                  ...editArticleData,
+                  content: e.target.value,
+                })
+              }
+            />
+            <select
+              type="select"
+              name="category"
+              value={editArticleData.category}
+              onChange={(e) =>
+                setEditArticleData({
+                  ...editArticleData,
+                  category: e.target.value,
+                })
+              }
+              ref={category}
+            >
+              <option ref={category} disabled selected>
+                Select new category
+              </option>
+              {sports.map((sport) => (
+                <option key={sport.id} value={sport.name}>
+                  {sport.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              onChange={(e) =>
+                setEditArticleData({
+                  ...editArticleData,
+                  photo: e.target.files[0],
+                })
+              }
+            />
+            <button type="submit">Update</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

@@ -57,6 +57,8 @@ const RatingAndReview = () => {
       console.log(data);
       if (status === 200) {
         fetchAllReviews();
+        setUserInput("");
+        setValue(0);
       }
     } catch (error) {
       console.log(error);

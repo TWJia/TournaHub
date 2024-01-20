@@ -13,6 +13,7 @@ const NewsForm = () => {
   const content = useRef(null);
   const photo = useRef(null);
   const category = useRef("");
+  const [organizerId, setorganizerId] = useState("");
 
   const [newsData, setnewsData] = useState({
     category: "",
@@ -23,18 +24,16 @@ const NewsForm = () => {
     user: "null",
   });
 
-  // const handleInputChange = (e) => {
-  //   setnewsData({
-  //     ...newsData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
   const handleInputChange = (e) => {
     setnewsData({
       ...newsData,
       [e.target.name]: e.target.value,
     });
   };
+  useEffect(() => {
+    // Set the initial value of organizerId when the component mounts
+    setorganizerId(user ? user._id : "");
+  }, [user]);
 
   const handleImage = (e) => {
     setnewsData({
@@ -46,7 +45,9 @@ const NewsForm = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3001/getCurrentUser");
+      const { data } = await axios.get("http://localhost:3001/getCurrentUser", {
+        withCredentials: true,
+      });
       setUser(data);
     } catch (error) {
       console.log(error);
@@ -113,38 +114,6 @@ const NewsForm = () => {
       console.error("Error submitting the form:", error);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("title", newsData.title);
-  //     formData.append("author", newsData.author);
-  //     formData.append("content", newsData.content);
-  //     formData.append("category", newsData.category);
-  //     formData.append("photo", newsData.photo);
-  //     formData.append("user", newsData.user._id);
-
-  //     const response = await axios.post(
-  //       "http://localhost:3001/api/news/create",
-  //       formData
-  //     );
-
-  //     console.log(response.data);
-
-  //     setnewsData({
-  //       category: "",
-  //       title: "",
-  //       content: "",
-  //       author: "",
-  //       photo: "",
-  //       user: "null",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error submitting the form:", error);
-  //   }
-  // };
 
   const fetchAllNews = async () => {
     try {

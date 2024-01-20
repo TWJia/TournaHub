@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const NewsSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
   title: String,
   author: String,
   content: String,
   category: String,
   photo: { type: String },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-  },
   postDate: { type: Date, default: Date.now },
   comments: [
     {

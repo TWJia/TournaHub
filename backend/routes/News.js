@@ -24,19 +24,21 @@ const fileFilter = (req, file, cb) => {
   }
 };
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+//create news
 router.route("/create").post(upload.single("photo"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
+    const { user } = req.body;
     const title = req.body.title;
     const author = req.body.author;
     const content = req.body.content;
     const category = req.body.category;
     const photo = req.file.filename;
-    const user = req.params.id;
 
+    // Make sure to include the user name in the newNewsData object
     const newNewsData = {
       title,
       author,
@@ -44,6 +46,7 @@ router.route("/create").post(upload.single("photo"), async (req, res) => {
       category,
       photo,
       user,
+      name: req.body.name,
     };
 
     const newNews = new NewsModel(newNewsData);
@@ -62,23 +65,10 @@ router.route("/rec").get((req, res) => {
     .catch((err) => res.status(400).json("Error:" + err));
 });
 
-// this endpint will create the new news
-// router.post("/create", async (req, res) => {
-//   try {
-//     await NewsModel.create(req.body);
-//     res
-//       .status(200)
-//       .json({ message: "New news added successfully", success: true });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Error adding news", success: false });
-//   }
-// });
-
 // this endpoint gets all the news from the database
 router.get("/all", async (req, res) => {
   try {
-    const news = await NewsModel.find();
+    const news = await NewsModel.find().populate("user");
     res.status(200).json({ message: news, success: true });
   } catch (error) {
     console.log(error);
@@ -134,7 +124,46 @@ router.delete("/:newsId", async (req, res) => {
     res.status(500).json({ message: "could not delete news", success: false });
   }
 });
+//Edit article
+router.route("/edit/:newsId").put(upload.single("photo"), async (req, res) => {
+  try {
+    // Get the article ID from the URL parameters
+    const newsId = req.params.newsId;
 
+    // Check if the logged-in user is the owner of the article
+    if (req.user._id.toString() !== req.body.user.toString()) {
+      return res.status(403).json({
+        error: "Unauthorized: You are not the owner of this article.",
+      });
+    }
+
+    // Update the article data
+    const { title, author, content, category } = req.body;
+    const updatedArticle = {
+      title,
+      author,
+      content,
+      category,
+    };
+
+    if (req.file) {
+      updatedArticle.photo = req.file.filename;
+    }
+
+    // Update the article in the database
+    const result = await NewsModel.findByIdAndUpdate(newsId, updatedArticle, {
+      new: true,
+    });
+
+    res.json({
+      message: "Article updated successfully",
+      updatedArticle: result,
+    });
+  } catch (error) {
+    console.error("Error in /edit route:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // Create a comment--------------------------------------------------------------------------
 // router.post("/create/:newsId", async (req, res) => {
 //   try {

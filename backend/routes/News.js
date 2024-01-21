@@ -126,44 +126,67 @@ router.delete("/:newsId", async (req, res) => {
 });
 //Edit article
 router.route("/edit/:newsId").put(upload.single("photo"), async (req, res) => {
-  try {
-    // Get the article ID from the URL parameters
-    const newsId = req.params.newsId;
+  const newsId = req.params.newsId;
+  const updatedData = req.body;
 
-    // Check if the logged-in user is the owner of the article
-    if (req.user._id.toString() !== req.body.user.toString()) {
-      return res.status(403).json({
-        error: "Unauthorized: You are not the owner of this article.",
-      });
-    }
+  console.log("Updating news article with ID:", newsId);
+  console.log("Updated data:", updatedData);
 
-    // Update the article data
-    const { title, author, content, category } = req.body;
-    const updatedArticle = {
-      title,
-      author,
-      content,
-      category,
-    };
-
-    if (req.file) {
-      updatedArticle.photo = req.file.filename;
-    }
-
-    // Update the article in the database
-    const result = await NewsModel.findByIdAndUpdate(newsId, updatedArticle, {
-      new: true,
+  NewsModel.findByIdAndUpdate(newsId, updatedData, { new: true })
+    .then((updatedArticle) => {
+      if (!updatedArticle) {
+        console.log("News article not found");
+        return res.status(404).json({ error: "News article not found" });
+      }
+      console.log("News article updated successfully:", updatedArticle);
+      res.json(updatedArticle);
+    })
+    .catch((err) => {
+      console.error("Error updating news article:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     });
-
-    res.json({
-      message: "Article updated successfully",
-      updatedArticle: result,
-    });
-  } catch (error) {
-    console.error("Error in /edit route:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
 });
+
+// router.route("/edit/:newsId").put(upload.single("photo"), async (req, res) => {
+//   console.log(req);
+//   try {
+//     // Get the article ID from the URL parameters
+//     const newsId = req.params.newsId;
+
+//     // Check if the logged-in user is the owner of the article
+//     if (req.user._id.toString() !== req.body.user.toString()) {
+//       return res.status(403).json({
+//         error: "Unauthorized: You are not the owner of this article.",
+//       });
+//     }
+
+//     // Update the article data
+//     const { title, author, content, category } = req.body;
+//     const updatedArticle = {
+//       title,
+//       author,
+//       content,
+//       category,
+//     };
+
+//     if (req.file) {
+//       updatedArticle.photo = req.file.filename;
+//     }
+
+//     // Update the article in the database
+//     const result = await NewsModel.findByIdAndUpdate(newsId, updatedArticle, {
+//       new: true,
+//     });
+
+//     res.json({
+//       message: "Article updated successfully",
+//       updatedArticle: result,
+//     });
+//   } catch (error) {
+//     console.error("Error in /edit route:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 // Create a comment--------------------------------------------------------------------------
 // router.post("/create/:newsId", async (req, res) => {
 //   try {

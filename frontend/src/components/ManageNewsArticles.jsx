@@ -55,11 +55,11 @@ function ManageNewsArticles() {
       <div>
       <NavbarSA />
       </div>
-      <div className="d-flex vh-100 justify-content-center align-items-center">
-        <div className="w-50 bg-white rounded p-3">
+      <div className="">
+        <div className="">
         <h2>Manage News Articles</h2>
         <SearchBar onSearch={handleSearch} />
-          <table className="tableContainer">
+          <table className="table">
             <thead>
               <tr>
                 <th>Title</th>

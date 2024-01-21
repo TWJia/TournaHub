@@ -38,6 +38,7 @@ import SponsorshipModels from "./components/SponsorshipModels";
 import PaymentSuccess from "./components/PaymentSuccess";
 import UploadSponsorIcon from "./components/UploadSponsorIcon";
 import TournamentApplication from "./components/Applicant/TournamentApplication";
+import AddScoresheet from "./components/AddScoresheet";
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -120,6 +121,7 @@ export default function App() {
           <Route path="/SponsorshipModels" element={<SponsorshipModels />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
           <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
+          <Route path="/AddScoresheet" element={<AddScoresheet />} />
 
           <Route
             path="/DashboardTOPendingCollaboration"

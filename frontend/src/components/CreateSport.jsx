@@ -24,8 +24,8 @@ function CreateSport() {
 
   return (
     <><NavbarSA />
-    <div className="d-flex vh-100 justify-content-center align-items-center">
-      <div className="w-50 bg-white rounded p-3">
+    <div className="">
+      <div className="">
         <form onSubmit={handleSubmit}>
           <h2>Create Sport</h2>
           <div className="mb-2">

@@ -84,6 +84,9 @@ require("./utils/db");
 app.use("/verify", express.static("verify"));
 // Used for getting the Sponsor Icon images
 app.use("/sponsoricon", express.static("sponsoricon"));
+// Used for getting scoresheets
+app.use("/scoresheet", express.static("scoresheet"));
+
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -116,6 +119,17 @@ const sponsorIconStorage = multer.diskStorage({
 });
 
 const sponsorIconUpload = multer({ storage: sponsorIconStorage });
+//For scoresheets
+const scoresheetStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./scoresheet");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const scoresheetUpload = multer({ storage: scoresheetStorage });
 
 //APIs
 //Testing
@@ -177,6 +191,11 @@ app.get("/searchUsers/:name", searchUsers);
 app.get("/getAllUser", handleGetAllUser);
 
 app.put("/updateProfile", updateProfile);
+
+//upload scoresheet API
+app.post("/AddScoresheet", scoresheetUpload.single("scoresheet"), (req, res) => {
+  res.send("Scoresheet uploaded successfully!");
+});
 
 // app.get('/getTournaments', (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');

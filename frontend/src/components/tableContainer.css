@@ -1,12 +1,13 @@
-.tableContainer{
+.tableContainer {
     background-color: rgb(247, 247, 247);
     border-radius: 20px;
-    height: 244px;
+    height: 200px;
     padding: 0 10px 10px 10px;
     overflow: scroll;
+    overflow-x: auto; /* Added to enable horizontal scrolling */
 }
 
-Table thead{
+Table thead {
     position: sticky;
     top: 0px;
     margin: 0 0 0 0;

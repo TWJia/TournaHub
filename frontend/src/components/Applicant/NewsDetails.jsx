@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NewsDetails.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import {
+  //faFacebook,
+  //faInstagram,
+  //faTwitter,
+//} from "@fortawesome/free-brands-svg-icons";
+import {ShareSocial} from 'react-share-social' 
+
 
 const NewsDetails = ({ match }) => {
   const [news, setNews] = useState(null);
@@ -19,6 +21,30 @@ const NewsDetails = ({ match }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allComments, setAllComments] = useState([]);
+  //url for sharing
+  const url = window.location.href;
+  //in-line css for react social share component (can't seperate it out without having bugs, fix this if we have time)
+  const style = {
+    root: {
+      maxWidth: '750px', // Adjust the max-width as needed
+      margin: '0 auto',
+      fontSize: '2rem',
+      padding: '1rem',
+      background: '#f8f8f8', // Adjust background color
+      borderRadius: '8px',
+      boxShadow: '0 3px 5px 2px rgba(0, 0, 0, 0.1)', // Adjust box shadow
+      color: '#333', // Set text color to black
+    },
+    copyContainer: {
+      fontSize: '1rem',
+      color: 'aliceblue',
+      background: 'rgb(77, 77, 182)',
+      borderRadius: '12px',
+      padding: '10px',
+      border: '1px solid rgb(41, 41, 97)',
+      transitionDuration: '0.4s',
+    },
+  };
   // useEffect(() => {
   //   // Fetch the specific news item using match.params.newsId
   //   // Find the news item with the matching newsId
@@ -43,6 +69,7 @@ const NewsDetails = ({ match }) => {
   //     setLoading(false);
   //   }
   // };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -268,7 +295,7 @@ const NewsDetails = ({ match }) => {
         <div>
           <h2>{news.title}</h2>
           <h6>{news.category}</h6>
-          <div className="singleCol d-flex justify-content-evenly">
+          {/*<div className="singleCol d-flex justify-content-evenly">
             <a href="https://facebook.com">
               <button className="FBWording">
                 <FontAwesomeIcon icon={faFacebook} />
@@ -289,7 +316,7 @@ const NewsDetails = ({ match }) => {
                 Send a tweet
               </button>
             </a>
-          </div>
+          </div> */}
           <img
             width={"200px"}
             src={`http://localhost:3001/images/${news.photo}`}
@@ -299,12 +326,18 @@ const NewsDetails = ({ match }) => {
               console.error("Error loading image:", e);
             }}
           />
-
           <p>{news.author}</p>
           <p>{news.postDate}</p>
           <pre class="pre-container">
             {news.content}
           </pre>
+          <div align="center">
+          <ShareSocial 
+            url = {url} 
+            socialTypes={['facebook','twitter','whatsapp','telegram' , 'email']}
+            style={style}
+          />
+          </div>
           <div>
             <h3>Comments:</h3>
 

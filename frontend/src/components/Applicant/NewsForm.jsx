@@ -167,6 +167,65 @@ const NewsForm = () => {
     }
   };
   //Handles edit of article------------------------------------
+  // const [editArticleData, setEditArticleData] = useState({
+  //   id: null,
+  //   title: "",
+  //   author: "",
+  //   content: "",
+  //   category: "",
+  //   photo: null,
+  // });
+
+  // const handleEdit = (article) => {
+  //   setEditArticleData({
+  //     id: article._id,
+  //     title: article.title,
+  //     author: article.author,
+  //     content: article.content,
+  //     category: article.category,
+  //     photo: article.photo,
+  //   });
+  // };
+
+  // const handleUpdate = async (newsId) => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("title", editArticleData.title);
+  //     formData.append("author", editArticleData.author);
+  //     formData.append("content", editArticleData.content);
+  //     formData.append("category", editArticleData.category);
+  //     formData.append("photo", editArticleData.photo);
+
+  //     const response = await axios.put(
+  //       `http://localhost:3001/api/news/edit/${newsId}`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     console.log(response.data);
+
+  //     // Fetch all news after successful update
+  //     await fetchAllNews();
+
+  //     // Clear the editArticleData after successful update
+  //     setEditArticleData({
+  //       id: null,
+  //       title: "",
+  //       author: "",
+  //       content: "",
+  //       category: "",
+  //       photo: null,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error updating the article:", error);
+  //   }
+  // };
+
+  // Add a new state for tracking the edited article data
   const [editArticleData, setEditArticleData] = useState({
     id: null,
     title: "",
@@ -176,9 +235,10 @@ const NewsForm = () => {
     photo: null,
   });
 
+  // Function to handle the edit button click
   const handleEdit = (article) => {
     setEditArticleData({
-      id: article._id,
+      id: article._id.toString(),
       title: article.title,
       author: article.author,
       content: article.content,
@@ -187,6 +247,7 @@ const NewsForm = () => {
     });
   };
 
+  // Function to handle the update button click
   const handleUpdate = async (newsId) => {
     try {
       const formData = new FormData();
@@ -224,7 +285,6 @@ const NewsForm = () => {
       console.error("Error updating the article:", error);
     }
   };
-
   //-------------------------------------------------------------
 
   return (
@@ -347,7 +407,8 @@ const NewsForm = () => {
       {editArticleData.id && (
         <div>
           <h2>Edit Article</h2>
-          <form onSubmit={handleUpdate}>
+          {/* <form onSubmit={handleUpdate}> */}
+          <form onSubmit={() => handleUpdate(editArticleData.id)}>
             <input
               type="text"
               name="title"
@@ -411,7 +472,12 @@ const NewsForm = () => {
                 })
               }
             />
-            <button type="submit">Update</button>
+            <button
+              type="submit"
+              onClick={() => handleUpdate(editArticleData.id)}
+            >
+              Update
+            </button>
           </form>
         </div>
       )}

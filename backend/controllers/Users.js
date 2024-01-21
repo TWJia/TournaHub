@@ -52,6 +52,36 @@ const updateUser = async (req, res) => {
   }
 };
 
+//Update user profile API
+const updateProfile = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json("Token is missing");
+  } 
+  try {
+    const decoded = jwt.verify(token, "jwt-secret-key");
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      { _id: decoded.id },
+      {
+        name: req.body.name,
+        email: req.body.email,
+        interestedSport: req.body.interestedSport,
+        skillLevel: req.body.skillLevel
+      },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.json(updatedUser);
+    } else {
+      res.json("Error updating user");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const suspendedUsers = (req, res) => {
   const id = req.params.id;
   const suspended = "Suspended";
@@ -183,5 +213,6 @@ module.exports = {
   verifySponsor,
   verifyUser,
   verifySysAdmin,
-  countUsers
+  countUsers,
+  updateProfile
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import NavbarA from "./NavbarA";
+import "./NewsForm.css"
 
 const NewsForm = () => {
   // const [image, setImage] = useState("");
@@ -293,6 +294,7 @@ const NewsForm = () => {
       <h1>Write a new article:</h1>
       <form action="">
         <h6>Select sport category:</h6>
+      <div className="mb-2">
         <select
           type="select"
           name="category"
@@ -311,15 +313,19 @@ const NewsForm = () => {
             </option>
           ))}
         </select>
-      </form>
-      <input
+        </div>
+        <div className="mb-2">
+        <input
         ref={title}
         type="text"
         name="title"
         id=""
         placeholder="Enter a title"
         onChange={handleInputChange}
+        required
       />
+        </div>
+        <div className="mb-2">
       <input
         ref={author}
         type="text"
@@ -327,15 +333,23 @@ const NewsForm = () => {
         id=""
         placeholder="Enter Author name"
         onChange={handleInputChange}
+        required
       />
-      <input
+        </div>
+        <div className="mb-2">
+      <textarea
         ref={content}
-        type="text"
+        type="textarea"
+        rows="10"
+        column="70"
         name="content"
         id=""
         placeholder="Enter the article content"
         onChange={handleInputChange}
+        required
       />
+        </div>
+        <div className="mb-2">
       <input
         ref={photo}
         type="file"
@@ -345,8 +359,11 @@ const NewsForm = () => {
         name="photo"
         placeholder="paste photo"
         onChange={handleImage}
+        required
       />
+        </div>
       <button onClick={handleSubmit}>Submit</button>
+      </form>
       <div>
         {/* {allNews.map((newss) => {
           return (

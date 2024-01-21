@@ -34,6 +34,7 @@ const {
   verifyUser,
   verifySysAdmin,
   countUsers,
+  updateProfile
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
@@ -174,6 +175,8 @@ app.put("/approveUser/:id", approveUser);
 app.get("/searchUsers/:name", searchUsers);
 
 app.get("/getAllUser", handleGetAllUser);
+
+app.put("/updateProfile", updateProfile);
 
 // app.get('/getTournaments', (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');

@@ -302,7 +302,9 @@ const NewsDetails = ({ match }) => {
 
           <p>{news.author}</p>
           <p>{news.postDate}</p>
-          <p>{news.content}</p>
+          <pre class="pre-container">
+            {news.content}
+          </pre>
           <div>
             <h3>Comments:</h3>
 

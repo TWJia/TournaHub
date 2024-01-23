@@ -63,7 +63,11 @@ const {
   UploadSponsorIcon,
   fetchSponsorIconsHomePage,
 } = require("./controllers/Sponsor");
-const { handleCreateStatus } = require("./controllers/Status");
+const { 
+  handleCreateStatus,
+  handleUpdateStatus, 
+  handleGetStatus,
+} = require("./controllers/Status");
 
 const app = express();
 const PORT = 3001;
@@ -221,6 +225,9 @@ app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
 app.post("/CreateRankingTable", handleCreateRankingTable);
 //
 app.post("/CreateStatus", handleCreateStatus);
+app.put("/updateStatus/:id", handleUpdateStatus);
+app.get("/getStatus", handleGetStatus);
+
 
 //Sponsor API
 app.post("/create-checkout-session-icon", IconPayment);

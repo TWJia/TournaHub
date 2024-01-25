@@ -2,6 +2,7 @@ const TournamentModel = require("../models/Tournaments");
 const MatchesModel = require("../models/Matches");
 const RankingTableModel = require("../models/RankingTable");
 const mongoose = require("mongoose");
+
 const handleCreateTournament = (req, res) => {
   TournamentModel.create(req.body)
     .then((tournaments) => res.json(tournaments))
@@ -78,6 +79,24 @@ const handleUpdateTournament = (req, res) => {
       console.error("Error updating Tournament:", err);
       res.status(500).json({ error: "Internal Server Error" });
     });
+};
+
+const handleUpdateTournamentCollaboratorId = async (req, res) => {
+  const { tournamentId } = req.params;
+  const { collaboratorId } = req.body; // Assuming you send the collaboratorId in the request body
+
+  try {
+    const updatedTournament = await TournamentModel.findByIdAndUpdate(
+      tournamentId,
+      { $push: { collaboratorId: collaboratorId } },
+      { new: true }
+    );
+
+    res.json(updatedTournament);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 const UpdateTournamentStatus = async (req, res) => {
@@ -230,6 +249,7 @@ module.exports = {
   handleCreateTournament,
   handleGetSingleTournament,
   handleDeleteTournament,
+  handleUpdateTournamentCollaboratorId,
   handleUpdateTournament,
   countTournaments,
   applyForTournament,

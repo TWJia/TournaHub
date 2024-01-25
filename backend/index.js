@@ -39,6 +39,7 @@ const {
 const {
   handleGetTournaments,
   handleUpdateTournament,
+  handleUpdateTournamentCollaboratorId,
   UpdateTournamentStatus,
   handleCreateTournament,
   handleGetSingleTournament,
@@ -219,6 +220,7 @@ app.post("/CreateMatches", handleCreateMatches);
 app.get("/getMatches/:tournamentId", handleGetMatches);
 app.put("/updateMatches/:id", handleUpdateMatches);
 
+app.put('/updateTournamentCollaboratorId/:tournamentId', handleUpdateTournamentCollaboratorId);
 app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
 
 app.get("/getRankingTable/:tournamentId", handleGetRankingTable);

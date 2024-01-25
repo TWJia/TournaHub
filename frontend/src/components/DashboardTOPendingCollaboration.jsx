@@ -9,6 +9,7 @@ function DashboardTOPendingCollaboration() {
   const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState();
   const [currentTab, setCurrentTab] = useState('Pending'); // Initialize currentTab state
+  const [updatedTournaments, setUpdatedTournaments] = useState([]); // Add state for updatedTournaments
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   
@@ -57,15 +58,71 @@ function DashboardTOPendingCollaboration() {
         fetchData();
       }, []);
 
+
+
+
+      const updateStatusInDatabase = async (updatedStatus) => {
+        const statusIdToUpdate = status.find(
+          (s) =>
+            s.tournamentId === updatedStatus.tournamentId &&
+            s.userId === updatedStatus.userId
+        )._id;
+      
+        // Update status
+        try {
+          await axios.put(
+            `http://localhost:3001/updateStatus/${statusIdToUpdate}`,
+            updatedStatus
+          );
+          console.log('Status updated successfully');
+          alert('Status updated successfully');
+          navigate('/Tournament');
+        } catch (err) {
+          console.log(err);
+        }
+      
+        // If the collaboration is accepted, update the tournaments database
+        if (updatedStatus.collaboratorStatus === 'Accepted') {
+          const tournamentIdToUpdate = updatedStatus.tournamentId;
+      
+          // Update the tournaments database
+          try {
+            await axios.put(
+              `http://localhost:3001/updateTournamentCollaboratorId/${tournamentIdToUpdate}`,
+              { collaboratorId: updatedStatus.collaboratorId }
+            );
+            console.log('Tournament updated successfully');
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      
+        // After updating both status and tournaments, you can navigate or perform other actions if needed
+        // navigate('/Tournament');
+      };
+      
       const handleAccept = (tournamentId) => {
         const updatedStatus = {
           tournamentId: tournamentId,
+          collaboratorId: user._id, // Add collaboratorId to the updatedStatus
           userId: user._id,
-          collaboratorStatus: 'Accepted', // Update the status to 'accepted' for acceptance
+          collaboratorStatus: 'Accepted',
         };
       
         updateStatusInDatabase(updatedStatus);
       };
+
+
+
+      // const handleAccept = (tournamentId) => {
+      //   const updatedStatus = {
+      //     tournamentId: tournamentId,
+      //     userId: user._id,
+      //     collaboratorStatus: 'Accepted', // Update the status to 'accepted' for acceptance
+      //   };
+      
+      //   updateStatusInDatabase(updatedStatus);
+      // };
 
       const handleReject = (tournamentId) => {
         const updatedStatus = {
@@ -77,20 +134,20 @@ function DashboardTOPendingCollaboration() {
         updateStatusInDatabase(updatedStatus);
 };
 
-const updateStatusInDatabase = (updatedStatus) => {
-  const statusIdToUpdate = status.find(
-    (s) => s.tournamentId === updatedStatus.tournamentId && s.userId === updatedStatus.userId
-  )._id;
+// const updateStatusInDatabase = (updatedStatus) => {
+//   const statusIdToUpdate = status.find(
+//     (s) => s.tournamentId === updatedStatus.tournamentId && s.userId === updatedStatus.userId
+//   )._id;
 
-  axios
-    .put(`http://localhost:3001/updateStatus/${statusIdToUpdate}`, updatedStatus)
-    .then((result) => {
-      console.log(result);
-      alert('Status updated successfully');
-      // navigate('/Tournament');
-    })
-    .catch((err) => console.log(err));
-};
+//   axios
+//     .put(`http://localhost:3001/updateStatus/${statusIdToUpdate}`, updatedStatus)
+//     .then((result) => {
+//       console.log(result);
+//       alert('Status updated successfully');
+//       // navigate('/Tournament');
+//     })
+//     .catch((err) => console.log(err));
+// };
 
   const renderTournamentList = () => {
     // Check if both status and tournaments are available

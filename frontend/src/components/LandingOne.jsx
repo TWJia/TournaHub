@@ -64,28 +64,47 @@ export default function LandingOne() {
 
   return (
     <div className="landingone-container">
-      <div className="landingone-div">
+      <div className="landingone-div"></div>
       <div>
-        <h1> Tournahub</h1>
-        <h3>Game On, Connect Strong</h3>
-        <h3>A one-stop hub to unleash your passion for sports</h3>
+        <h1> Tournahub </h1>
+        <h3> Game On, Connect Strong</h3>
       </div>
       <div>
         <u><h4>Why choose us?</h4></u>
-        <h5> Simplicity meets intuitivity. Take the stress out of tournament management </h5>
+        <i><p> Simplicity meets intuitivity. Take the stress out of tournament management </p></i>
       </div>
       <div className="flex-container">
-          <div> <u><h5>Simple & Intuitive </h5></u> {"\n"} <h6> Register, organize, compete. It's just that simple.</h6> </div>
-          <div> <u><h5>Free-to-experience </h5></u> {"\n"} <h6> Wide variety of functionalities available for free. No hidden charges.</h6> </div>
-          <div> <u><h5>Flexible & Customazible </h5></u> {"\n"} <h6> Just choose the sport and format you desire.</h6></div>
-        </div>
+    <div className="animation-container">
+    <div className="text-container">
+      <u><h5>Simple & Intuitive</h5></u>
+      <i><h6>Register, organize, compete. It's just that simple.</h6></i>
+    </div>
+  </div>
+
+  <div className="animation-container">
+    <div className="text-container2">
+      <u><h5>Free-to-experience</h5></u>
+      <i><h6>Wide variety of functionalities available for free. No hidden charges.</h6></i>
+    </div>
+  </div>
+
+  <div className="animation-container">
+    <div className="text-container3">
+      <u><h5>Flexible & Customizable</h5></u>
+      <i><h6>Just choose the sport and format you desire.</h6></i>
+    </div>
+  </div>
+</div>
+
+        
       <u><h4>To date we have:</h4></u>
-        <div className="flex-container">
+        <div className="flex-container animation-container">
           <div> <h5> {userCount} </h5> <h6> Registered Active Users </h6></div>
           <div> <h5> {tournamentCount}</h5> <h6> Tournaments Organised </h6></div>
         </div>
+  
       <u><h4>Reviews:</h4></u>
-      <div className="flex-container">
+      <div className="flex-container animation-container">
           {reviews.slice(0, 3).map((review, index) => (
           <div key={index}>
             <h6>{`Testimonial ${index + 1}`}</h6>
@@ -95,7 +114,7 @@ export default function LandingOne() {
         ))}
         </div>
         <u><h4>Trusted by our sponsors:</h4></u>
-        <div className="flex-container">
+        <div className="flex-container animation-container">
         {sponsorIcons.slice(0, 3).map((sponsorIcon, index) => (
         <div key={index}>
         <img
@@ -113,6 +132,6 @@ export default function LandingOne() {
           ))}
         </div>     
     </div>
-    </div>
+    
   );
 }

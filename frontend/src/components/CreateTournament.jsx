@@ -9,6 +9,7 @@ function CreateTournament() {
   const [tournamentName, settournamentName] = useState('');
   const [tournamentSport, settournamentSport] = useState('');
   const [sportsList, setSportsList] = useState([]);
+  const [tournamentSkillLevel, settournamentSkillLevel] = useState('');
   const [tournamentFormat, settournamentFormat] = useState('');
   const [tournamentDetails, settournamentDetails] = useState('');
   const [tournamentStartDate, settournamentStartDate] = useState('');
@@ -76,7 +77,8 @@ function CreateTournament() {
     axios
       .post('http://localhost:3001/CreateTournament', 
       { organizerId, 
-        tournamentName, tournamentSport, tournamentFormat, tournamentDetails, 
+        tournamentName, tournamentSport, tournamentSkillLevel,
+        tournamentFormat, tournamentDetails, 
         tournamentStartDate, tournamentEndDate, 
         tournamentNumberofplayers, tournamentNumberofmatches, 
         tournamentStatus: 'Open for Application' })
@@ -133,6 +135,22 @@ function CreateTournament() {
                     {sport.name}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div className="mb-2">
+              <label htmlFor="tournamentSkillLevel">Skill Level</label>
+              <select
+              id="tournamentSkillLevel"
+              className="form-control"
+              value={tournamentSkillLevel}
+              onChange={(e) => settournamentSkillLevel(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select Skill Level
+                </option>
+              <option value="Beginner">Beginner</option>
+              <option value="Amateur">Amateur</option>
+              <option value="Professional">Professional</option>
               </select>
             </div>
             <div className="mb-2">

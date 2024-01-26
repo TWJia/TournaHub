@@ -4,12 +4,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NewsDetails.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import {
+  //faFacebook,
+  //faInstagram,
+  //faTwitter,
+//} from "@fortawesome/free-brands-svg-icons";
+import {ShareSocial} from 'react-share-social' 
+
 
 const NewsDetails = ({ match }) => {
   const [news, setNews] = useState(null);
@@ -19,28 +21,96 @@ const NewsDetails = ({ match }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allComments, setAllComments] = useState([]);
-  useEffect(() => {
-    // Fetch the specific news item using match.params.newsId
-    // Find the news item with the matching newsId
-    getNewsDetailsById();
-    fetchAllComments();
-    getComments();
-  }, [newsId]);
-  useEffect(() => {
-    fetchData();
-  });
-
-  const fetchData = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3001/getCurrentUser");
-      console.log("current user ", data);
-      setUser(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+  //url for sharing
+  const url = window.location.href;
+  //in-line css for react social share component (can't seperate it out without having bugs, fix this if we have time)
+  const style = {
+    root: {
+      maxWidth: '750px', // Adjust the max-width as needed
+      margin: '0 auto',
+      fontSize: '2rem',
+      padding: '1rem',
+      background: '#f8f8f8', // Adjust background color
+      borderRadius: '8px',
+      boxShadow: '0 3px 5px 2px rgba(0, 0, 0, 0.1)', // Adjust box shadow
+      color: '#333', // Set text color to black
+    },
+    copyContainer: {
+      fontSize: '1rem',
+      color: 'aliceblue',
+      background: 'rgb(77, 77, 182)',
+      borderRadius: '12px',
+      padding: '10px',
+      border: '1px solid rgb(41, 41, 97)',
+      transitionDuration: '0.4s',
+    },
   };
+  // useEffect(() => {
+  //   // Fetch the specific news item using match.params.newsId
+  //   // Find the news item with the matching newsId
+  //   getNewsDetailsById();
+  //   fetchAllComments();
+  //   getComments();
+  // }, [newsId]);
+  // useEffect(() => {
+  //   fetchData();
+  // });
+
+  // const fetchData = async () => {
+  //   try {
+  //     const { data } = await axios.get("http://localhost:3001/getCurrentUser", {
+  //       withCredentials: true,
+  //     });
+  //     console.log("current user ", data);
+  //     setUser(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/getCurrentUser",
+          {
+            withCredentials: true,
+          }
+        );
+        console.log("current user ", data);
+        setUser(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const getNewsDetailsAndComments = async () => {
+      try {
+        const [newsResponse, commentsResponse] = await Promise.all([
+          axios.get(`http://localhost:3001/api/news/byid/${newsId}`),
+          axios.get(`http://localhost:3001/api/news/${newsId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }),
+        ]);
+
+        setNews(newsResponse.data.message);
+        setComments(commentsResponse.data.comments);
+        setAllComments(commentsResponse.data.comments);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+    getNewsDetailsAndComments();
+  }, [newsId]);
+
   const writtenComment = (event) => {
     setUserInput(event.target.value);
   };
@@ -100,10 +170,38 @@ const NewsDetails = ({ match }) => {
   //     console.log(error);
   //   }
   // };
+  //option2----------------
+  // const addToComments = async () => {
+  //   const body = {
+  //     comments: userInput,
+  //     user: user._id,
+  //   };
+
+  //   try {
+  //     const { status, data } = await axios.post(
+  //       `http://localhost:3001/api/news/create/${newsId}`,
+  //       body,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the user token here
+  //         },
+  //       }
+  //     );
+  //     console.log(data);
+  //     if (status === 200) {
+  //       fetchAllComments();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const addToComments = async () => {
     const body = {
       comments: userInput,
-      user: user._id,
+      user: {
+        _id: user._id,
+        name: user.name,
+      },
     };
 
     try {
@@ -112,7 +210,7 @@ const NewsDetails = ({ match }) => {
         body,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the user token here
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -132,7 +230,10 @@ const NewsDetails = ({ match }) => {
     }
     const payload = {
       text: commentText,
-      user: user?._id,
+      user: {
+        _id: user?._id,
+        name: user.name,
+      },
     };
     console.log("paload", payload);
     try {
@@ -142,6 +243,7 @@ const NewsDetails = ({ match }) => {
       );
       // Update the comments state with the new comment
       setAllComments([...allComments, data.comment]);
+      setUserInput("");
     } catch (error) {
       console.log(error);
     }
@@ -177,7 +279,7 @@ const NewsDetails = ({ match }) => {
 
   const handleCommentDelete = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:3001/api/news/${commentId}`);
+      await axios.delete(`http://localhost:3001/api/news/comment/${commentId}`);
       setAllComments(
         allComments.filter((comment) => comment._id !== commentId)
       );
@@ -193,7 +295,7 @@ const NewsDetails = ({ match }) => {
         <div>
           <h2>{news.title}</h2>
           <h6>{news.category}</h6>
-          <div className="singleCol d-flex justify-content-evenly">
+          {/*<div className="singleCol d-flex justify-content-evenly">
             <a href="https://facebook.com">
               <button className="FBWording">
                 <FontAwesomeIcon icon={faFacebook} />
@@ -214,7 +316,7 @@ const NewsDetails = ({ match }) => {
                 Send a tweet
               </button>
             </a>
-          </div>
+          </div> */}
           <img
             width={"200px"}
             src={`http://localhost:3001/images/${news.photo}`}
@@ -224,22 +326,30 @@ const NewsDetails = ({ match }) => {
               console.error("Error loading image:", e);
             }}
           />
-
           <p>{news.author}</p>
           <p>{news.postDate}</p>
-          <p>{news.content}</p>
+          <pre class="pre-container">
+            {news.content}
+          </pre>
+          <div align="center">
+          <ShareSocial 
+            url = {url} 
+            socialTypes={['facebook','twitter','whatsapp','telegram' , 'email']}
+            style={style}
+          />
+          </div>
           <div>
             <h3>Comments:</h3>
 
             {allComments.map((comment) => {
-              console.log(comment); // Add this line to check the comment structure
+              console.log(comment);
 
               return (
                 <p key={comment._id}>
                   <p>{comment.user?.name}</p>
                   <p>{comment.comments}</p>
 
-                  {comment.user?.id === user?._id && (
+                  {comment.user?._id === user?._id && (
                     <button onClick={() => handleCommentDelete(comment._id)}>
                       Delete Comment
                     </button>

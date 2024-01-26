@@ -41,10 +41,10 @@ function VerifyUsers() {
       <div>
       <NavbarSA />
       </div>
-      <div className="d-flex vh-100 justify-content-center align-items-center">
-        <div className="w-50 bg-white rounded p-3">
+      <div className="">
+        <div className="">
           <h2>Verify Users</h2>
-          <table className="tableContainer">
+          <table className="table">
             <thead>
               <tr>
                 <th>Name</th>

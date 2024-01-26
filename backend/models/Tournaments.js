@@ -9,9 +9,13 @@ const ApplicationSchema = new mongoose.Schema({
 
 const TournamentSchema = new mongoose.Schema({
   organizerId: String,
-  collaboratorId: String,
+  collaboratorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user", // Reference to the user collection
+  },
   tournamentName: String,
   tournamentSport: String,
+  tournamentSkillLevel: String,
   tournamentFormat: String,
   tournamentDetails: String,
   tournamentStartDate: Date,

@@ -3,7 +3,7 @@ import axios from "axios";
 import NavbarA from "./NavbarA";
 
 const TournamentApplication = () => {
-  //fetch and display tournaments that are open for application.
+  // Fetch and display tournaments that are open for application.
   const [openTournaments, setOpenTournaments] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,11 +55,17 @@ const TournamentApplication = () => {
     }
   };
 
+  // Filter tournaments based on user's skill level preference
+  const filteredTournaments = openTournaments.filter(
+    (tournament) => tournament.skillLevel === user.skillLevel
+  );
+
   return (
     <div>
       <NavbarA />
       <h2>Open Tournaments</h2>
-      {openTournaments.map((tournament) => (
+      {/* Display tournaments of the user's skill level first */}
+      {filteredTournaments.map((tournament) => (
         <div key={tournament._id}>
           <p>{tournament.tournamentName}</p>
           <p>{tournament.tournamentDetails}</p>
@@ -68,6 +74,17 @@ const TournamentApplication = () => {
           </button>
         </div>
       ))}
+      {openTournaments
+        .filter((tournament) => tournament.skillLevel !== user.skillLevel)
+        .map((tournament) => (
+          <div key={tournament._id}>
+            <p>{tournament.tournamentName}</p>
+            <p>{tournament.tournamentDetails}</p>
+            <button onClick={() => applyForTournament(tournament._id)}>
+              Apply
+            </button>
+          </div>
+        ))}
     </div>
   );
 };

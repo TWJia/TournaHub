@@ -61,6 +61,10 @@ function ViewTournamentDetails() {
     return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
+  const exportScoresheet = () =>{
+    window.open(`http://localhost:3001/scoresheet/${tournamentDetails.tournamentSport}.pdf`, "_blank", "noreferrer")
+  }
+
   const exportMatches = () => {
     // Create a new instance of jsPDF
     const pdfDoc = new jsPDF();
@@ -113,6 +117,7 @@ function ViewTournamentDetails() {
 <div>
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
+          <p>SKill Level: {tournamentDetails.tournamentSkillLevel}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
           <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>
@@ -121,6 +126,7 @@ function ViewTournamentDetails() {
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
           <p>Tornament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
+          <button onClick={exportScoresheet}>Export Scoresheet</button>
           <h1>Matches</h1>
           {Array.isArray(matchDetails) && matchDetails.length > 0 ? (
             matchDetails.map((match, index) => (

@@ -6,6 +6,7 @@ const ApplicantHome = () => {
   const [newsData, setNewsData] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // axios.defaults.withCredentials = true;
 
   useEffect(() => {
     fetchData();
@@ -14,7 +15,9 @@ const ApplicantHome = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3001/getCurrentUser");
+      const { data } = await axios.get("http://localhost:3001/getCurrentUser", {
+        withCredentials: true,
+      });
       setUser(data);
     } catch (error) {
       console.log(error);

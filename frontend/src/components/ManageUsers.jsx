@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavbarSA from './NavbarSA';
 import SearchBar from './SearchBarSA';
-import './tableContainer.css'
+import './tableContainer.css';
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -56,11 +56,11 @@ function ManageUsers() {
       <div>
       <NavbarSA />
       </div>
-      <div className="d-flex vh-100 justify-content-left align-items-center">
-        <div className="w-50 bg-white rounded p-3">
+      <div className="">
+        <div className="">
         <h2>Manage Users</h2>
         <SearchBar onSearch={handleSearch}/>
-          <table className="tableContainer">
+          <table className="table">
             <thead>
               <tr>
                 <th>Name</th>

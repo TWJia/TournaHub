@@ -24,19 +24,21 @@ const fileFilter = (req, file, cb) => {
   }
 };
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+//create news
 router.route("/create").post(upload.single("photo"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
+    const { user } = req.body;
     const title = req.body.title;
     const author = req.body.author;
     const content = req.body.content;
     const category = req.body.category;
     const photo = req.file.filename;
-    const user = req.params.id;
 
+    // Make sure to include the user name in the newNewsData object
     const newNewsData = {
       title,
       author,
@@ -44,6 +46,7 @@ router.route("/create").post(upload.single("photo"), async (req, res) => {
       category,
       photo,
       user,
+      name: req.body.name,
     };
 
     const newNews = new NewsModel(newNewsData);
@@ -62,23 +65,10 @@ router.route("/rec").get((req, res) => {
     .catch((err) => res.status(400).json("Error:" + err));
 });
 
-// this endpint will create the new news
-// router.post("/create", async (req, res) => {
-//   try {
-//     await NewsModel.create(req.body);
-//     res
-//       .status(200)
-//       .json({ message: "New news added successfully", success: true });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Error adding news", success: false });
-//   }
-// });
-
 // this endpoint gets all the news from the database
 router.get("/all", async (req, res) => {
   try {
-    const news = await NewsModel.find();
+    const news = await NewsModel.find().populate("user");
     res.status(200).json({ message: news, success: true });
   } catch (error) {
     console.log(error);
@@ -134,8 +124,95 @@ router.delete("/:newsId", async (req, res) => {
     res.status(500).json({ message: "could not delete news", success: false });
   }
 });
+//Edit article
+router.route("/edit/:newsId").put(upload.single("photo"), async (req, res) => {
+  const newsId = req.params.newsId;
+  const updatedData = req.body;
 
+  console.log("Updating news article with ID:", newsId);
+  console.log("Updated data:", updatedData);
+
+  NewsModel.findByIdAndUpdate(newsId, updatedData, { new: true })
+    .then((updatedArticle) => {
+      if (!updatedArticle) {
+        console.log("News article not found");
+        return res.status(404).json({ error: "News article not found" });
+      }
+      console.log("News article updated successfully:", updatedArticle);
+      res.json(updatedArticle);
+    })
+    .catch((err) => {
+      console.error("Error updating news article:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+});
+
+// router.route("/edit/:newsId").put(upload.single("photo"), async (req, res) => {
+//   console.log(req);
+//   try {
+//     // Get the article ID from the URL parameters
+//     const newsId = req.params.newsId;
+
+//     // Check if the logged-in user is the owner of the article
+//     if (req.user._id.toString() !== req.body.user.toString()) {
+//       return res.status(403).json({
+//         error: "Unauthorized: You are not the owner of this article.",
+//       });
+//     }
+
+//     // Update the article data
+//     const { title, author, content, category } = req.body;
+//     const updatedArticle = {
+//       title,
+//       author,
+//       content,
+//       category,
+//     };
+
+//     if (req.file) {
+//       updatedArticle.photo = req.file.filename;
+//     }
+
+//     // Update the article in the database
+//     const result = await NewsModel.findByIdAndUpdate(newsId, updatedArticle, {
+//       new: true,
+//     });
+
+//     res.json({
+//       message: "Article updated successfully",
+//       updatedArticle: result,
+//     });
+//   } catch (error) {
+//     console.error("Error in /edit route:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 // Create a comment--------------------------------------------------------------------------
+// router.post("/create/:newsId", async (req, res) => {
+//   try {
+//     const { text, user } = req.body;
+//     const newsId = req.params.newsId;
+
+//     const newComment = new CommentModel({
+//       comments: text,
+//       user,
+//     });
+
+//     await newComment.save();
+
+//     // Add the comment to the corresponding news article
+//     await NewsModel.findByIdAndUpdate(
+//       newsId,
+//       { $push: { comments: newComment._id } },
+//       { new: true }
+//     );
+
+//     res.json({ comment: newComment, message: "Comment added successfully" });
+//   } catch (error) {
+//     console.error("Error in /create route:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 router.post("/create/:newsId", async (req, res) => {
   try {
     const { text, user } = req.body;
@@ -144,6 +221,7 @@ router.post("/create/:newsId", async (req, res) => {
     const newComment = new CommentModel({
       comments: text,
       user,
+      news: newsId,
     });
 
     await newComment.save();
@@ -163,10 +241,25 @@ router.post("/create/:newsId", async (req, res) => {
 });
 
 // Get comments for a specific news article
+// router.get("/:newsId", async (req, res) => {
+//   try {
+//     const newsId = req.params.newsId;
+//     const news = await NewsModel.findById(newsId).populate(["comments"]);
+//     console.log("getting single news", news);
+//     res.json({ comments: news.comments });
+//   } catch (error) {
+//     console.error("Error in /:newsId route:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 router.get("/:newsId", async (req, res) => {
   try {
     const newsId = req.params.newsId;
-    const news = await NewsModel.findById(newsId).populate(["comments"]);
+    const news = await NewsModel.findById(newsId).populate({
+      path: "comments",
+      populate: { path: "user", select: "name" },
+    });
+
     console.log("getting single news", news);
     res.json({ comments: news.comments });
   } catch (error) {
@@ -176,13 +269,13 @@ router.get("/:newsId", async (req, res) => {
 });
 
 // Delete a comment
-router.delete("/:commentId", async (req, res) => {
+router.delete("/comment/:commentId", async (req, res) => {
   const commentId = req.params.commentId;
 
   try {
     // Find the comment and get its associated newsId
-    const comments = await CommentModel.findById(commentId);
-    const newsId = comments.news;
+    const comment = await CommentModel.findById(commentId);
+    const newsId = comment.news;
 
     // Remove the comment from CommentModel
     await CommentModel.findByIdAndDelete(commentId);

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavbarSA from './NavbarSA';
 import SearchBar from './SearchBarSA';
+import './tableContainer.css';
 
 
 function ManageSports() {
@@ -56,8 +57,8 @@ function ManageSports() {
       <div>
       <NavbarSA />
       </div>
-      <div className="d-flex vh-100 justify-content-center align-items-center">
-        <div className="w-50 bg-white rounded p-3">
+      <div className="">
+        <div className="">
         <h2>Manage Sports</h2>
         <SearchBar onSearch={handleSearch} />
           <table className="table">

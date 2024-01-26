@@ -21,6 +21,9 @@ export default function NavbarSA() {
           <Link to="/DashboardSA" onClick={closeMobileMenu}>
             {<img className="nav-logo" src={logo} />}
           </Link>
+          <Link to={`/AddScoresheet`} className="nav-links">
+            Add Scoresheet
+          </Link>
           <Link to={`/CreateSport`} className="nav-links">
             Create Sport
           </Link>
@@ -32,7 +35,7 @@ export default function NavbarSA() {
           </Link>
           <Link to={`/ManageUsers`} className="nav-links">
             Manage Users
-          </Link>
+          </Link>         
           <Link to={`/verifyUsers`} className="nav-links">
             Verify Users
           </Link>

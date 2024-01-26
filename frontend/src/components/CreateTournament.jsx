@@ -142,8 +142,12 @@ function CreateTournament() {
               <select
               id="tournamentSkillLevel"
               className="form-control"
+              value={tournamentSkillLevel}
               onChange={(e) => settournamentSkillLevel(e.target.value)}
               >
+                <option value="" disabled>
+                  Select Skill Level
+                </option>
               <option value="Beginner">Beginner</option>
               <option value="Amateur">Amateur</option>
               <option value="Professional">Professional</option>

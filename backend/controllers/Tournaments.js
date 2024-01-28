@@ -95,7 +95,7 @@ const handleUpdateTournamentCollaboratorId = async (req, res) => {
     res.json(updatedTournament);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -139,17 +139,66 @@ const countTournaments = (req, res) => {
     });
 };
 
+// const applyForTournament = async (req, res) => {
+//   console.log("Received request to apply for tournament", req.params);
+//   const tournamentId = req.params.tournamentId;
+//   console.log("Tournament ID:", tournamentId);
+//   const userid = req.params.userId;
+
+//   try {
+//     // Check if the tournamentId is not a valid ObjectId
+//     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
+//       return res.status(400).json({ error: "Invalid tournament ID" });
+//     }
+//     const tournament = await TournamentModel.findById(tournamentId);
+
+//     // Check if the tournament is open for application
+//     if (!tournament || tournament.tournamentStatus !== "Open for Application") {
+//       return res
+//         .status(404)
+//         .json({ error: "Tournament not found or not open for application" });
+//     }
+
+//     console.log(userid);
+
+//     // Check if the user has already applied for the tournament
+//     const userApplied = tournament.applications.some(
+//       (application) => application.user && application.user.equals(userid)
+//     );
+
+//     if (userApplied) {
+//       return res
+//         .status(400)
+//         .json({ error: "You have already applied for this tournament" });
+//     }
+
+//     // // Add the user to the list of tournament applications
+//     tournament.applications.push({ user: userid });
+//     await tournament.save();
+
+//     res.json({ message: "Application submitted successfully" });
+//     console.log("user ID:", userid);
+//   } catch (error) {
+//     console.error("Error applying for tournament:", error);
+//     res
+//       .status(500)
+//       .json({ error: "Internal Server Error", message: error.message });
+//   }
+// };
+//add new attribute action
 const applyForTournament = async (req, res) => {
   console.log("Received request to apply for tournament", req.params);
   const tournamentId = req.params.tournamentId;
   console.log("Tournament ID:", tournamentId);
-  const userid = req.params.userId;
+  const userId = req.params.userId;
+  const action = req.body.action || "apply"; // Default to "apply" if no action is provided
 
   try {
     // Check if the tournamentId is not a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
       return res.status(400).json({ error: "Invalid tournament ID" });
     }
+
     const tournament = await TournamentModel.findById(tournamentId);
 
     // Check if the tournament is open for application
@@ -159,11 +208,11 @@ const applyForTournament = async (req, res) => {
         .json({ error: "Tournament not found or not open for application" });
     }
 
-    console.log(userid);
+    console.log("User ID:", userId);
 
     // Check if the user has already applied for the tournament
     const userApplied = tournament.applications.some(
-      (application) => application.user && application.user.equals(userid)
+      (application) => application.user && application.user.equals(userId)
     );
 
     if (userApplied) {
@@ -172,12 +221,12 @@ const applyForTournament = async (req, res) => {
         .json({ error: "You have already applied for this tournament" });
     }
 
-    // // Add the user to the list of tournament applications
-    tournament.applications.push({ user: userid });
+    // Add the user to the list of tournament applications
+    tournament.applications.push({ user: userId, action });
     await tournament.save();
 
     res.json({ message: "Application submitted successfully" });
-    console.log("user ID:", userid);
+    console.log("User ID:", userId);
   } catch (error) {
     console.error("Error applying for tournament:", error);
     res
@@ -202,28 +251,42 @@ const getOpenTournaments = async (req, res) => {
 };
 
 //test code
-// Review tournament applications
+
+// // Review tournament applications
+
 const reviewTournamentApplications = async (req, res) => {
   try {
     const tournamentId = req.params.tournamentId;
-    const applicationUserId = req.body.applicationUserId;
-    const action = req.body.action; // 'accept' or 'reject'
+    const applications = req.body?.applications || [];
 
-    // Check if the tournament exists
+    if (applications.length === 0) {
+      return res.status(400).json({ error: "No applications provided" });
+    }
+
+    const applicationUserId = applications[0]?.user?._id || null;
+    const action = applications[0]?.action;
+
+    console.log(
+      "Received request for userId:",
+      applicationUserId,
+      "from body:",
+      req.body
+    );
+    console.log("Received request for tournamentId:", tournamentId);
+
     const tournament = await TournamentModel.findById(tournamentId);
     if (!tournament) {
       return res.status(404).json({ error: "Tournament not found" });
     }
-    // Find the application in the tournament's applications array
+
     const applicationIndex = tournament.applications.findIndex((application) =>
-      application.user.equals(applicationUserId)
+      application.user?._id.equals(applicationUserId)
     );
 
     if (applicationIndex === -1) {
       return res.status(404).json({ error: "Application not found" });
     }
 
-    // Update the application status based on the action
     if (action === "accept") {
       tournament.applications[applicationIndex].status = "accepted";
     } else if (action === "reject") {
@@ -242,6 +305,107 @@ const reviewTournamentApplications = async (req, res) => {
       .json({ error: "Internal Server Error", message: error.message });
   }
 };
+
+// const reviewTournamentApplications = async (req, res) => {
+//   try {
+//     console.log("Received request body:", req.body);
+//     const tournamentId = req.params.tournamentId;
+//     const applicationUserId = req.body.user?._id;
+//     console.log("Received request for userId:", applicationUserId);
+
+//     const action = req.body.action; // 'accept' or 'reject'
+//     console.log("Received request for tournamentId:", tournamentId);
+
+//     // Check if the tournament exists
+//     const tournament = await TournamentModel.findById(tournamentId);
+//     if (!tournament) {
+//       return res.status(404).json({ error: "Tournament not found" });
+//     }
+//     // Find the application in the tournament's applications array
+//     const applicationIndex = tournament.applications.findIndex((application) =>
+//       application.user.equals(applicationUserId)
+//     );
+
+//     if (applicationIndex === -1) {
+//       return res.status(404).json({ error: "Application not found" });
+//     }
+
+//     // Update the application status based on the action
+//     if (action === "accept") {
+//       tournament.applications[applicationIndex].status = "accepted";
+//     } else if (action === "reject") {
+//       tournament.applications[applicationIndex].status = "rejected";
+//     } else {
+//       return res.status(400).json({ error: "Invalid action" });
+//     }
+
+//     await tournament.save();
+
+//     res.json({ message: "Application reviewed successfully" });
+//   } catch (error) {
+//     console.error("Error reviewing tournament applications:", error);
+//     res
+//       .status(500)
+//       .json({ error: "Internal Server Error", message: error.message });
+//   }
+// };
+
+//================================
+// Review tournament applications
+// const reviewTournamentApplications = async (req, res) => {
+//   try {
+//     const tournamentId = req.params.tournamentId;
+//     const applicationUserId = req.body.applicationUserId;
+//     const action = req.body.action; // 'accept' or 'reject'
+//     console.log(
+//       "Received request to review applications for tournament with ID:",
+//       tournamentId
+//     );
+//     // Check if the tournament exists
+//     const tournament = await TournamentModel.findById(tournamentId);
+//     if (!tournament) {
+//       return res.status(404).json({ error: "Tournament not found" });
+//     }
+
+//     // Find the application in the tournament's applications array
+//     const applicationIndex = tournament.applications.findIndex((application) =>
+//       application.user.equals(applicationUserId)
+//     );
+
+//     if (applicationIndex === -1) {
+//       return res.status(404).json({ error: "Application not found" });
+//     }
+
+//     // Update the application status based on the action
+//     if (action === "accept") {
+//       tournament.applications[applicationIndex].status = "accepted";
+//     } else if (action === "reject") {
+//       tournament.applications[applicationIndex].status = "rejected";
+//     } else {
+//       return res.status(400).json({ error: "Invalid action" });
+//     }
+
+//     // Save the updated tournament
+//     await tournament.save();
+
+//     // Fetch all users whose IDs are in the applications array
+//     const userIds = tournament.applications.map(
+//       (application) => application.user
+//     );
+
+//     const users = await UserModel.find({ _id: { $in: userIds } });
+
+//     res.json({
+//       message: "Application reviewed successfully",
+//       users: users,
+//     });
+//   } catch (error) {
+//     console.error("Error reviewing tournament applications:", error);
+//     res
+//       .status(500)
+//       .json({ error: "Internal Server Error", message: error.message });
+//   }
+// };
 
 module.exports = {
   handleGetTournaments,

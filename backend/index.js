@@ -34,7 +34,7 @@ const {
   verifyUser,
   verifySysAdmin,
   countUsers,
-  updateProfile
+  updateProfile,
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
@@ -64,9 +64,9 @@ const {
   UploadSponsorIcon,
   fetchSponsorIconsHomePage,
 } = require("./controllers/Sponsor");
-const { 
+const {
   handleCreateStatus,
-  handleUpdateStatus, 
+  handleUpdateStatus,
   handleGetStatus,
 } = require("./controllers/Status");
 
@@ -91,7 +91,6 @@ app.use("/verify", express.static("verify"));
 app.use("/sponsoricon", express.static("sponsoricon"));
 // Used for getting scoresheets
 app.use("/scoresheet", express.static("scoresheet"));
-
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -131,7 +130,7 @@ const scoresheetStorage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
-  }
+  },
 });
 
 const scoresheetUpload = multer({ storage: scoresheetStorage });
@@ -198,9 +197,13 @@ app.get("/getAllUser", handleGetAllUser);
 app.put("/updateProfile", updateProfile);
 
 //upload scoresheet API
-app.post("/AddScoresheet", scoresheetUpload.single("scoresheet"), (req, res) => {
-  res.send("Scoresheet uploaded successfully!");
-});
+app.post(
+  "/AddScoresheet",
+  scoresheetUpload.single("scoresheet"),
+  (req, res) => {
+    res.send("Scoresheet uploaded successfully!");
+  }
+);
 
 // app.get('/getTournaments', (req, res) => {
 //     res.send('Hello, this is the tournaments endpoint!');
@@ -214,13 +217,19 @@ app.delete("/deleteTournament/:id", handleDeleteTournament);
 //User: Application API
 app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
 app.get("/getOpenTournaments", getOpenTournaments);
-app.post("/reviewTournamentApplications/:id", reviewTournamentApplications);
+app.post(
+  "/reviewTournamentApplications/:tournamentId/:userId",
+  reviewTournamentApplications
+);
 
 app.post("/CreateMatches", handleCreateMatches);
 app.get("/getMatches/:tournamentId", handleGetMatches);
 app.put("/updateMatches/:id", handleUpdateMatches);
 
-app.put('/updateTournamentCollaboratorId/:tournamentId', handleUpdateTournamentCollaboratorId);
+app.put(
+  "/updateTournamentCollaboratorId/:tournamentId",
+  handleUpdateTournamentCollaboratorId
+);
 app.put("/updateTournamentStatus/:tournamentId", UpdateTournamentStatus);
 
 app.get("/getRankingTable/:tournamentId", handleGetRankingTable);
@@ -229,7 +238,6 @@ app.post("/CreateRankingTable", handleCreateRankingTable);
 app.post("/CreateStatus", handleCreateStatus);
 app.put("/updateStatus/:id", handleUpdateStatus);
 app.get("/getStatus", handleGetStatus);
-
 
 //Sponsor API
 app.post("/create-checkout-session-icon", IconPayment);

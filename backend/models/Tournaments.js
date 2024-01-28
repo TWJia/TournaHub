@@ -5,13 +5,17 @@ const ApplicationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
+  action: {
+    type: String,
+    default: "apply",
+  },
 });
 
 const TournamentSchema = new mongoose.Schema({
   organizerId: String,
   collaboratorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user", // Reference to the user collection
+    ref: "user",
   },
   tournamentName: String,
   tournamentSport: String,

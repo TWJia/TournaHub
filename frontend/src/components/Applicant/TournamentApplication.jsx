@@ -55,31 +55,52 @@ const TournamentApplication = () => {
     }
   };
 
-  // Filter tournaments based on user's skill level preference
-  const filteredTournaments = openTournaments.filter(
-    (tournament) => tournament.skillLevel === user.skillLevel
-  );
+  // Filter tournaments based on user's skill level preference (case-insensitive)
+  const filteredTournaments = openTournaments.filter((tournament) => {
+    const tournamentSkillLevels = tournament && tournament.tournamentSkillLevel;
+    const userSkillLevel = user && user.skillLevel;
+
+    return (
+      tournamentSkillLevels &&
+      userSkillLevel &&
+      tournamentSkillLevels.toLowerCase() === userSkillLevel.toLowerCase()
+    );
+  });
 
   return (
     <div>
       <NavbarA />
       <h2>Open Tournaments</h2>
       {/* Display tournaments of the user's skill level first */}
+      <h4>Recommended match for your skill level:</h4>
       {filteredTournaments.map((tournament) => (
         <div key={tournament._id}>
           <p>{tournament.tournamentName}</p>
           <p>{tournament.tournamentDetails}</p>
+          <p>{tournament.tournamentSkillLevel}</p>
           <button onClick={() => applyForTournament(tournament._id)}>
             Apply
           </button>
         </div>
       ))}
+      <h4>Other matches not recommended for you:</h4>
       {openTournaments
-        .filter((tournament) => tournament.skillLevel !== user.skillLevel)
+        .filter((tournament) => {
+          const tournamentSkillLevels =
+            tournament && tournament.tournamentSkillLevel;
+          const userSkillLevel = user && user.skillLevel;
+
+          return (
+            tournamentSkillLevels &&
+            userSkillLevel &&
+            tournamentSkillLevels.toLowerCase() !== userSkillLevel.toLowerCase()
+          );
+        })
         .map((tournament) => (
           <div key={tournament._id}>
             <p>{tournament.tournamentName}</p>
             <p>{tournament.tournamentDetails}</p>
+            <p>{tournament.tournamentSkillLevel}</p>
             <button onClick={() => applyForTournament(tournament._id)}>
               Apply
             </button>

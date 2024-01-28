@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavbarA from "./Applicant/NavbarA";
-import ApplicantHome from "./Applicant/ApplicantHome";
+import DisplayAllNews from "./Applicant/DisplayAllNews";
 
 function DashboardA() {
   const [verify, setVerify] = useState("");
@@ -11,7 +11,6 @@ function DashboardA() {
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
-
   useEffect(() => {
     axios
       .get("http://localhost:3001/home")
@@ -19,7 +18,10 @@ function DashboardA() {
         if (res.data === "Login is successful") {
           // Set and store verify in localStorage
           setVerify("Welcome! You are logged in as an User");
-          localStorage.setItem('verify', "Welcome! You are logged in as an User");
+          localStorage.setItem(
+            "verify",
+            "Welcome! You are logged in as an User"
+          );
         } else {
           // navigate back to homepage
           navigate("/");
@@ -34,15 +36,17 @@ function DashboardA() {
     const fetchData = async () => {
       try {
         // Check if user data is stored in localStorage
-        const storedUser = localStorage.getItem('userA');
+        const storedUser = localStorage.getItem("userA");
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         } else {
           // If not, fetch user data from the server
-          const response = await axios.get("http://localhost:3001/getCurrentUser");
+          const response = await axios.get(
+            "http://localhost:3001/getCurrentUser"
+          );
           setUser(response.data);
           // Store user data in localStorage
-          localStorage.setItem('user', JSON.stringify(response.data));
+          localStorage.setItem("user", JSON.stringify(response.data));
         }
       } catch (error) {
         console.log(error);
@@ -69,10 +73,9 @@ function DashboardA() {
           <p>Email: {user.email}</p>
         </div>
       )}
-      <ApplicantHome />
+      <DisplayAllNews />
     </div>
   );
 }
 
 export default DashboardA;
-

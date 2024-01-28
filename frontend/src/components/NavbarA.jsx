@@ -9,27 +9,51 @@ export default function NavbarA() {
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
-    window.localStorage.removeItem("loggedInA")
+    window.localStorage.removeItem("loggedInA");
     window.localStorage.removeItem("verify")
     window.localStorage.removeItem("user")
-  }
+  };
 
   return (
     <div>
       <div className="navbar">
         <div className="navbar-container">
-          <Link to="/DashboardA" onClick={closeMobileMenu}>
+          <Link to="/home" onClick={closeMobileMenu}>
             {<img className="nav-logo" src={logo} />}
+          </Link>
+          <Link to={`/UpdateProfile`} className="nav-links">
+            Profile
+          </Link>
+          <Link to={`/home`} className="nav-links">
+            Home
+          </Link>
+          <Link to={`/TournamentSchedule`} className="nav-links">
+            Tournament Schedule
+          </Link>
+          <Link to={`/RankingTable`} className="nav-links">
+            Ranking Table
+          </Link>
+          <Link to={`/MatchResult`} className="nav-links">
+            Match Result
+          </Link>
+          <Link to={`/MatchStatistic`} className="nav-links">
+            Match Statistic
+          </Link>
+          <Link to={`/Apply`} className="nav-links">
+            Apply
+          </Link>
+          <Link to={`/RatingAndReview`} className="nav-links">
+            Rating
           </Link>
           <div className="menu-icon" onClick={handleClick}>
             <MenuIcon />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
-                <a href="/" className="nav-links" onClick={() => Logout()}>
-                  LogOut
-                </a>
-              </li>
+              <a href="/" className="nav-links" onClick={() => Logout()}>
+                LogOut
+              </a>
+            </li>
           </ul>
         </div>
       </div>

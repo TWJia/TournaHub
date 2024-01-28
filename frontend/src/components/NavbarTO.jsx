@@ -18,6 +18,10 @@ export default function NavbarC() {
     //navigate to /DashboardCPendingCollaboration
     navigate('/Tournament');
   };
+  const navigateToUploadNews= () => {
+    //navigate to /UploadNews
+    navigate('/UploadNews');
+  };
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -46,6 +50,11 @@ export default function NavbarC() {
             <li className="nav-item">
               <a className="nav-links" onClick={navigateToDashboardTOPendingCollaboration}>
                 Collaboration
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-links" onClick={navigateToUploadNews}>
+                Manage News
               </a>
             </li>
             <li className="nav-item">

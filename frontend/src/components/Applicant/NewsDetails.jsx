@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavbarA from "./NavbarA";
+import SelectNavbar from "../../components/SelectNavbar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -290,7 +290,7 @@ const NewsDetails = ({ match }) => {
 
   return (
     <div>
-      <NavbarA />
+      {SelectNavbar()}
       {news ? (
         <div>
           <h2>{news.title}</h2>

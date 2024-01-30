@@ -34,35 +34,28 @@ export default function NavbarC() {
   return (
     <div>
       <div className="navbar">
-        <div className="navbar-container">
+        <div className="nav_left">
           <Link to="/DashboardTO" onClick={closeMobileMenu}>
             {<img className="nav-logo" src={logo} />}
           </Link>
           <div className="menu-icon" onClick={handleClick}>
             <MenuIcon />
           </div>
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-          <li className="nav-item">
-              <a className="nav-links" onClick={navigateToViewTournament}>
-                Tournament
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-links" onClick={navigateToDashboardTOPendingCollaboration}>
-                Collaboration
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-links" onClick={navigateToUploadNews}>
-                Manage News
-              </a>
-            </li>
-            <li className="nav-item">
-                <a href="/" className="nav-links" onClick={() => Logout()}>
-                  LogOut
-                </a>
-              </li>
-          </ul>
+          <Link to={`/Tournament`} className="nav-links">
+            Tournament
+          </Link>
+          <Link to={`/DashboardTOPendingCollaboration`} className="nav-links">
+            Colloboration
+          </Link>
+          <Link to={`/UploadNews`} className="nav-links">
+            Manage News
+          </Link>
+
+          <li className="nav-links">
+            <a href="/" className="nav-links" onClick={() => Logout()}>
+              LogOut
+            </a>
+          </li>
         </div>
       </div>
     </div>

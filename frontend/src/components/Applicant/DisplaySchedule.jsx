@@ -124,6 +124,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import NavbarA from "./NavbarA";
+import SelectNavbar from "../../components/SelectNavbar";
 import axios from 'axios'
 
 const DisplaySchedule = () => {
@@ -220,7 +221,7 @@ const DisplaySchedule = () => {
   
   return (
     <div>
-      <NavbarA />
+      {SelectNavbar()}
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}

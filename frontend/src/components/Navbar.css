@@ -2,7 +2,8 @@
   height: 75px;
   display: flex;
   align-items: center;
-  width: fit-content;
+  justify-content: space-between;
+  width: 100%;
   margin: 0;
   margin-left: auto;
   background-color: #372c2e;
@@ -24,7 +25,8 @@
   align-items: center;
   height: 80px;
   width: 100%;
-  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: 32px;
 }
 
 .nav-logo {
@@ -86,10 +88,9 @@
   }
 
   .nav-links {
-    text-align: center;
-    padding: 2rem;
-    width: 100%;
-    display: table;
+    width: 100%; /* Full width for each link */
+    padding: 1rem 0; /* Adjusted padding */
+    border-bottom: 0.3px solid #ffffff; /* Added bottom border between links */
   }
 
   .nav-links:hover {

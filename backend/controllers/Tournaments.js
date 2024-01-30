@@ -21,6 +21,24 @@ const handleGetTournaments = (req, res) => {
     });
 };
 
+const handleGetOwnTournaments = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Fetch tournaments where organizerId or collaboratorId matches userId
+    const tournaments = await TournamentModel.find({
+      $or: [{ organizerId: userId }, { collaboratorId: userId }],
+    });
+
+    res.json(tournaments);
+  } catch (error) {
+    console.error('Error fetching tournaments:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
 const handleGetSingleTournament = (req, res) => {
   const id = req.params.id;
   TournamentModel.findById({ _id: id })
@@ -409,6 +427,7 @@ const reviewTournamentApplications = async (req, res) => {
 
 module.exports = {
   handleGetTournaments,
+  handleGetOwnTournaments,
   UpdateTournamentStatus,
   handleCreateTournament,
   handleGetSingleTournament,

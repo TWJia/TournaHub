@@ -38,6 +38,7 @@ const {
 } = require("./controllers/Users");
 const {
   handleGetTournaments,
+  handleGetOwnTournaments,
   handleUpdateTournament,
   handleUpdateTournamentCollaboratorId,
   UpdateTournamentStatus,
@@ -211,7 +212,10 @@ app.post(
 
 app.post("/CreateTournament", handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
+app.get('/getTournaments/:userId', handleGetOwnTournaments);
+
 app.get("/getTournamentDetails/:id", handleGetSingleTournament);
+
 app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
 //User: Application API

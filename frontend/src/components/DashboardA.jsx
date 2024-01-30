@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavbarA from "./Applicant/NavbarA";
 import DisplayAllNews from "./Applicant/DisplayAllNews";
+import "./Navbar.css";
 
 function DashboardA() {
   const [verify, setVerify] = useState("");
@@ -63,12 +64,13 @@ function DashboardA() {
   }
 
   return (
-    <div>
+    <div className="mainDashboard">
       <NavbarA />
-      <p>Dashboard: User</p>
-      <p>{verify}</p>
+      {/* <p>Dashboard: User</p> */}
+      {/* <p>{verify}</p> */}
       {user && (
         <div>
+          <p>Welcome Back {user.name}!</p>
           <p>User ID: {user._id}</p>
           <p>Email: {user.email}</p>
         </div>

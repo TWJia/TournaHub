@@ -117,7 +117,7 @@ function ViewTournamentDetails() {
 <div>
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
-          <p>Skill Level: {tournamentDetails.tournamentSkillLevel}</p>
+          <p>SKill Level: {tournamentDetails.tournamentSkillLevel}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
           <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>

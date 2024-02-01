@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarA from "./NavbarA";
+import "./TournamentApplication.css";
+import bgmImage from "../images/background_application.jpg";
 
 const TournamentApplication = () => {
   const [openTournaments, setOpenTournaments] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  //scrolling aimation
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,16 +83,20 @@ const TournamentApplication = () => {
       tournament.applications.some((app) => app.user?._id === user?._id);
 
     return (
-      <div key={tournament._id}>
-        <p>{tournament.tournamentName}</p>
-        <p>{tournament.tournamentDetails}</p>
-        <p>{tournament.tournamentSkillLevel}</p>
-        <button
-          onClick={() => applyForTournament(tournament._id)}
-          disabled={userAlreadyApplied}
-        >
-          {userAlreadyApplied ? "Already Applied" : "Apply"}
-        </button>
+      <div className="displayall">
+        <div className="Tframe" key={tournament._id}>
+          <h4> {tournament.tournamentName}</h4>
+          <p>Tournament details: {tournament.tournamentDetails}</p>
+          <p>Skill Level: {tournament.tournamentSkillLevel}</p>
+          <p>Sport Category: {tournament.tournamentSport}</p>
+          <button
+            className="mainBtns"
+            onClick={() => applyForTournament(tournament._id)}
+            disabled={userAlreadyApplied}
+          >
+            {userAlreadyApplied ? "Already Applied" : "Apply"}
+          </button>
+        </div>
       </div>
     );
   };
@@ -88,24 +107,34 @@ const TournamentApplication = () => {
   const filteredTournaments = (filterFn) => openTournaments.filter(filterFn);
 
   return (
-    <div>
+    <>
       <NavbarA />
+      <img
+        className="bg"
+        src={bgmImage}
+        alt="Background"
+        style={{ transform: `translateY(${scrollY * 0.01}px)` }}
+      />
       <h2>Open Tournaments</h2>
       <h4>Recommended match for your skill level:</h4>
-      {renderFilteredTournaments((tournament) => {
-        const skillLevelMatches =
-          tournament.tournamentSkillLevel?.toLowerCase() ===
-          user?.skillLevel?.toLowerCase();
-        return skillLevelMatches;
-      })}
-      <h4>Other matches not recommended for you:</h4>
-      {renderFilteredTournaments((tournament) => {
-        const skillLevelDiffers =
-          tournament.tournamentSkillLevel?.toLowerCase() !==
-          user?.skillLevel?.toLowerCase();
-        return skillLevelDiffers;
-      })}
-    </div>
+      <div className="direction">
+        {renderFilteredTournaments((tournament) => {
+          const skillLevelMatches =
+            tournament.tournamentSkillLevel?.toLowerCase() ===
+            user?.skillLevel?.toLowerCase();
+          return skillLevelMatches;
+        })}
+      </div>
+      <div className="newline">
+        <h4>Other matches not recommended for you:</h4>
+        {renderFilteredTournaments((tournament) => {
+          const skillLevelDiffers =
+            tournament.tournamentSkillLevel?.toLowerCase() !==
+            user?.skillLevel?.toLowerCase();
+          return skillLevelDiffers;
+        })}
+      </div>
+    </>
   );
 };
 

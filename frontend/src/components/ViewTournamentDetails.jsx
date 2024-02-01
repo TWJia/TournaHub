@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import NavbarTO from "./NavbarTO";
+import SelectNavbar from "./SelectNavbar";
 import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
@@ -110,7 +110,7 @@ function ViewTournamentDetails() {
 
   return (
     <div>
-      <NavbarTO />
+      {SelectNavbar()}
       {loadingTournament || loadingMatches || LoadingRankingTable ? (
         <p>Loading...</p>
       ) : (

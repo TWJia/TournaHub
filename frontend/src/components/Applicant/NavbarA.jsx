@@ -27,8 +27,8 @@ export default function NavbarA() {
           <Link to={`/TournamentSchedule`} className="nav-links">
             Tournament Schedule
           </Link>
-          <Link to={`/RankingTable`} className="nav-links">
-            Ranking Table
+          <Link to={`/ViewTournament`} className="nav-links">
+            Tournament List
           </Link>
           <Link to={`/MatchResult`} className="nav-links">
             Match Result

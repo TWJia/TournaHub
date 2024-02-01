@@ -28,6 +28,9 @@ export default function NavbarS() {
           <Link to={`/TournamentSchedule`} className="nav-links">
             Tournament Schedule
           </Link>
+          <Link to={`/ViewTournament`} className="nav-links">
+            Tournament List
+          </Link>
           <Link to={`/SponsorshipModels`} className="nav-links">
             Sponsorship
           </Link>

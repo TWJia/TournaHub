@@ -39,6 +39,7 @@ import PaymentSuccess from "./components/PaymentSuccess";
 import UploadSponsorIcon from "./components/UploadSponsorIcon";
 import TournamentApplication from "./components/Applicant/TournamentApplication";
 import AddScoresheet from "./components/AddScoresheet";
+import ViewTournament from "./components/ViewTournament"
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -116,6 +117,7 @@ export default function App() {
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
           <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
           <Route path="/AddScoresheet" element={<AddScoresheet />} />
+          <Route path="/ViewTournament" element={<ViewTournament />} />
 
           <Route
             path="/DashboardTOPendingCollaboration"

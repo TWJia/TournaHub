@@ -126,7 +126,7 @@ function ViewTournamentDetails() {
 
   return (
     <div>
-      <NavbarTO />
+      {SelectNavbar()}
       {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
         <p>Loading...</p>
       ) : (

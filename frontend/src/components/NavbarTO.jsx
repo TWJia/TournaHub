@@ -42,7 +42,7 @@ export default function NavbarC() {
             <MenuIcon />
           </div>
           <Link to={`/Tournament`} className="nav-links">
-            Tournament
+            Manage Tournaments
           </Link>
           <Link to={`/DashboardTOPendingCollaboration`} className="nav-links">
             Colloboration

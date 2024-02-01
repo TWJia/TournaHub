@@ -18,6 +18,10 @@ function CreateTournament() {
   const [tournamentNumberofmatches, settournamentNumberofmatches] = useState('');
   const [tournamentStatus, settournamentStatus] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isCustomFormat, setIsCustomFormat] = useState(false);
+
+
+
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
@@ -58,17 +62,23 @@ function CreateTournament() {
   useEffect(() => {
     // Calculate and update the number of matches when the number of players or format changes
     calculateNumberOfMatches();
-  }, [tournamentNumberofplayers, tournamentFormat]);
+  }, [tournamentNumberofplayers, tournamentFormat, isCustomFormat]);
 
   const calculateNumberOfMatches = () => {
     if (tournamentFormat === 'Single Elimination') {
       // Single Elimination: n - 1 matches
       settournamentNumberofmatches(tournamentNumberofplayers - 1);
+      setIsCustomFormat(false); // Set to false for Single Elimination
     } else if (tournamentFormat === 'Double Elimination') {
       // Double Elimination: (n - 1) * 2 + 1 matches
       settournamentNumberofmatches((tournamentNumberofplayers - 1) * 2 + 1);
+      setIsCustomFormat(false); // Set to false for Double Elimination
+    } else if (tournamentFormat === 'Others') {
+      // Use customNumberOfMatches for "Others"
+      settournamentNumberofmatches('');
+      setIsCustomFormat(true); // Set to true for Others
     } else {
-      // Handle other formats as needed
+      setIsCustomFormat(false); // Set to false for other formats
     }
   };
 
@@ -166,6 +176,7 @@ function CreateTournament() {
               </option>
               <option value="Single Elimination">Single Elimination</option>
               <option value="Double Elimination">Double Elimination</option>
+              <option value="Others">Others...</option>
             </select>
           </div>
             <div className="mb-2">
@@ -212,6 +223,7 @@ function CreateTournament() {
                 }}
               />
             </div>
+
              <div className="mb-2">
               <label htmlFor="tournamentNumberofmatches">Number of matches</label>
               <input
@@ -220,8 +232,14 @@ function CreateTournament() {
                 placeholder=""
                 className="form-control"
                 value={tournamentNumberofmatches}
-                readOnly // Make it read-only
+                readOnly={tournamentFormat !== 'Others'} // Set readOnly based on the format
+                onChange={(e) => {
+                if (tournamentFormat === 'Others') {
+                  settournamentNumberofmatches(e.target.value);
+                }
+                }}
               />
+              
             </div>
             <div className="mb-2">
               <input

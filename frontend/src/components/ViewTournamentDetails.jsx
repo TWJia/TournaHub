@@ -8,9 +8,11 @@ function ViewTournamentDetails() {
   const [tournamentDetails, setTournamentDetails] = useState({});
   const [matchDetails, setMatchDetails] = useState({});
   const [rankingTableDetails, setRankingTableDetails] = useState({});
+  const [statisticsDetails, setStatisticsDetails] = useState({});
   const [loadingTournament, setLoadingTournament] = useState(true);
   const [loadingMatches, setLoadingMatches] = useState(true);
   const [LoadingRankingTable, setLoadingRankingTable] = useState(true);
+  const [LoadingStatistics, setLoadingStatistics] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -53,6 +55,20 @@ function ViewTournamentDetails() {
       })
       .finally(() => {
         setLoadingRankingTable(false);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    // Fetch statistics table details when the component mounts
+    axios.get(`http://localhost:3001/getStatistics/${id}`)
+      .then((response) => {
+        setStatisticsDetails(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching ranking table details:', error);
+      })
+      .finally(() => {
+        setLoadingStatistics(false);
       });
   }, [id]);
   
@@ -110,8 +126,8 @@ function ViewTournamentDetails() {
 
   return (
     <div>
-      {SelectNavbar()}
-      {loadingTournament || loadingMatches || LoadingRankingTable ? (
+      <NavbarTO />
+      {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
         <p>Loading...</p>
       ) : (
 <div>
@@ -156,13 +172,32 @@ function ViewTournamentDetails() {
               <div key={index}>
                 <p>Winner: {rankingtables.Winner}</p>
                 <p>Runner-Up: {rankingtables.RunnerUp}</p>
-                {/* Display other match details as needed */}
+                {/* Display other ranking table as needed */}
               </div>
               
             ))
 
           ) : (
             <p>No ranking table details available.</p>
+          )}
+              </div>
+              <div>
+            <h1>Statistics</h1>
+            {Array.isArray(statisticsDetails) && statisticsDetails.length > 0 ? (
+            statisticsDetails.map((statistics, index) => (
+              <div key={index}>
+                <p>Paricipant: {statistics.Participant}</p>
+                <p>Score: {statistics.Score}</p>
+                <p>Average Score: {statistics.AverageScore}</p>
+                <p>Total Score: {statistics.TotalScore}</p>
+                <p>----------------------------------------</p>
+                {/* Display other statistics as needed */}
+              </div>
+              
+            ))
+
+          ) : (
+            <p>No Statistics available.</p>
           )}
               </div>
         </div>

@@ -4,14 +4,32 @@ import { useNavigate, useParams } from 'react-router-dom';
 import NavbarTO from "./NavbarTO";
 
 function InvitationPage() {
+    const [user, setUser] = useState(null);
     const { tournamentId } = useParams();
     const [userDetails, setUserDetails] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState("");
     const [userId, setUserId] = useState("");
     const [loadingTournament, setLoadingTournament] = useState(true);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const { id } = useParams();
     axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:3001/getCurrentUser");
+                setUser(response.data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
 
     useEffect(() => {
         // Fetch user details when the component mounts
@@ -56,7 +74,8 @@ function InvitationPage() {
     };
 
     // Filter out the current user from the list of tournament organizers
-    const currentUser = userDetails.find(user => user._id === id);
+
+    const currentUser = user; // Use the user obtained from setUser response data
     const tournamentOrganizers = userDetails.filter(user => user.usertype === 'tournamentorganizer' && user._id !== currentUser?._id);
 
     return (

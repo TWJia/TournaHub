@@ -22,6 +22,12 @@ function ViewTournament() {
       const handleNavigateToUpdateMatches = (tournamentId) => {
         navigate(`/UpdateMatches/${tournamentId}`);
       };
+      const handleNavigateToAddStatistics = (tournamentId) => {
+        navigate(`/AddStatistics/${tournamentId}`);
+      };
+      const handleNavigateToUpdateStatistics = (tournamentId) => {
+        navigate(`/UpdateStatistics/${tournamentId}`);
+      };      
       const handleNavigateToCreateRankingTable = (tournamentId) => {
         navigate(`/CreateRankingTable/${tournamentId}`);
       };
@@ -157,6 +163,18 @@ function ViewTournament() {
                     className="btn btn-sm btn-warning mr-2"
                   >
                     Edit Matches
+                  </button>
+                  <button
+                    onClick={() =>  handleNavigateToAddStatistics(tournament._id)}
+                    className="btn btn-sm btn-success mr-2"
+                  >
+                    Add Statistics
+                  </button>
+                  <button
+                    onClick={() =>  handleNavigateToUpdateStatistics(tournament._id)}
+                    className="btn btn-sm btn-warning mr-2"
+                  >
+                    Edit Statistics
                   </button>
                   <button
                     onClick={() => handleNavigateToCreateRankingTable(tournament._id)}

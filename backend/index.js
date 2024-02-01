@@ -53,6 +53,11 @@ const {
   handleUpdateMatches,
 } = require("./controllers/Matches");
 const {
+  handleCreateStatistics,
+  handleGetStatistics,
+  handleUpdateStatistics,
+} = require("./controllers/Statistics");
+const {
   handleCreateRankingTable,
   handleGetRankingTable,
 } = require("./controllers/RankingTable");
@@ -226,6 +231,10 @@ app.delete("/deleteTournament/:id", handleDeleteTournament);
 app.post("/CreateMatches", handleCreateMatches);
 app.get("/getMatches/:tournamentId", handleGetMatches);
 app.put("/updateMatches/:id", handleUpdateMatches);
+
+app.post("/CreateStatistics", handleCreateStatistics);
+app.get("/getStatistics/:tournamenId", handleGetStatistics);
+app.put("/updateStatistics/:id", handleUpdateStatistics);
 
 app.put(
   "/updateTournamentCollaboratorId/:tournamentId",

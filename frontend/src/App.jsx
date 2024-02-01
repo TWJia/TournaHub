@@ -30,7 +30,9 @@ import Tournament from "./components/Tournament";
 import ViewTournamentDetails from "./components/ViewTournamentDetails";
 import UpdateTournament from "./components/UpdateTournament";
 import AddMatches from "./components/AddMatches";
+import AddStatistics from "./components/AddStatistics";
 import UpdateMatches from "./components/UpdateMatches";
+import UpdateStatistics from "./components/UpdateStatistics";
 import CreateRankingTable from "./components/CreateRankingTable";
 import ViewApplicants from "./components/ViewApplicants";
 import InvitationPage from "./components/InvitationPage";
@@ -102,6 +104,11 @@ export default function App() {
           <Route path="/AddMatches/:tournamentId" element={<AddMatches />} />
           <Route path="/UpdateMatches" element={<UpdateMatches />} />
           <Route path="/UpdateMatches/:id" element={<UpdateMatches />} />
+
+          <Route path="/AddStatistics" element={<AddStatistics />} />
+          <Route path="/AddStatistics/:tournamentId" element={<AddStatistics />} />
+          <Route path="/UpdateStatistics" element={<UpdateStatistics />} />
+          <Route path="/UpdateStatistics/:id" element={<UpdateStatistics />} />
           
           <Route path="/CreateRankingTable" element={<CreateRankingTable />} />
           <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />

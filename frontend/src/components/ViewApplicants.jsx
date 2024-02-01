@@ -119,21 +119,12 @@ function ViewApplicants() {
         return;
       }
 
-      const userApplication = tournament?.applications?.find((application) =>
-        application.user?._id.equals(user._id)
-      );
-
-      if (!userApplication) {
-        console.error("User application not found");
-        return;
-      }
-
       const response = await axios.get(
-        `http://localhost:3001/reviewTournamentApplications`
+        `http://localhost:3001/api/applicationstatus/reviewTournamentApplications/${tournamentId}/${user._id}`
       );
 
-      setTournament(response.data);
-      setApplicants(response.data?.applications || []);
+      setTournament(response.data.tournament);
+      setApplicants(response.data.userApplications || []);
     } catch (error) {
       console.error("Error fetching tournament data:", error);
     }
@@ -146,19 +137,9 @@ function ViewApplicants() {
 
         {applicants?.length > 0 ? (
           <ul>
-            {applicants.map(async (applicant) => {
-              try {
-                const userResponse = await axios.get(
-                  `http://localhost:3001/getUser/${applicant.user?.user._id}`
-                );
-                const userName = userResponse.data?.name || "Unknown User";
-
-                return <li key={applicant._id}>User Name: {userName}</li>;
-              } catch (error) {
-                console.error("Error fetching user data:", error);
-                return null;
-              }
-            })}
+            {applicants.map((applicant) => (
+              <li key={applicant._id}>User Name: {applicant.user?.name}</li>
+            ))}
           </ul>
         ) : (
           <p>No applicants for this tournament.</p>

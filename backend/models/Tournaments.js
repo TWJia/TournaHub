@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
 
-const ApplicationSchema = new mongoose.Schema({
+const MakeUniqueSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  action: {
-    type: String,
-    default: "apply",
-  },
 });
-
 const TournamentSchema = new mongoose.Schema({
   organizerId: String,
   collaboratorId: {
@@ -27,7 +22,7 @@ const TournamentSchema = new mongoose.Schema({
   tournamentNumberofplayers: String,
   tournamentNumberofmatches: String,
   tournamentStatus: String,
-  applications: [ApplicationSchema],
+  applications: [MakeUniqueSchema],
 });
 
 const TournamentModel = mongoose.model("tournaments", TournamentSchema);

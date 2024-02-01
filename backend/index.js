@@ -46,9 +46,6 @@ const {
   handleGetSingleTournament,
   handleDeleteTournament,
   countTournaments,
-  applyForTournament,
-  getOpenTournaments,
-  reviewTournamentApplications,
 } = require("./controllers/Tournaments");
 const {
   handleCreateMatches,
@@ -98,6 +95,9 @@ app.use("/api/reviews", require("./routes/Reviews"));
 app.use("/api/news", require("./routes/News"));
 app.use("/images", express.static("images"));
 
+//ApplicationStatus API
+app.use("/api/applicationstatus", require("./controllers/ApplicationStatus"));
+
 // Middlewares
 // Multer file upload locations
 //For verification
@@ -137,9 +137,6 @@ const scoresheetStorage = multer.diskStorage({
 const scoresheetUpload = multer({ storage: scoresheetStorage });
 
 //APIs
-//Testing
-
-//Reviews API
 
 //Login APIs
 app.get("/DashboardSA", verifySysAdmin, (req, res) => {
@@ -212,19 +209,19 @@ app.post(
 
 app.post("/CreateTournament", handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
-app.get('/getTournaments/:userId', handleGetOwnTournaments);
+app.get("/getTournaments/:userId", handleGetOwnTournaments);
 
 app.get("/getTournamentDetails/:id", handleGetSingleTournament);
 
 app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
 //User: Application API
-app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
-app.get("/getOpenTournaments", getOpenTournaments);
-app.post(
-  "/reviewTournamentApplications/:tournamentId/:userId",
-  reviewTournamentApplications
-);
+// app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
+// app.get("/getOpenTournaments", getOpenTournaments);
+// app.post(
+//   "/reviewTournamentApplications/:tournamentId/:userId",
+//   reviewTournamentApplications
+// );
 
 app.post("/CreateMatches", handleCreateMatches);
 app.get("/getMatches/:tournamentId", handleGetMatches);

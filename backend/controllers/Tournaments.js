@@ -1,6 +1,7 @@
 const TournamentModel = require("../models/Tournaments");
 const MatchesModel = require("../models/Matches");
 const RankingTableModel = require("../models/RankingTable");
+const StatisticsModel = require("../models/Statistics");
 const mongoose = require("mongoose");
 
 const handleCreateTournament = (req, res) => {
@@ -56,10 +57,17 @@ const handleDeleteTournament = async (req, res) => {
     // If the tournament is deleted successfully, delete associated matches and ranking tables
     if (deletedTournament) {
       // Delete matches associated with the tournament
-      await MatchesModel.deleteMany({ tournamentId: deletedTournament._id });
+      await MatchesModel.deleteMany({ 
+        tournamentId: deletedTournament._id 
+      });
 
       // Delete ranking tables associated with the tournament
       await RankingTableModel.deleteMany({
+        tournamentId: deletedTournament._id,
+      });
+
+      // Delete statistics associated with the tournament
+      await StatisticsModel.deleteMany({
         tournamentId: deletedTournament._id,
       });
 

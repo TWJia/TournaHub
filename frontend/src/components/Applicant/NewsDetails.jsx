@@ -334,7 +334,7 @@ const NewsDetails = ({ match }) => {
           <div align="center">
           <ShareSocial 
             url = {url} 
-            socialTypes={['facebook','twitter','whatsapp','telegram' , 'email']}
+            socialTypes={['facebook','twitter','whatsapp','telegram']}
             style={style}
           />
           </div>

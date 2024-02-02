@@ -45,7 +45,7 @@ export default function NavbarC() {
             Manage Tournaments
           </Link>
           <Link to={`/DashboardTOPendingCollaboration`} className="nav-links">
-            Colloboration
+            Collaboration
           </Link>
           <Link to={`/UploadNews`} className="nav-links">
             Manage News

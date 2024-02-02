@@ -22,6 +22,8 @@ const {
 } = require("./controllers/sports");
 const {
   handleGetAllUser,
+  handleGetAllUserIds,
+  handleGetUserDetails,
   handleManageUser,
   getPendingUsers,
   getSingleUser,
@@ -184,6 +186,8 @@ app.get("/searchSports/:name", handleSearchSport);
 app.post("/CreateSport", handleCreateSport);
 // Manage Users APIs
 app.get("/ManageUsers", handleManageUser);
+app.get("/getAllUserIds", handleGetAllUserIds);
+app.post("/getUserDetails", handleGetUserDetails);
 app.get("/PendingUsers", getPendingUsers);
 
 app.get("/getUser/:id", getSingleUser);

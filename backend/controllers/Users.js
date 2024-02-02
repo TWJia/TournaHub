@@ -13,6 +13,28 @@ const handleGetAllUser = (req, res) => {
       //res.json(err)
     });
 };
+const handleGetAllUserIds = (req, res) => {
+  UserModel.find({}, "_id")
+    .then((users) => res.json(users))
+    .catch((err) => {
+      console.error("Error fetching user IDs:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+};
+const handleGetUserDetails = async (req, res) => {
+  try {
+    const { userIds } = req.body;
+
+    const userDetails = await UserModel.find({ _id: { $in: userIds } });
+
+    res.json(userDetails);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
+  }
+};
 
 const handleManageUser = (req, res) => {
   UserModel.find({})
@@ -57,7 +79,7 @@ const updateProfile = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
     return res.json("Token is missing");
-  } 
+  }
   try {
     const decoded = jwt.verify(token, "jwt-secret-key");
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -66,7 +88,7 @@ const updateProfile = async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         interestedSport: req.body.interestedSport,
-        skillLevel: req.body.skillLevel
+        skillLevel: req.body.skillLevel,
       },
       { new: true }
     );
@@ -152,56 +174,58 @@ const verifyTournamentOrganizer = (req, res, next) => {
   }
 };
 const verifyUser = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.json("Token is missing");
-    } else {
-      jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-        if (err) {
-          return res.json("Error with token");
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json("Token is missing");
+  } else {
+    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+      if (err) {
+        return res.json("Error with token");
+      } else {
+        if (decoded.usertype === "user") {
+          next();
         } else {
-          if (decoded.usertype === "user") {
-            next();
-          } else {
-            return res.json("User is not an user");
-          }
+          return res.json("User is not an user");
         }
-      });
-    }
-  };
+      }
+    });
+  }
+};
 
-  const verifySysAdmin = (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.json("Token is missing");
-    } else {
-      jwt.verify(token, "jwt-secret-key", (err, decoded) => {
-        if (err) {
-          return res.json("Error with token");
+const verifySysAdmin = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json("Token is missing");
+  } else {
+    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+      if (err) {
+        return res.json("Error with token");
+      } else {
+        if (decoded.usertype === "systemadministrator") {
+          next();
         } else {
-          if (decoded.usertype === "systemadministrator") {
-            next();
-          } else {
-            return res.json("User is not an system administrator");
-          }
+          return res.json("User is not an system administrator");
         }
-      });
-    }
-  };
+      }
+    });
+  }
+};
 
-  const countUsers = (req, res) => {
-    UserModel.countDocuments({})
-      .then((users) => {
-        res.json(users);
-      })
-      .catch((err) => {
-        console.error('Error counting users:', err);
-        res.json(err);
-      });
-  };
+const countUsers = (req, res) => {
+  UserModel.countDocuments({})
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => {
+      console.error("Error counting users:", err);
+      res.json(err);
+    });
+};
 
 module.exports = {
   handleGetAllUser,
+  handleGetAllUserIds,
+  handleGetUserDetails,
   verifyTournamentOrganizer,
   handleManageUser,
   getPendingUsers,
@@ -214,5 +238,5 @@ module.exports = {
   verifyUser,
   verifySysAdmin,
   countUsers,
-  updateProfile
+  updateProfile,
 };

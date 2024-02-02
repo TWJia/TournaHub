@@ -5,13 +5,10 @@ const TournamentModel = require("../models/Tournaments");
 const ApplicationModel = require("../models/ApplicantionStatus");
 
 // Apply for a tournament
-// Apply for a tournament
 router.post("/applyForTournament/:tournamentId", async (req, res) => {
   const tournamentId = req.params.tournamentId;
-  const userId = req.body.userId; // Use req.body.userId instead of req.params.userId
+  const userId = req.body.userId;
   const action = req.body.action || "apply";
-  console.log("Tournament ID:", tournamentId);
-  console.log("User ID:", userId);
 
   try {
     // Check if the tournamentId is not a valid ObjectId
@@ -35,7 +32,8 @@ router.post("/applyForTournament/:tournamentId", async (req, res) => {
 
     // Check if the user has already applied for the tournament
     const userApplied = tournament.applications.some(
-      (application) => application.user && application.user.equals(userId)
+      (application) =>
+        application.user && application.user.toString() === userId
     );
 
     if (userApplied) {

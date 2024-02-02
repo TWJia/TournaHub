@@ -27,6 +27,13 @@ function UpdateMatches() {
       });
   }, [id]);
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleDateString('en-GB', options);
+    const [day, month, year] = formattedDate.split('/');
+    return `${year}-${month}-${day}`;
+  };
+
   const updateMatch = (e, matchId) => {
     e.preventDefault();
     const updatedMatch = updatedMatches.find((match) => match._id === matchId);
@@ -81,7 +88,7 @@ function UpdateMatches() {
                   Match Date:{' '}
                   <input
                     type="date"
-                    value={updatedMatches[index]?.MatchDate || match.MatchDate}
+                    value={formatDate(updatedMatches[index]?.MatchDate) || formatDate(match.MatchDate)}
                     onChange={(e) => handleInputChange(e, match._id, 'MatchDate')}
                   />
                 </p>

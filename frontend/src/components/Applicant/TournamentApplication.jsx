@@ -26,7 +26,10 @@ const TournamentApplication = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:3001/getCurrentUser"
+          "http://localhost:3001/getCurrentUser",
+          {
+            withCredentials: true,
+          }
         );
         setUser(data);
       } catch (error) {
@@ -60,6 +63,21 @@ const TournamentApplication = () => {
           action: "apply",
         }
       );
+      console.log("Application response:", response.data);
+      setOpenTournaments((prevTournaments) =>
+        prevTournaments.map((tournament) =>
+          tournament._id === tournamentId
+            ? {
+                ...tournament,
+                applications: [
+                  ...(tournament.applications || []),
+                  { user: user },
+                ],
+              }
+            : tournament
+        )
+      );
+
       console.log("Application response:", response.data);
     } catch (error) {
       if (
@@ -126,7 +144,7 @@ const TournamentApplication = () => {
         })}
       </div>
       <div className="newline">
-        <h4>Other matches not recommended for you:</h4>
+        <h4>Other matches:</h4>
         {renderFilteredTournaments((tournament) => {
           const skillLevelDiffers =
             tournament.tournamentSkillLevel?.toLowerCase() !==

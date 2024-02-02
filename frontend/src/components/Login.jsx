@@ -31,6 +31,19 @@ function Login() {
           }
         } else {
           console.log(res.data);
+          if (res.data === "User is suspended"){
+            alert("User is suspended")
+          }
+          else if (res.data === "User is pending verification"){
+            alert("User is pending verification")
+          }
+          else if (res.data === "The password is incorrect"){
+            alert("The password is incorrect")
+            
+          }
+          else{
+            alert("No record exists.")
+          }
         }
       })
       .catch((err) => console.log(err));

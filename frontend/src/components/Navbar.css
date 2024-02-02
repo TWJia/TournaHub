@@ -1,12 +1,22 @@
 .navbar {
-  background: #eceaea;
-  height: 85px;
+  height: 75px;
   display: flex;
-  justify-content: flex;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  margin-left: auto;
+  background-color: #372c2e;
+  border-bottom: 0.3px solid #ffffff;
+}
+.nav_left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 3.5;
+  justify-content: center;
+  cursor: pointer;
+  border-bottom: 0.3px solid var(--border-color);
 }
 
 .navbar-container {
@@ -15,18 +25,8 @@
   align-items: center;
   height: 80px;
   width: 100%;
-  margin-bottom: 40px;
-}
-
-.nav-menu {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  grid-gap: 10px;
-  list-style: none;
-  text-align: center;
-  width: 75vw;
-  justify-content: flex-end;
-  margin-right: 2rem;
+  margin-left: auto;
+  margin-right: 32px;
 }
 
 .nav-logo {
@@ -38,15 +38,15 @@
   align-items: center;
 }
 
-.nav-item {
+/* .nav-item {
   height: 80px;
-}
+} */
 
 .nav-links {
-  color: #282828;
-  font-family: "Ubuntu", sans-serif;
+  color: #ffffff;
+  font-family: "Gill Sans", sans-serif;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 550;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -55,8 +55,9 @@
 }
 
 .nav-links:hover {
-  border-bottom: 5px solid #737373;
-  transition: all 0.2s ease-out;
+  transform: translateY(-5px);
+  transition: transform 250ms;
+  color: orange;
 }
 
 .menu-icon {
@@ -68,8 +69,8 @@
   fill: rgb(38, 38, 38) !important;
 }
 
-@media screen and (max-width: 960px) {
-  .nav-menu {
+@media screen and (max-width: 700px) {
+  /* .nav-menu {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,30 +81,20 @@
     left: -100%;
     opacity: 1;
     transition: all 0.5s ease;
-  }
-
-  .nav-menu.active {
-    background: #e87d26;
-    left: 0;
-    opacity: 1;
-    transition: all 0.5s ease;
-    z-index: 1;
-  }
+  } */
 
   .nav-logo {
     position: relative;
   }
 
   .nav-links {
-    text-align: center;
-    padding: 2rem;
-    width: 100%;
-    display: table;
+    width: 100%; /* Full width for each link */
+    padding: 1rem 0; /* Adjusted padding */
+    border-bottom: 0.3px solid #ffffff; /* Added bottom border between links */
   }
 
   .nav-links:hover {
-    background-color: #c2b0a3;
-    color: #0a0f0b;
+    color: orange;
     border-bottom: none;
   }
 
@@ -117,3 +108,6 @@
     cursor: pointer;
   }
 }
+/* .mainDashboard {
+  background-color: #7a431d;
+} */

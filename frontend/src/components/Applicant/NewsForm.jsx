@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
-import NavbarA from "./NavbarA";
+import NavbarTO from "../../components/NavbarTO";
 import "./NewsForm.css"
 
 const NewsForm = () => {
@@ -290,7 +290,7 @@ const NewsForm = () => {
 
   return (
     <div>
-      <NavbarA />
+      <NavbarTO />
       <h1>Write a new article:</h1>
       <form action="">
         <h6>Select sport category:</h6>
@@ -365,6 +365,9 @@ const NewsForm = () => {
       <button onClick={handleSubmit}>Submit</button>
       </form>
       <div>
+      <h1>---------------------------------------------------------------------------</h1>
+      <h1>Edit news:</h1>
+      <h6>Disclaimer: You can view all articles, but only edit and delete your own.</h6>
         {/* {allNews.map((newss) => {
           return (
             <>
@@ -426,6 +429,7 @@ const NewsForm = () => {
           <h2>Edit Article</h2>
           {/* <form onSubmit={handleUpdate}> */}
           <form onSubmit={() => handleUpdate(editArticleData.id)}>
+          <div>
             <input
               type="text"
               name="title"
@@ -437,6 +441,8 @@ const NewsForm = () => {
                 })
               }
             />
+            </div>
+            <div>
             <input
               type="text"
               name="author"
@@ -448,9 +454,13 @@ const NewsForm = () => {
                 })
               }
             />
+            </div>
+            <div>
             <textarea
               name="content"
               value={editArticleData.content}
+              rows="10"
+              columns="70"
               onChange={(e) =>
                 setEditArticleData({
                   ...editArticleData,
@@ -458,6 +468,8 @@ const NewsForm = () => {
                 })
               }
             />
+            </div>
+            <div>
             <select
               type="select"
               name="category"
@@ -479,6 +491,8 @@ const NewsForm = () => {
                 </option>
               ))}
             </select>
+            </div>
+            <div>
             <input
               type="file"
               accept=".png, .jpg, .jpeg"
@@ -489,6 +503,7 @@ const NewsForm = () => {
                 })
               }
             />
+            </div>
             <button
               type="submit"
               onClick={() => handleUpdate(editArticleData.id)}

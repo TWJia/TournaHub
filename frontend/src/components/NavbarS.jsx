@@ -8,6 +8,7 @@ export default function NavbarS() {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
+  
   const Logout = () => {
     window.localStorage.removeItem("loggedInS")
     window.localStorage.removeItem("verify")
@@ -17,23 +18,28 @@ export default function NavbarS() {
   return (
     <div>
       <div className="navbar">
-        <div className="navbar-container">
+        <div className="nav_left">
           <Link to="/DashboardS" onClick={closeMobileMenu}>
             {<img className="nav-logo" src={logo} />}
           </Link>
           <div className="menu-icon" onClick={handleClick}>
             <MenuIcon />
           </div>
+          <Link to={`/TournamentSchedule`} className="nav-links">
+            Tournament Schedule
+          </Link>
+          <Link to={`/ViewTournament`} className="nav-links">
+            Tournament List
+          </Link>
           <Link to={`/SponsorshipModels`} className="nav-links">
             Sponsorship
           </Link>
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item">
-                <a href="/" className="nav-links" onClick={() => Logout()}>
-                  LogOut
-                </a>
-              </li>
-          </ul>
+          
+          <li className="nav-links">
+            <a href="/" className="nav-links" onClick={() => Logout()}>
+              LogOut
+            </a>
+          </li>
         </div>
       </div>
     </div>

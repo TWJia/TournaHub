@@ -30,7 +30,9 @@ import Tournament from "./components/Tournament";
 import ViewTournamentDetails from "./components/ViewTournamentDetails";
 import UpdateTournament from "./components/UpdateTournament";
 import AddMatches from "./components/AddMatches";
+import AddStatistics from "./components/AddStatistics";
 import UpdateMatches from "./components/UpdateMatches";
+import UpdateStatistics from "./components/UpdateStatistics";
 import CreateRankingTable from "./components/CreateRankingTable";
 import ViewApplicants from "./components/ViewApplicants";
 import InvitationPage from "./components/InvitationPage";
@@ -39,6 +41,7 @@ import PaymentSuccess from "./components/PaymentSuccess";
 import UploadSponsorIcon from "./components/UploadSponsorIcon";
 import TournamentApplication from "./components/Applicant/TournamentApplication";
 import AddScoresheet from "./components/AddScoresheet";
+import ViewTournament from "./components/ViewTournament"
 
 export default function App() {
   const loginSA = window.localStorage.getItem("loggedInSA");
@@ -101,6 +104,11 @@ export default function App() {
           <Route path="/AddMatches/:tournamentId" element={<AddMatches />} />
           <Route path="/UpdateMatches" element={<UpdateMatches />} />
           <Route path="/UpdateMatches/:id" element={<UpdateMatches />} />
+
+          <Route path="/AddStatistics" element={<AddStatistics />} />
+          <Route path="/AddStatistics/:tournamentId" element={<AddStatistics />} />
+          <Route path="/UpdateStatistics" element={<UpdateStatistics />} />
+          <Route path="/UpdateStatistics/:id" element={<UpdateStatistics />} />
           
           <Route path="/CreateRankingTable" element={<CreateRankingTable />} />
           <Route path="/CreateRankingTable/:tournamentId" element={<CreateRankingTable />} />
@@ -116,6 +124,7 @@ export default function App() {
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
           <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
           <Route path="/AddScoresheet" element={<AddScoresheet />} />
+          <Route path="/ViewTournament" element={<ViewTournament />} />
 
           <Route
             path="/DashboardTOPendingCollaboration"

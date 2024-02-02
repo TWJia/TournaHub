@@ -4,16 +4,32 @@ import { useNavigate, useParams } from 'react-router-dom';
 import NavbarTO from "./NavbarTO";
 
 function InvitationPage() {
-
+    const [user, setUser] = useState(null);
     const { tournamentId } = useParams();
     const [userDetails, setUserDetails] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState("");
     const [userId, setUserId] = useState("");
-
     const [loadingTournament, setLoadingTournament] = useState(true);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const { id } = useParams();
     axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:3001/getCurrentUser");
+                setUser(response.data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
 
     useEffect(() => {
         // Fetch user details when the component mounts
@@ -29,7 +45,6 @@ function InvitationPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:3001/CreateStatus', {
-
             tournamentId,
             userId: selectedUserId,
             collaboratorStatus: 'Pending',
@@ -43,22 +58,25 @@ function InvitationPage() {
     };
 
     const handleChange = (e) => {
-      const selectedUserId = e.target.value;
-      setSelectedUserId(selectedUserId);
-  
-      // Find the selected user based on userId
-      const selectedUser = userDetails.find(user => user._id === selectedUserId);
-  
-      if (selectedUser) {
-          // If the user is found, set the userId and tournamentId
-          setUserId(selectedUser._id);
-      } else {
-          console.log("Selected User is undefined.");
-          // Handle this case, perhaps show an error message or set default values.
-      }
-  };
+        const selectedUserId = e.target.value;
+        setSelectedUserId(selectedUserId);
 
-    const tournamentOrganizers = userDetails.filter(user => user.usertype === 'tournamentorganizer');
+        // Find the selected user based on userId
+        const selectedUser = userDetails.find(user => user._id === selectedUserId);
+
+        if (selectedUser) {
+            // If the user is found, set the userId and tournamentId
+            setUserId(selectedUser._id);
+        } else {
+            console.log("Selected User is undefined.");
+            // Handle this case, perhaps show an error message or set default values.
+        }
+    };
+
+    // Filter out the current user from the list of tournament organizers
+
+    const currentUser = user; // Use the user obtained from setUser response data
+    const tournamentOrganizers = userDetails.filter(user => user.usertype === 'tournamentorganizer' && user._id !== currentUser?._id);
 
     return (
         <>
@@ -79,7 +97,6 @@ function InvitationPage() {
                                     <option key={user._id} value={user._id}>{user.name}</option>
                                 ))}
                             </select>
-                            
                         </div>
 
                         <p><button type="submit">Invite</button></p>

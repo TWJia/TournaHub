@@ -1,47 +1,69 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarA from "./NavbarA";
+import "./TournamentApplication.css";
+import bgmImage from "../images/background_application.jpg";
 
 const TournamentApplication = () => {
-  // Fetch and display tournaments that are open for application.
   const [openTournaments, setOpenTournaments] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  //scrolling aimation
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3001/getCurrentUser"
+        );
+        setUser(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const fetchOpenTournaments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/getOpenTournaments"
+          "http://localhost:3001/api/applicationstatus/getOpenTournaments"
         );
         setOpenTournaments(response.data);
       } catch (error) {
         console.error("Error fetching open tournaments:", error);
       }
     };
+
     fetchData();
     fetchOpenTournaments();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3001/getCurrentUser");
-      setUser(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const applyForTournament = async (id) => {
+  const applyForTournament = async (tournamentId) => {
     try {
       const response = await axios.post(
-        `http://localhost:3001/applyForTournament/${id}/${user._id}`
+        `http://localhost:3001/api/applicationstatus/applyForTournament/${tournamentId}`,
+        {
+          userId: user?._id,
+          action: "apply",
+        }
       );
       console.log("Application response:", response.data);
     } catch (error) {
       if (
+        error.response &&
         error.response.status === 400 &&
         error.response.data.error ===
           "You have already applied for this tournament"
@@ -55,37 +77,64 @@ const TournamentApplication = () => {
     }
   };
 
-  // Filter tournaments based on user's skill level preference
-  const filteredTournaments = openTournaments.filter(
-    (tournament) => tournament.skillLevel === user.skillLevel
-  );
+  const renderTournament = (tournament) => {
+    const userAlreadyApplied =
+      Array.isArray(tournament.applications) &&
+      tournament.applications.some((app) => app.user?._id === user?._id);
 
-  return (
-    <div>
-      <NavbarA />
-      <h2>Open Tournaments</h2>
-      {/* Display tournaments of the user's skill level first */}
-      {filteredTournaments.map((tournament) => (
-        <div key={tournament._id}>
-          <p>{tournament.tournamentName}</p>
-          <p>{tournament.tournamentDetails}</p>
-          <button onClick={() => applyForTournament(tournament._id)}>
-            Apply
+    return (
+      <div className="displayall">
+        <div className="Tframe" key={tournament._id}>
+          <h4> {tournament.tournamentName}</h4>
+          <p>Tournament details: {tournament.tournamentDetails}</p>
+          <p>Skill Level: {tournament.tournamentSkillLevel}</p>
+          <p>Sport Category: {tournament.tournamentSport}</p>
+          <button
+            className="mainBtns"
+            onClick={() => applyForTournament(tournament._id)}
+            disabled={userAlreadyApplied}
+          >
+            {userAlreadyApplied ? "Already Applied" : "Apply"}
           </button>
         </div>
-      ))}
-      {openTournaments
-        .filter((tournament) => tournament.skillLevel !== user.skillLevel)
-        .map((tournament) => (
-          <div key={tournament._id}>
-            <p>{tournament.tournamentName}</p>
-            <p>{tournament.tournamentDetails}</p>
-            <button onClick={() => applyForTournament(tournament._id)}>
-              Apply
-            </button>
-          </div>
-        ))}
-    </div>
+      </div>
+    );
+  };
+
+  const renderFilteredTournaments = (filterFn) =>
+    filteredTournaments(filterFn).map(renderTournament);
+
+  const filteredTournaments = (filterFn) => openTournaments.filter(filterFn);
+
+  return (
+    <>
+      <NavbarA />
+      <img
+        className="bg"
+        src={bgmImage}
+        alt="Background"
+        style={{ transform: `translateY(${scrollY * 0.01}px)` }}
+      />
+      <h2>Open Tournaments</h2>
+      <h4>Recommended match for your skill level:</h4>
+      <div className="direction">
+        {renderFilteredTournaments((tournament) => {
+          const skillLevelMatches =
+            tournament.tournamentSkillLevel?.toLowerCase() ===
+            user?.skillLevel?.toLowerCase();
+          return skillLevelMatches;
+        })}
+      </div>
+      <div className="newline">
+        <h4>Other matches not recommended for you:</h4>
+        {renderFilteredTournaments((tournament) => {
+          const skillLevelDiffers =
+            tournament.tournamentSkillLevel?.toLowerCase() !==
+            user?.skillLevel?.toLowerCase();
+          return skillLevelDiffers;
+        })}
+      </div>
+    </>
   );
 };
 

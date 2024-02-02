@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import NavbarTO from "./NavbarTO";
+import SelectNavbar from "./SelectNavbar";
 import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
   const [tournamentDetails, setTournamentDetails] = useState({});
   const [matchDetails, setMatchDetails] = useState({});
   const [rankingTableDetails, setRankingTableDetails] = useState({});
+  const [statisticsDetails, setStatisticsDetails] = useState({});
   const [loadingTournament, setLoadingTournament] = useState(true);
   const [loadingMatches, setLoadingMatches] = useState(true);
   const [LoadingRankingTable, setLoadingRankingTable] = useState(true);
+  const [LoadingStatistics, setLoadingStatistics] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -53,6 +55,20 @@ function ViewTournamentDetails() {
       })
       .finally(() => {
         setLoadingRankingTable(false);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    // Fetch statistics table details when the component mounts
+    axios.get(`http://localhost:3001/getStatistics/${id}`)
+      .then((response) => {
+        setStatisticsDetails(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching ranking table details:', error);
+      })
+      .finally(() => {
+        setLoadingStatistics(false);
       });
   }, [id]);
   
@@ -110,21 +126,21 @@ function ViewTournamentDetails() {
 
   return (
     <div>
-      <NavbarTO />
-      {loadingTournament || loadingMatches || LoadingRankingTable ? (
+      {SelectNavbar()}
+      {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
         <p>Loading...</p>
       ) : (
 <div>
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
-          <p>SKill Level: {tournamentDetails.tournamentSkillLevel}</p>
+          <p>Skill Level: {tournamentDetails.tournamentSkillLevel}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
           <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>
           <p>End Date: {formatDate(tournamentDetails.tournamentEndDate)}</p>
           <p>Number of Players: {tournamentDetails.tournamentNumberofplayers}</p>
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
-          <p>Tornament Status: {tournamentDetails.tournamentStatus}</p>
+          <p>Tournament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
           <button onClick={exportScoresheet}>Export Scoresheet</button>
           <h1>Matches</h1>
@@ -156,13 +172,32 @@ function ViewTournamentDetails() {
               <div key={index}>
                 <p>Winner: {rankingtables.Winner}</p>
                 <p>Runner-Up: {rankingtables.RunnerUp}</p>
-                {/* Display other match details as needed */}
+                {/* Display other ranking table as needed */}
               </div>
               
             ))
 
           ) : (
             <p>No ranking table details available.</p>
+          )}
+              </div>
+              <div>
+            <h1>Statistics</h1>
+            {Array.isArray(statisticsDetails) && statisticsDetails.length > 0 ? (
+            statisticsDetails.map((statistics, index) => (
+              <div key={index}>
+                <p>Paricipant: {statistics.Participant}</p>
+                <p>Score: {statistics.Score}</p>
+                <p>Average Score: {statistics.AverageScore}</p>
+                <p>Total Score: {statistics.TotalScore}</p>
+                <p>----------------------------------------</p>
+                {/* Display other statistics as needed */}
+              </div>
+              
+            ))
+
+          ) : (
+            <p>No Statistics available.</p>
           )}
               </div>
         </div>

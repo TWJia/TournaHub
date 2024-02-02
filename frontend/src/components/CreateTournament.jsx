@@ -19,8 +19,7 @@ function CreateTournament() {
   const [tournamentNumberofmatches, settournamentNumberofmatches] = useState('');
   const [tournamentStatus, settournamentStatus] = useState('');
   const [loading, setLoading] = useState(true);
-
-
+  const [customFormat, setCustomFormat] = useState('');
 
 
   const navigate = useNavigate();
@@ -87,14 +86,18 @@ function CreateTournament() {
       setIsCustomFormat(false);
     }
   };
+  const handleCustomFormatChange = (e) => {
+    setCustomFormat(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const finalTournamentFormat = tournamentFormat === 'Others' ? customFormat : tournamentFormat;
     axios
       .post('http://localhost:3001/CreateTournament', 
       { organizerId, 
         tournamentName, tournamentSport, tournamentSkillLevel,
-        tournamentFormat, 
+        tournamentFormat : finalTournamentFormat,
         tournamentDetails, 
         tournamentStartDate, tournamentEndDate, 
         tournamentNumberofplayers, tournamentNumberofmatches, 
@@ -179,6 +182,38 @@ function CreateTournament() {
           value={tournamentFormat}
           onChange={(e) => {
             settournamentFormat(e.target.value);
+            // Reset customFormat when selecting a different format
+            setCustomFormat('');
+          }}
+        >
+          <option value="Single Elimination">Single Elimination</option>
+          <option value="Double Elimination">Double Elimination</option>
+          <option value="Others">Others...</option>
+        </select>
+      </div>
+      {/* Conditionally render input for custom format when 'Others' is selected */}
+      {tournamentFormat === 'Others' && (
+        <div className="mb-2">
+          <label htmlFor="customFormat">Custom Format</label>
+          <input
+            type="text"
+            id="customFormat"
+            placeholder="Enter Custom Format"
+            className="form-control"
+            value={customFormat}
+            onChange={handleCustomFormatChange}
+          />
+        </div>
+      )}
+
+            {/* <div className="mb-2">
+        <label htmlFor="tournamentFormat">Format</label>
+        <select
+          id="tournamentFormat"
+          className="form-control"
+          value={tournamentFormat}
+          onChange={(e) => {
+            settournamentFormat(e.target.value);
           }}
         >
           <option value="" disabled>
@@ -188,7 +223,7 @@ function CreateTournament() {
           <option value="Double Elimination">Double Elimination</option>
           <option value="Others">Others...</option>
         </select>
-      </div>
+      </div> */}
 
 
             <div className="mb-2">

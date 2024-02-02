@@ -65,7 +65,10 @@ function UpdateTournament() {
       (tournament) => tournament._id === tournamentId
       );
       console.log('Updated Tournament:', updatedTournament);
-      updatedTournament.customFormat = customFormat;
+      if (customFormat !== '') {
+        updatedTournament.tournamentFormat = customFormat;
+      }
+
       updatedTournament.tournamentNumberofmatches = manualNumberOfMatchesInput
       ? manualNumberOfMatches
       : calculateNumberOfMatches(
@@ -110,6 +113,7 @@ function UpdateTournament() {
             if (field === 'tournamentFormat') {
               if (value === 'Others') {
                 setShowCustomFormatInput(true);
+                setManualNumberOfMatchesInput(true);
               } else {
                 setShowCustomFormatInput(false);
                 setCustomFormat('');

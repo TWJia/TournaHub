@@ -8,10 +8,10 @@ const MakeUniqueSchema = new mongoose.Schema({
 });
 const TournamentSchema = new mongoose.Schema({
   organizerId: String,
-  collaboratorId: {
+  collaboratorId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-  },
+  }],
   tournamentName: String,
   tournamentSport: String,
   tournamentSkillLevel: String,

@@ -149,60 +149,60 @@ function DashboardTOPendingCollaboration() {
 //     .catch((err) => console.log(err));
 // };
 
-  const renderTournamentList = () => {
-    // Check if both status and tournaments are available
-    if (!status.length || !tournaments.length) {
-      return <p>Loading...</p>;
-    }
-  
-    // Filter tournaments based on the conditions
-    const filteredTournaments = tournaments.filter((tournament) => {
-      return status.some(
-        (s) =>
-          s.tournamentId === tournament._id &&
-          s.userId === user._id &&
-          (currentTab === 'All' || s.collaboratorStatus === currentTab)
-      );
-    });
-  
-    if (!filteredTournaments.length) {
-      return <p>No Pending Collaborations.</p>;
-    }
-  
-    return (
-      <table style={{ margin: 'auto', width: '50%', textAlign: 'left' }}>
-        <thead>
-          <tr>
-            <th>Tournament</th>
-            <th>Details</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTournaments.map(tournament => (
-            <tr key={tournament._id}>
-              <td>{tournament.tournamentName}</td>
-              <td>{tournament.tournamentDetails}</td>
-              <td>
-              {/* Display a list of collaboratorStatus values for each tournament */}
+const renderTournamentList = () => {
+  if (!status.length || !tournaments.length) {
+    return <p>Loading...</p>;
+  }
+
+  const filteredTournaments = tournaments.filter((tournament) => {
+    return status.some(
+      (s) =>
+        s.tournamentId === tournament._id &&
+        s.userId === user._id &&
+        (currentTab === 'All' || s.collaboratorStatus === currentTab)
+    );
+  });
+
+  if (!filteredTournaments.length) {
+    return <p>No Pending Collaborations.</p>;
+  }
+
+  return (
+    <table style={{ margin: 'auto', width: '50%', textAlign: 'left' }}>
+      <thead>
+        <tr>
+          <th>Tournament</th>
+          <th>Details</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredTournaments.map((tournament) => (
+          <tr key={tournament._id}>
+            <td>{tournament.tournamentName}</td>
+            <td>{tournament.tournamentDetails}</td>
+            <td>
               {status
-                .filter(s => s.tournamentId === tournament._id && s.userId === user._id)
+                .filter((s) => s.tournamentId === tournament._id && s.userId === user._id)
                 .map((s, index) => (
                   <span key={index}>{s.collaboratorStatus}</span>
                 ))}
-              </td>
-              <td>
-                <button onClick={() => handleAccept(tournament._id)}>Accept</button>
-                <button onClick={() => handleReject(tournament._id)}>Reject</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        {/* ... (other tbody sections remain unchanged) */}
-      </table>
-    );
-  };
+            </td>
+            <td>
+              {/* Conditionally render buttons based on currentTab */}
+              {currentTab === 'Pending' && (
+                <>
+                  <button onClick={() => handleAccept(tournament._id)}>Accept</button>
+                  <button onClick={() => handleReject(tournament._id)}>Reject</button>
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
   return (
     <div>

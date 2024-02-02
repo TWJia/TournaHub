@@ -10,7 +10,7 @@ function CreateTournament() {
   const [tournamentSport, settournamentSport] = useState('');
   const [sportsList, setSportsList] = useState([]);
   const [tournamentSkillLevel, settournamentSkillLevel] = useState('');
-  const [tournamentFormat, settournamentFormat] = useState('');
+  const [tournamentFormat, settournamentFormat] = useState('Single Elimination');
   const [isCustomFormat, setIsCustomFormat] = useState(false);
   const [tournamentDetails, settournamentDetails] = useState('');
   const [tournamentStartDate, settournamentStartDate] = useState('');

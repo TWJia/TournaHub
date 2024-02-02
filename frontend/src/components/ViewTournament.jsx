@@ -44,6 +44,7 @@ function ViewTournament() {
               <th>Sport</th>
               <th>Format</th>
               <th>Number of Matches</th>
+              <th>Tournament Status</th>
               <th>View</th>
             </tr>
           </thead>
@@ -54,12 +55,13 @@ function ViewTournament() {
                 <td style={{ padding: '10px' }}>{tournament.tournamentSport}</td>
                 <td style={{ padding: '10px' }}>{tournament.tournamentFormat}</td>
                 <td style={{ padding: '10px' }}>{tournament.tournamentNumberofmatches}</td>
+                <td style={{ padding: '10px' }}>{tournament.tournamentStatus}</td>
                 <td style={{ padding: '10px' }}>
                 <button
                 onClick={() => handleNavigateToViewTournamentDeatils(tournament._id)}
                 className="btn btn-sm btn-info mr-2"
                 >
-                View
+                Details
                 </button>
                   </td>
                 </tr>

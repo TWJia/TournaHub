@@ -31,6 +31,12 @@ function Login() {
           }
         } else {
           console.log(res.data);
+          if (res.data === "The password is incorrect"){
+            alert("The password is incorrect")
+          }
+          else{
+            alert("No record exists.")
+          }
         }
       })
       .catch((err) => console.log(err));

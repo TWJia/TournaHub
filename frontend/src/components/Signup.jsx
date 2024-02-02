@@ -9,7 +9,7 @@ function Signup() {
   const [password, setPassword] = useState();
   const [gender, setGender] = useState("male");
   const [dob, setDOB] = useState();
-  const [usertype, setUserType] = useState("systemadministrator");
+  const [usertype, setUserType] = useState("user");
   const [verification, setFile] = useState("");
   const [skillLevel, setSkillLevel] = useState("beginner");
   const [sports, setSports] = useState([]);
@@ -224,7 +224,6 @@ function Signup() {
               value={usertype}
               onChange={(e) => setUserType(e.target.value)}
             >
-              <option value="systemadministrator">System Administrator</option>
               <option value="user">User</option>
               <option value="tournamentorganizer">Tournament Organizer</option>
               <option value="sponsor">Sponsor</option>

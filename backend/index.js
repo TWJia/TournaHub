@@ -233,7 +233,7 @@ app.get("/getMatches/:tournamentId", handleGetMatches);
 app.put("/updateMatches/:id", handleUpdateMatches);
 
 app.post("/CreateStatistics", handleCreateStatistics);
-app.get("/getStatistics/:tournamenId", handleGetStatistics);
+app.get("/getStatistics/:tournamentId", handleGetStatistics);
 app.put("/updateStatistics/:id", handleUpdateStatistics);
 
 app.put(

@@ -7,9 +7,9 @@ const handleCreateStatistics = (req, res) => {
   };
 
   const handleGetStatistics = (req, res) => {
-    const statisticsId = req.params.statisticsId;
+    const tournamentId = req.params.tournamentId;
   
-    StatisticsModel.find({ statisticsId: statisticsId })
+    StatisticsModel.find({ tournamentId: tournamentId })
       .then(function (statistics) {
         res.json(statistics);
       })

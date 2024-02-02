@@ -133,14 +133,14 @@ function ViewTournamentDetails() {
 <div>
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
-          <p>SKill Level: {tournamentDetails.tournamentSkillLevel}</p>
+          <p>Skill Level: {tournamentDetails.tournamentSkillLevel}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
           <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>
           <p>End Date: {formatDate(tournamentDetails.tournamentEndDate)}</p>
           <p>Number of Players: {tournamentDetails.tournamentNumberofplayers}</p>
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
-          <p>Tornament Status: {tournamentDetails.tournamentStatus}</p>
+          <p>Tournament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
           <button onClick={exportScoresheet}>Export Scoresheet</button>
           <h1>Matches</h1>

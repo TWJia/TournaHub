@@ -4,14 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NewsDetails.css";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import {
-  //faFacebook,
-  //faInstagram,
-  //faTwitter,
-//} from "@fortawesome/free-brands-svg-icons";
-import {ShareSocial} from 'react-share-social' 
-
+import { ShareSocial } from "react-share-social";
 
 const NewsDetails = ({ match }) => {
   const [news, setNews] = useState(null);
@@ -26,49 +19,25 @@ const NewsDetails = ({ match }) => {
   //in-line css for react social share component (can't seperate it out without having bugs, fix this if we have time)
   const style = {
     root: {
-      maxWidth: '750px', // Adjust the max-width as needed
-      margin: '0 auto',
-      fontSize: '2rem',
-      padding: '1rem',
-      background: '#f8f8f8', // Adjust background color
-      borderRadius: '8px',
-      boxShadow: '0 3px 5px 2px rgba(0, 0, 0, 0.1)', // Adjust box shadow
-      color: '#333', // Set text color to black
+      maxWidth: "750px", // Adjust the max-width as needed
+      margin: "0 auto",
+      fontSize: "2rem",
+      padding: "1rem",
+      background: "#f8f8f8", // Adjust background color
+      borderRadius: "8px",
+      boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)", // Adjust box shadow
+      color: "#333", // Set text color to black
     },
     copyContainer: {
-      fontSize: '1rem',
-      color: 'aliceblue',
-      background: 'rgb(77, 77, 182)',
-      borderRadius: '12px',
-      padding: '10px',
-      border: '1px solid rgb(41, 41, 97)',
-      transitionDuration: '0.4s',
+      fontSize: "1rem",
+      color: "aliceblue",
+      background: "rgb(77, 77, 182)",
+      borderRadius: "12px",
+      padding: "10px",
+      border: "1px solid rgb(41, 41, 97)",
+      transitionDuration: "0.4s",
     },
   };
-  // useEffect(() => {
-  //   // Fetch the specific news item using match.params.newsId
-  //   // Find the news item with the matching newsId
-  //   getNewsDetailsById();
-  //   fetchAllComments();
-  //   getComments();
-  // }, [newsId]);
-  // useEffect(() => {
-  //   fetchData();
-  // });
-
-  // const fetchData = async () => {
-  //   try {
-  //     const { data } = await axios.get("http://localhost:3001/getCurrentUser", {
-  //       withCredentials: true,
-  //     });
-  //     console.log("current user ", data);
-  //     setUser(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,23 +94,14 @@ const NewsDetails = ({ match }) => {
       console.log(error);
     }
   };
-  // const getComments = async () => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `http://localhost:3001/api/news/${newsId}`
-  //     );
-  //     setComments(data.comments);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
   const getComments = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:3001/api/news/${newsId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the user token here
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -151,50 +111,6 @@ const NewsDetails = ({ match }) => {
     }
   };
 
-  // const addToComments = async () => {
-  //   const body = {
-  //     comments: userInput,
-  //     user: user._id,
-  //   };
-
-  //   try {
-  //     const { status, data } = await axios.post(
-  //       `http://localhost:3001/api/news/create/${newsId}`,
-  //       body
-  //     );
-  //     console.log(data);
-  //     if (status === 200) {
-  //       fetchAllComments();
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  //option2----------------
-  // const addToComments = async () => {
-  //   const body = {
-  //     comments: userInput,
-  //     user: user._id,
-  //   };
-
-  //   try {
-  //     const { status, data } = await axios.post(
-  //       `http://localhost:3001/api/news/create/${newsId}`,
-  //       body,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the user token here
-  //         },
-  //       }
-  //     );
-  //     console.log(data);
-  //     if (status === 200) {
-  //       fetchAllComments();
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const addToComments = async () => {
     const body = {
       comments: userInput,
@@ -249,23 +165,13 @@ const NewsDetails = ({ match }) => {
     }
   };
 
-  // const fetchAllComments = async () => {
-  //   try {
-  //     const { data, status } = await axios.get(
-  //       `http://localhost:3001/api/news/${newsId}`
-  //     );
-  //     setAllComments(data.comments);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const fetchAllComments = async () => {
     try {
       const { data, status } = await axios.get(
         `http://localhost:3001/api/news/${newsId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the user token here
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -295,28 +201,7 @@ const NewsDetails = ({ match }) => {
         <div>
           <h2>{news.title}</h2>
           <h6>{news.category}</h6>
-          {/*<div className="singleCol d-flex justify-content-evenly">
-            <a href="https://facebook.com">
-              <button className="FBWording">
-                <FontAwesomeIcon icon={faFacebook} />
-                Share on Facebook
-              </button>
-            </a>
 
-            <a href="https://intagram.com">
-              <button className="igWordings ">
-                <FontAwesomeIcon icon={faInstagram} />
-                Post a Story
-              </button>
-            </a>
-
-            <a href="https://twitter.com">
-              <button className="twitterWording ">
-                <FontAwesomeIcon icon={faTwitter} />
-                Send a tweet
-              </button>
-            </a>
-          </div> */}
           <img
             width={"200px"}
             src={`http://localhost:3001/images/${news.photo}`}
@@ -328,25 +213,23 @@ const NewsDetails = ({ match }) => {
           />
           <p>{news.author}</p>
           <p>{news.postDate}</p>
-          <pre class="pre-container">
-            {news.content}
-          </pre>
+          <pre class="pre-container">{news.content}</pre>
           <div align="center">
-          <ShareSocial 
-            url = {url} 
-            socialTypes={['facebook','twitter','whatsapp','telegram']}
-            style={style}
-          />
+            <ShareSocial
+              url={url}
+              socialTypes={["facebook", "twitter", "whatsapp", "telegram"]}
+              style={style}
+            />
           </div>
-          <div>
+          <div className="middle">
             <h3>Comments:</h3>
-
             {allComments.map((comment) => {
               console.log(comment);
 
               return (
-                <p key={comment._id}>
-                  <p>{comment.user?.name}</p>
+                <p className="usernameSize" key={comment._id}>
+                  <h4>{comment.user?.name}</h4>
+
                   <p>{comment.comments}</p>
 
                   {comment.user?._id === user?._id && (
@@ -368,11 +251,14 @@ const NewsDetails = ({ match }) => {
               <input
                 type="text"
                 name="commentText"
+                className="commentTextBox"
                 placeholder="Add a comment"
                 value={userInput}
                 onChange={writtenComment}
               />
-              <button type="submit">Submit</button>
+              <button className="mainBtns" type="submit">
+                Submit
+              </button>
             </form>
           </div>
         </div>

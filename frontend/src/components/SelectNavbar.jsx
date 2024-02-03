@@ -1,5 +1,5 @@
-import Navbar from "./Navbar"
-import NavbarA from "./NavbarA";
+import Navbar from "./Navbar";
+import NavbarA from "./Applicant/NavbarA";
 import NavbarSA from "../components/NavbarSA";
 import NavbarTO from "../components/NavbarTO";
 import NavbarS from "../components/NavbarS";

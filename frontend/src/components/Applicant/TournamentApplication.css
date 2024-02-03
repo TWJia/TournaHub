@@ -26,7 +26,7 @@
   display: block;
   clear: both;
 }
-.mainBtns:not([disabled]) {
+.mainBtns {
   justify-content: center;
   min-width: 80px;
   max-width: 85px;
@@ -49,11 +49,11 @@
     -2px -2px 5px rgba(34, 37, 39, 0.3);
 }
 
-.mainBtns:not([disabled]) span {
+.mainBtns:span {
   color: #e7e7e7 !important;
 }
 
-.mainBtns:not([disabled]):hover {
+.mainBtns:hover {
   transform: scale(1.1);
 }
 

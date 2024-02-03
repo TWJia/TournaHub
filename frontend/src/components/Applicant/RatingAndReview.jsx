@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
-import { useParams } from "react-router";
 import axios from "axios";
 import NavbarA from "./NavbarA";
+import "./RatingAndReview.css";
+
 const RatingAndReview = () => {
   const [value, setValue] = useState(0);
-  const [reviews, setReviews] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [user, setUser] = useState(null);
   const [allReviews, setAllReviews] = useState([]);
@@ -29,9 +28,7 @@ const RatingAndReview = () => {
       console.log(error);
     }
   };
-  const writtenNote = (event) => {
-    setUserInput(event.target.value);
-  };
+
   const fetchData = async () => {
     try {
       const { data } = await axios.get("http://localhost:3001/getCurrentUser");
@@ -42,6 +39,7 @@ const RatingAndReview = () => {
       setLoading(false);
     }
   };
+
   const addToReviews = async () => {
     const body = {
       text: userInput,
@@ -54,11 +52,11 @@ const RatingAndReview = () => {
         "http://localhost:3001/api/reviews/create",
         body
       );
-      console.log(data);
       if (status === 200) {
         fetchAllReviews();
         setUserInput("");
         setValue(0);
+        window.alert("Review submitted successfully. Thank you!");
       }
     } catch (error) {
       console.log(error);
@@ -72,6 +70,7 @@ const RatingAndReview = () => {
       );
       if (status === 200) {
         fetchAllReviews();
+        window.alert("Review deleted successfully.");
       }
     } catch (error) {
       console.log(error);
@@ -81,16 +80,15 @@ const RatingAndReview = () => {
   return (
     <>
       <NavbarA />
-      <div className="topic">
-        <h2 className="book_now_text">Rate us!</h2>
+      <div className="middle">
+        <h2 className="book_now_text">Rate us</h2>
+        <h4 className="book_now_text">Tell us about your experience</h4>
         <Box
           sx={{
             "& > legend": { mt: 2 },
           }}
         >
-          <Typography component="legend" className="other_info_key">
-            Ratings:
-          </Typography>
+          <div className="text">Ratings:</div>
           <Rating
             name="simple-controlled"
             value={value}
@@ -100,9 +98,9 @@ const RatingAndReview = () => {
           />
         </Box>
         <textarea
-          className="loginBox"
+          className="topReviewBox"
           placeholder="Describe your experience"
-          onChange={writtenNote}
+          onChange={(e) => setUserInput(e.target.value)}
           value={userInput}
         />
         <button className="mainBtns" onClick={addToReviews}>
@@ -110,24 +108,25 @@ const RatingAndReview = () => {
         </button>
       </div>
 
-      <div>
-        {allReviews.map((review) => {
-          return (
-            <>
-              <div>
-                <p>{review.user?.name}</p>
-                <Rating name="simple-controlled" value={review.star} readOnly />
-
-                <p>{review.text}</p>
-                {user?._id === review.user?._id && (
-                  <button onClick={() => handleDeleteReview(review._id)}>
-                    Delete
-                  </button>
-                )}
-              </div>
-            </>
-          );
-        })}
+      <h4>Your Review History</h4>
+      <div className="reviewBox">
+        {allReviews.map((review) => (
+          <div className="usernameSize" key={review._id}>
+            <h4>{review.user?.name}</h4>
+            <Rating
+              className="star"
+              name="simple-controlled"
+              value={review.star}
+              readOnly
+            />
+            <p>{review.text}</p>
+            {user?._id === review.user?._id && (
+              <button onClick={() => handleDeleteReview(review._id)}>
+                Delete
+              </button>
+            )}
+          </div>
+        ))}
       </div>
     </>
   );

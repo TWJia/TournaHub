@@ -108,15 +108,17 @@ const TournamentApplication = () => {
       ) {
         console.log("User has already applied for this tournament");
         // Handle the case where the user has already applied
+        window.alert("You have already applied for this tournament");
       } else {
         console.error("Error applying for tournament:", error);
         console.log("Error response:", error.response);
+        window.alert("Error applying for the tournament. Please try again");
       }
     }
   };
 
   const renderTournament = (tournament) => {
-    const userAlreadyApplied = appliedTournaments.includes(tournament._id);
+    const userAlreadyApplied = appliedTournaments.includes(tournament?._id);
 
     return (
       <div className="displayall" key={tournament._id}>

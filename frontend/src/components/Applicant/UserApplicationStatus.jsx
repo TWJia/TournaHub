@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarA from "./NavbarA";
+import "./TournamentApplication.css";
 
 const UserApplicationStatus = () => {
   const [user, setUser] = useState(null);
@@ -53,7 +54,7 @@ const UserApplicationStatus = () => {
         {applications.length > 0 ? (
           <ul>
             {applications.map((application) => (
-              <div key={application.tournamentId}>
+              <div className="Tframe" key={application.tournamentId}>
                 <p>Tournament: {application.tournamentName}</p>
                 <p>Status: {application.action}</p>
               </div>

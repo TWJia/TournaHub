@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import NavbarA from "./NavbarA";
-import axios from 'axios'
+import axios from "axios";
 
 const DisplaySchedule = () => {
   const [events, setEvents] = useState([]);
@@ -21,22 +21,26 @@ const DisplaySchedule = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tournamentResponse = await axios.get('http://localhost:3001/getTournaments');
+        const tournamentResponse = await axios.get(
+          "http://localhost:3001/getTournaments"
+        );
         const tournaments = tournamentResponse.data;
-  
+
         const matchPromises = tournaments.map(async (tournament) => {
-          const responseMatch = await axios.get('http://localhost:3001/getMatches/' + tournament._id);
-          const matches = responseMatch.data.map(match => ({
+          const responseMatch = await axios.get(
+            "http://localhost:3001/getMatches/" + tournament._id
+          );
+          const matches = responseMatch.data.map((match) => ({
             tournament: tournament.tournamentName,
-            date: match.MatchDate, 
-            matchname: match.MatchName 
+            date: match.MatchDate,
+            matchname: match.MatchName,
           }));
-            return matches;
+          return matches;
         });
-  
+
         const filteredMatchPromises = matchPromises.filter(Boolean);
         const matchResults = await Promise.all(filteredMatchPromises);
-  
+
         const events = matchResults.flat();
         setEvents(events);
         console.log(matchResults);
@@ -44,7 +48,7 @@ const DisplaySchedule = () => {
         console.error("Error fetching events:", error);
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -56,7 +60,7 @@ const DisplaySchedule = () => {
       // const startString =
       //   event.start.toLocaleString && event.start.toLocaleString();
       // const endString = event.end.toLocaleString && event.end.toLocaleString();
-      const titleElement = info.el.querySelector('.fc-event-title');
+      const titleElement = info.el.querySelector(".fc-event-title");
       titleElement.innerHTML = `${event.extendedProps.tournament} - ${event.extendedProps.matchname}`;
 
       const popover = document.createElement("div");
@@ -90,14 +94,12 @@ const DisplaySchedule = () => {
     if (currentEvent && currentEvent.extendedProps) {
       const tournament = currentEvent.extendedProps.tournament;
       const matchname = currentEvent.extendedProps.matchname;
-      return (
-        {tournament} - {matchname}
-      );
+      return { tournament } - { matchname };
     } else {
       return null;
     }
   };
-  
+
   return (
     <div>
       <NavbarA />

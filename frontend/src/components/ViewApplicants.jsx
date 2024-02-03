@@ -39,18 +39,20 @@ function ViewApplicants() {
   return (
     <>
       <NavbarTO />
-      <div className="d-flex justify-content-center align-items-center">
-        <h2>Applicants for {tournament?.tournamentName}</h2>
-
+      <div>
+        <h2>Applicants for {tournament?.tournamentName}:</h2> 
+        
         {applicants?.length > 0 ? (
-          <ul>
+          <ol>
             {applicants.map((applicantions) => (
-              <div key={applicantions._id}>
-                <p>username :{applicantions?.user?.name}</p>
-                <p>email :{applicantions?.user?.email}</p>
+            <li key={applicantions._id}>
+              <div>
+                <p>Name : {applicantions?.user?.name}</p>
+                <p>Email : {applicantions?.user?.email}</p>
               </div>
+            </li>
             ))}
-          </ul>
+          </ol>
         ) : (
           <p>No applicants for this tournament.</p>
         )}

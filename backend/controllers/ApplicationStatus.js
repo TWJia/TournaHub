@@ -60,20 +60,76 @@ router.post("/applyForTournament/:tournamentId", async (req, res) => {
   }
 });
 
+// router.get("/getUserApplications/:userId", async (req, res) => {
+//   const userId = req.params.userId;
+
+//   try {
+//     // Find applications where the user has applied
+//     const userApplications = await ApplicationModel.find({ user: userId });
+
+//     // Extract tournament IDs from the applications
+//     const appliedTournamentIds = userApplications.map((app) => app.tournament);
+
+//     res.status(200).json(appliedTournamentIds);
+//   } catch (error) {
+//     console.error("Error fetching user applications:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 router.get("/getUserApplications/:userId", async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    // Find applications where the user has applied
-    const userApplications = await ApplicationModel.find({ user: userId });
+    // Find applications where the user has applied and populate the tournament details
+    const userApplications = await ApplicationModel.find({
+      user: userId,
+    }).populate("tournament");
 
-    // Extract tournament IDs from the applications
-    const appliedTournamentIds = userApplications.map((app) => app.tournament);
+    // Extract tournament details from the populated applications
+    const appliedTournaments = userApplications.map((app) => {
+      return {
+        tournamentId: app.tournament._id,
+        tournamentName: app.tournament.tournamentName,
+        action: app.action,
+      };
+    });
 
-    res.status(200).json(appliedTournamentIds);
+    res.status(200).json(appliedTournaments);
   } catch (error) {
     console.error("Error fetching user applications:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.put("/updateApplicationStatus/:applicationId", async (req, res) => {
+  const applicationId = req.params.applicationId;
+  const { action } = req.body;
+
+  try {
+    const application = await ApplicationModel.findById(applicationId);
+
+    // Check if the application is found
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    // Check if the application has already been processed
+    if (application.action !== "REQUESTED") {
+      return res
+        .status(400)
+        .json({ error: "Application has already been processed" });
+    }
+
+    // Update the application action
+    application.action = action;
+    await application.save();
+
+    res.json({ message: "Application status updated successfully" });
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
   }
 });
 

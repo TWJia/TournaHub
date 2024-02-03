@@ -8,7 +8,6 @@ const ApplicationModel = require("../models/ApplicantionStatus");
 router.post("/applyForTournament/:tournamentId", async (req, res) => {
   const tournamentId = req.params.tournamentId;
   const userId = req.body.userId;
-  const action = req.body.action || "apply";
 
   try {
     // Check if the tournamentId is not a valid ObjectId
@@ -43,9 +42,13 @@ router.post("/applyForTournament/:tournamentId", async (req, res) => {
     }
 
     // Create a new application and add it to the tournament
-    const application = await ApplicationModel.create({ user: userId, action });
+    const application = await ApplicationModel.create({
+      tournament: tournamentId,
+      user: userId,
+      action: "REQUESTED",
+    });
+    // tournament.applications.push(application._id);
     tournament.applications.push(application);
-
     await tournament.save();
 
     res.json({ message: "Application submitted successfully" });
@@ -57,67 +60,47 @@ router.post("/applyForTournament/:tournamentId", async (req, res) => {
   }
 });
 
-// // Apply for a tournament
-// router.post("/applyForTournament/:tournamentId", async (req, res) => {
-//   const tournamentId = req.params.tournamentId;
-//   // const userId = req.params.userId;
-//   const userId = req.body.userId;
-//   //const userId = req.body.user._id;
-//   const action = req.body.action || "apply";
-//   console.log("Tournament ID:", tournamentId);
-//   console.log("User ID:", userId);
-//   try {
-//     // Check if the tournamentId is not a valid ObjectId
-//     if (!mongoose.Types.ObjectId.isValid(tournamentId)) {
-//       return res.status(400).json({ error: "Invalid tournament ID" });
-//     }
+router.get("/getUserApplications/:userId", async (req, res) => {
+  const userId = req.params.userId;
 
-//     const tournament = await TournamentModel.findById(tournamentId);
-//     // Check if the tournament is found
-//     if (!tournament) {
-//       return res.status(404).json({ error: "Tournament not found" });
-//     }
-//     // Check if the tournament is open for application
-//     if (!tournament || tournament.tournamentStatus !== "Open for Application") {
-//       return res
-//         .status(404)
-//         .json({ error: "Tournament not found or not open for application" });
-//     }
+  try {
+    // Find applications where the user has applied
+    const userApplications = await ApplicationModel.find({ user: userId });
 
-//     // Check if the user has already applied for the tournament
-//     const userApplied =
-//       userId &&
-//       tournament.applications.some(
-//         (application) => application.user && application.user.equals(userId)
-//       );
+    // Extract tournament IDs from the applications
+    const appliedTournamentIds = userApplications.map((app) => app.tournament);
 
-//     if (userApplied) {
-//       return res
-//         .status(400)
-//         .json({ error: "You have already applied for this tournament" });
-//     }
+    res.status(200).json(appliedTournamentIds);
+  } catch (error) {
+    console.error("Error fetching user applications:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-//     // Create a new application and add it to the tournament
-//     const application = await ApplicationModel.create({ user: userId, action });
-//     tournament.applications.push(application);
+router.get("/getApplicationOfTournament/:tournamentId", async (req, res) => {
+  const { tournamentId } = req.params;
 
-//     await tournament.save();
+  try {
+    if (!tournamentId) {
+      throw new Error("Tournament id is missing ");
+    }
+    const applicants = await ApplicationModel.find({
+      tournament: tournamentId,
+    }).populate(["user", "tournament"]);
 
-//     res.json({ message: "Application submitted successfully" });
-//   } catch (error) {
-//     console.error("Error applying for tournament:", error);
-//     res
-//       .status(500)
-//       .json({ error: "Internal Server Error", message: error.message });
-//   }
-// });
+    res.json({ message: applicants, success: true });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "Internal server error ", success: false });
+  }
+});
 
 // Get tournaments open for application
 router.get("/getOpenTournaments", async (req, res) => {
   try {
     const openTournaments = await TournamentModel.find({
       tournamentStatus: "Open for Application",
-    }).populate("applications.user", "name");
+    }).populate(["applications._id"]);
 
     res.json(openTournaments);
   } catch (error) {

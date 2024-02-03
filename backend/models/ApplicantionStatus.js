@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
 const ApplicationSchema = new mongoose.Schema({
+  tournament: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "tournaments",
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
   action: {
     type: String,
-    default: "apply",
+    default: "REQUESTED",
+    enum: ["REQUESTED", "APPROVED", "REJECTED"],
   },
 });
 

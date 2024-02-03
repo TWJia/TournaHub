@@ -10,8 +10,8 @@ export default function NavbarA() {
   const closeMobileMenu = () => setClick(false);
   const Logout = () => {
     window.localStorage.removeItem("loggedInA");
-    window.localStorage.removeItem("verify")
-    window.localStorage.removeItem("user")
+    window.localStorage.removeItem("verify");
+    window.localStorage.removeItem("user");
   };
 
   return (
@@ -41,6 +41,9 @@ export default function NavbarA() {
           </Link>
           <Link to={`/Apply`} className="nav-links">
             Apply
+          </Link>
+          <Link to={`/userapplicationstatus`} className="nav-links">
+            Application Status
           </Link>
           <Link to={`/RatingAndReview`} className="nav-links">
             Rating

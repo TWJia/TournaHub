@@ -30,14 +30,11 @@ export default function NavbarA() {
           <Link to={`/ViewTournament`} className="nav-links">
             Tournament List
           </Link>
-          <Link to={`/MatchResult`} className="nav-links">
-            Match Result
-          </Link>
-          <Link to={`/MatchStatistic`} className="nav-links">
-            Match Statistic
-          </Link>
           <Link to={`/Apply`} className="nav-links">
             Apply
+          </Link>
+          <Link to={`/userapplicationstatus`} className="nav-links">
+            Application Status
           </Link>
           <Link to={`/RatingAndReview`} className="nav-links">
             Rating

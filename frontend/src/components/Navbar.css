@@ -55,7 +55,7 @@
 }
 
 .nav-links:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   transition: transform 250ms;
   color: orange;
 }

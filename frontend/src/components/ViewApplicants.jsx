@@ -9,58 +9,31 @@ function ViewApplicants() {
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchApplicationsOfTournaments = async () => {
+    if (!tournamentId) return;
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3001/api/applicationstatus/getApplicationOfTournament/${tournamentId}`
+      );
+      setApplicants(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchTournamenData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3001/getTournamentDetails/${tournamentId}`
+      );
+      setTournament(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchTournamentData = async () => {
-      try {
-        // Fetch user information
-        const { data: userData } = await axios.get(
-          "http://localhost:3001/getCurrentUser",
-          { withCredentials: true }
-        );
-
-        if (!userData || !userData._id) {
-          console.error("User or user ID not available");
-          return;
-        }
-
-        // Fetch all user IDs
-        const { data: allUserIds } = await axios.get(
-          "http://localhost:3001/getAllUserIds"
-        );
-
-        // Fetch tournament details and applicants
-        const { data } = await axios.get(
-          `http://localhost:3001/api/applicationstatus/reviewTournamentApplications/${tournamentId}/${userData._id}`
-        );
-
-        setTournament(data.tournament);
-
-        // Fetch user details based on user IDs
-        const { data: userDetails } = await axios.post(
-          "http://localhost:3001/getUserDetails",
-          { userIds: allUserIds }
-        );
-
-        // Map user details to applicants
-        const updatedApplicants = data.userApplications.map((applicant) => {
-          const userDetailsForApplicant = userDetails.find(
-            (userDetail) => userDetail._id === applicant.user._id
-          );
-          return {
-            ...applicant,
-            user: userDetailsForApplicant,
-          };
-        });
-
-        setApplicants(updatedApplicants);
-      } catch (error) {
-        console.error("Error fetching tournament data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTournamentData();
+    if (!tournamentId) return;
+    fetchApplicationsOfTournaments();
+    fetchTournamenData();
   }, [tournamentId]);
 
   return (
@@ -72,9 +45,10 @@ function ViewApplicants() {
         {applicants?.length > 0 ? (
           <ul>
             {applicants.map((applicantions) => (
-              <li key={applicantions._id}>
-                User Name: {applicantions.userName}
-              </li>
+              <div key={applicantions._id}>
+                <p>username :{applicantions?.user?.name}</p>
+                <p>email :{applicantions?.user?.email}</p>
+              </div>
             ))}
           </ul>
         ) : (

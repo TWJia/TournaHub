@@ -115,15 +115,16 @@ function ViewApplicants() {
   return (
     <>
       <NavbarTO />
-      <div className="d-flex justify-content-center align-items-center">
+      <div>
         <h2>Applicants for {tournament?.tournamentName}</h2>
 
         {applicants?.length > 0 ? (
-          <ul>
+          <ol>
             {applicants.map((application) => (
-              <div key={application._id}>
+              <li key={application._id}>
                 <p>username: {application?.user?.name}</p>
                 <p>email: {application?.user?.email}</p>
+                <p>status: {application.action}</p>
                 <button
                   onClick={() =>
                     updateApplicationStatus(application._id, "APPROVED")
@@ -140,9 +141,9 @@ function ViewApplicants() {
                 >
                   Reject
                 </button>
-              </div>
+              </li>
             ))}
-          </ul>
+          </ol>
         ) : (
           <p>No applicants for this tournament.</p>
         )}

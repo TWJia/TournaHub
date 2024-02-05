@@ -2,6 +2,8 @@
 .flex-container {
   display: flex;
   background-color: inset 0 0 0 800px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -11,69 +13,189 @@
   padding: 20px;
   font-size: 30px;
 }
-.text-container {
-  background-image: url('images/Simple.jpg');
-  background-size: cover;
+
+.animation-container div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  flex: 1; 
+}
+
+h5, h6 {
+  margin: 0;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  color:whitesmoke;
+}
+h1,h3,h4,p,h2 {
+  
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  color:whitesmoke;
+}
+
+
+.container-img {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px;
-  color: black;
 }
 
-.text-container2 {
-  background-image: url('images/Free.jpg');
-  background-size: cover;
+.img-hover-container {
+  transition: .8s;
+  overflow: hidden;
+  width: 260px;
+  height: 140px;
+  position: relative;
+}
+
+.img-hover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-hover-overlay {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.img-hover-overlay:hover {
+  background-color: rgba(36, 33, 33, 0.4);
+}
+.carousel-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #3c2f2f; 
+  text-align: center;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  
+  
+}
+.carousel-text h5,
+.carousel-text h6 {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.0); /* Semi-transparent background for readability */
+  display: inline; /* Only as wide as the content */
+  padding: 0.5em;
+}
+.carousel-text h5 {
+  font-size: 30px; /* Adjust the font size for h5 */
+  font-weight: bold;
+}
+
+.carousel-text h6 {
+  font-size: 20px; /* Adjust the font size for h6 */
+  font-weight: bold;
+}
+/* .footer {
+  background-color: #333; 
+  color: white;
   padding: 20px;
-  color: black;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
 }
 
-.text-container3 {
-  background-image: url('images/Flexible.jpg');
-  background-size: cover;
+.footer-title h1 {
+  margin-bottom: 20px; 
+  font-size: 1.5em; 
+}
+
+.footer-links-container {
+  display: flex;
+  width: 100%; 
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px; 
+  flex: 1; 
+}
+
+.footer-column a {
+  color: white;
+  text-decoration: none;
+  margin-bottom: 10px; 
+  font-size: 1em; 
+}
+
+.footer-column a:hover {
+  color: #FF6A00; 
+} */
+
+.footer {
+  background-color:#011f4b; /* Set the background color as per your design */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px;
-  color: black;
 }
 
-.animation-container {
-  opacity: 0;
-  transform: translateX(-100%);
-  animation: slideInLeft 1s forwards;
+.footer-content {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between;
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.footer-brand{
+  text-align: left;
 }
 
-
-
-h1, h3, h4, h5, h6 {
-  margin: 0; 
+.footer-brand h2 {
+  margin-right: 30px; /* Adjust the space between the brand and the links */
 }
 
-h1 {
-  font-size: 3em; 
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6; /* Adjust the line height for better readability */
 }
 
-h3,h4 {
-  font-size: 1.3em; 
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  margin-bottom: 5px; /* Adjust the space between the links */
 }
 
-h5 {
-  font-size: 0.7em; 
+.footer-links-lower {
+  margin-top: 10px; /* Adjust the space between the upper and lower links */
 }
 
-h6 {
-  font-size: 0.5em; 
+.footer-social {
+  text-align: left;
 }
 
-p {
-  font-size: 1em; /* Adjust as needed */
+.footer-social h2 {
+  display: block;
+  margin-bottom: 10px; /* Adjust the space between the text and the icons */
 }
 
+.footer-social a {
+  color: white;
+  margin: 0 10px; /* Adjust the space between the icons */
+}
 
+.footer-social a:hover {
+  color: #e35d6a; /* Adjust the hover color to match your design */
+}
+
+/* Adjust the size of the icons as needed */
+.footer-social svg {
+  font-size: 24px;
+}
 

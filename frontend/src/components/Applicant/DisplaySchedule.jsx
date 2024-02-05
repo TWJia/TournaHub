@@ -126,10 +126,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import NavbarA from "./NavbarA";
 import SelectNavbar from "../../components/SelectNavbar";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const DisplaySchedule = () => {
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   // Fetch events from a JSON file or API endpoint
@@ -150,10 +152,12 @@ const DisplaySchedule = () => {
           const matches = responseMatch.data.map(match => ({
             tournament: tournament.tournamentName,
             date: match.MatchDate, 
-            matchname: match.MatchName 
+            matchname: match.MatchName, tournamentid: tournament._id,
+ 
           }));
             return matches;
         });
+
   
         const filteredMatchPromises = matchPromises.filter(Boolean);
         const matchResults = await Promise.all(filteredMatchPromises);
@@ -190,7 +194,10 @@ const DisplaySchedule = () => {
       popover.innerHTML = `
         <p>${event.extendedProps.tournament} ${event.extendedProps.matchname}</p>
       `;
-
+      info.el.addEventListener("click", () => {
+        // Navigate to new page when event is clicked
+      navigate(`/ViewTournamentDetails/${event.extendedProps.tournamentid}`);
+      });
       info.el.appendChild(popover);
 
       // Set the initial display to 'none'
@@ -205,6 +212,7 @@ const DisplaySchedule = () => {
       info.el.addEventListener("mouseleave", () => {
         popover.style.display = "none";
       });
+     
     }
   };
   const renderCustomHeaderCenter = () => {
@@ -218,10 +226,23 @@ const DisplaySchedule = () => {
       return null;
     }
   };
-  
+  const handlePrint = () => {
+    const originalContent = document.body.innerHTML;
+    const printArea = document.getElementById('print-area').innerHTML;
+
+    document.body.innerHTML = printArea;
+    window.print();
+    document.body.innerHTML = originalContent;
+  }
   return (
     <div>
       {SelectNavbar()}
+      <NavbarA />
+      <div className="toolbar">
+        <button onClick={() => handlePrint()}>Print</button>
+        {/* Other buttons and elements */}
+      </div>
+      <div id="print-area">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
@@ -234,8 +255,9 @@ const DisplaySchedule = () => {
         events={events}
         eventDidMount={eventDidMount}
       />
-    </div>
-  );
+      </div>
+    </div>
+  );
 };
 
 export default DisplaySchedule;

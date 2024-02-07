@@ -78,6 +78,7 @@ const RatingAndReview = () => {
   };
 
   return (
+    <div style={{ backgroundColor: '#707a8a' }}>
     <>
       <NavbarA />
       <div className="middle">
@@ -129,6 +130,7 @@ const RatingAndReview = () => {
         ))}
       </div>
     </>
+    </div>
   );
 };
 

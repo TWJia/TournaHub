@@ -126,7 +126,7 @@ function ViewTournamentDetails() {
 
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#344771' }}>
       {SelectNavbar()}
       {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
         <p>Loading...</p>
@@ -164,7 +164,12 @@ function ViewTournamentDetails() {
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
           <p>Tournament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
-          <button onClick={exportScoresheet}>Export Scoresheet</button>
+          <button 
+            onClick={exportScoresheet}
+            style={{ backgroundColor: '#bbdcf0', color: 'black' }}
+            className="btn btn-sm mr-2">
+            Export Scoresheet
+          </button>
           <h1>Matches</h1>
           {Array.isArray(matchDetails) && matchDetails.length > 0 ? (
             matchDetails.map((match, index) => (
@@ -186,7 +191,12 @@ function ViewTournamentDetails() {
           ) : (
             <p>No match details available.</p>
           )}
-          <button onClick={exportMatches}>Export Matches</button>
+          <button 
+            onClick={exportMatches} 
+            style={{ backgroundColor: '#bbdcf0', color: 'black' }}
+            className="btn btn-sm mr-2">
+            Export Matches
+          </button>
           <div>
             <h1>Ranking Table</h1>
             {Array.isArray(rankingTableDetails) && rankingTableDetails.length > 0 ? (

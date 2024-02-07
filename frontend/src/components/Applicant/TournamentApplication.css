@@ -1,9 +1,8 @@
-.Tframe {
+/* .Tframe {
   padding: 20px;
   flex-direction: column;
   display: flex;
   border: 3px solid rgb(23, 23, 23);
-  /* background-color: orange; */
   border-radius: 20px;
   margin: 0 auto;
   width: 300px;
@@ -16,15 +15,41 @@
   float: left;
   display: inline;
   padding: 10px;
+} */
+.Tframe {
+  padding: 20px;
+  border: 3px solid rgb(23, 23, 23);
+  border-radius: 20px;
+  margin: 10px; /* Added a margin for spacing between items */
+  width: 300px; /* You may need to adjust this width depending on the container size */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Optional: adds shadow for depth */
+}
+
+.displayall {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  justify-content: center; /* Centers items on the main axis */
+  align-items: stretch; /* Stretch items to fill the container */
+  gap: 10px; /* Space between the items */
 }
 .direction {
   display: "flex";
   align-items: "center";
   justify-content: center;
 }
-.newline {
+/* .newline {
   display: block;
   clear: both;
+} */
+.newline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; 
+  align-items: flex-start;
 }
 .mainBtns {
   justify-content: center;

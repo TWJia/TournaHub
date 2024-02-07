@@ -147,30 +147,33 @@ const TournamentApplication = () => {
   return (
     <>
       <NavbarA />
-      <img
+      {/* <img
         className="bg"
         src={bgmImage}
         alt="Background"
         style={{ transform: `translateY(${scrollY * 0.01}px)` }}
-      />
-      <h2>Open Tournaments</h2>
-      <h4>Recommended match for your skill level:</h4>
-      <div className="direction">
-        {renderFilteredTournaments((tournament) => {
-          const skillLevelMatches =
-            tournament.tournamentSkillLevel?.toLowerCase() ===
-            user?.skillLevel?.toLowerCase();
-          return skillLevelMatches;
-        })}
-      </div>
-      <div className="newline">
-        <h4>Other matches:</h4>
-        {renderFilteredTournaments((tournament) => {
-          const skillLevelDiffers =
-            tournament.tournamentSkillLevel?.toLowerCase() !==
-            user?.skillLevel?.toLowerCase();
-          return skillLevelDiffers;
-        })}
+      /> */}
+      <div>
+        <h2>Open Tournaments</h2>
+        <h4>Recommended match for your skill level:</h4>
+        <div className="direction">
+          {renderFilteredTournaments((tournament) => {
+            const skillLevelMatches =
+              tournament.tournamentSkillLevel?.toLowerCase() ===
+              user?.skillLevel?.toLowerCase();
+            return skillLevelMatches;
+          })}
+        </div>
+        <div className="newline">
+          <h4>Other matches:</h4>
+          {renderFilteredTournaments((tournament) => {
+            const skillLevelDiffers =
+              tournament.tournamentSkillLevel?.toLowerCase() !==
+              user?.skillLevel?.toLowerCase();
+            return skillLevelDiffers;
+          })}
+        </div>
+
       </div>
     </>
   );

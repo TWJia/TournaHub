@@ -1,4 +1,4 @@
-.newsColumns {
+/* .newsColumns {
   flex-direction: column;
   display: flex;
   border: 2px orange;
@@ -6,7 +6,27 @@
   border-radius: 10px;
   margin: 0 auto;
   width: 300px;
+} */
+.newsColumns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; 
+  border: 2px orange;
+  background-color: orange;
+  border-radius: 10px;
+  margin: 0 auto;
+  width: 300px;
 }
+
+.newsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0 auto;
+}
+
 .newsBorder {
   flex-direction: column;
   float: left;

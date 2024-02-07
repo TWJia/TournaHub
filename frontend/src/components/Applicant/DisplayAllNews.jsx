@@ -42,93 +42,142 @@ const ApplicantHome = () => {
     }
   };
 
+  // return (
+  //   <div>
+  //     <h3>Recommended News For you</h3>
+  //     <div>
+  //       <>
+  //         {newsData.map(
+  //           (news) =>
+  //             news.category === user.interestedSport && (
+  //               <div className="newsBorder" key={news._id}>
+  //                 <a
+  //                   className="newstitle"
+  //                   href={`/home/news/${news._id}`}
+  //                   onClick={(e) => {
+  //                     e.preventDefault();
+  //                     handleTitleClick(news._id);
+  //                   }}
+  //                 >
+  //                   <div className="newsColumns">
+  //                     <img
+  //                       className="fixed-size-image"
+  //                       src={`http://localhost:3001/images/${news.photo}`}
+  //                       alt={news.title}
+  //                       onClick={() => handleTitleClick(news._id)}
+  //                     />
+  //                     {/* 
+  //                     <h3 className="category-box">{news.category}</h3> */}
+  //                     <div>
+  //                       <h3>{news.title}</h3>
+  //                       <p>Written by: {news.user?.name}</p>
+  //                     </div>
+  //                     {/* <p>{news.content}</p> */}
+  //                   </div>
+  //                 </a>
+  //               </div>
+  //             )
+  //         )}
+  //       </>
+  //     </div>
+  //         <div className="newline">
+  //           <h3>Other News</h3>
+  //           {newsData.map(
+  //             (news) =>
+  //               news.category !== user.interestedSport &&
+  //               news.category && (
+  //                 <div className="newsBorder" key={news._id}>
+  //                   <a
+  //                     className="newstitle"
+  //                     href={`/home/news/${news._id}`}
+  //                     onClick={(e) => {
+  //                       e.preventDefault();
+  //                       handleTitleClick(news._id);
+  //                     }}
+  //                   >
+  //                     <div className="newsColumns">
+  //                       <img
+  //                         className="fixed-size-image"
+  //                         src={`http://localhost:3001/images/${news.photo}`}
+  //                         alt={news.title}
+  //                         onClick={() => handleTitleClick(news._id)}
+  //                       />
+  //                       <div>
+  //                         <h3>{news.title}</h3>
+  //                         <p>Written by: {news.user?.name}</p>
+  //                       </div>
+  //                     </div>
+  //                     {/* <p>{news.content}</p> */}
+  //                   </a>
+  //                 </div>
+  //               )
+  //           )}
+  //         </div>
+  //   </div>
+  // );
   return (
-    <div>
+    <div style={{"backgroundColor":"black"}}>
       <h3>Recommended News For you</h3>
-      <div>
-        <>
-          {newsData.map(
-            (news) =>
-              news.category === user.interestedSport && (
-                <div className="newsBorder" key={news._id}>
-                  <a
-                    className="newstitle"
-                    href={`/home/news/${news._id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleTitleClick(news._id);
-                    }}
-                  >
-                    <div className="newsColumns">
-                      <img
-                        className="fixed-size-image"
-                        src={`http://localhost:3001/images/${news.photo}`}
-                        alt={news.title}
-                        onClick={() => handleTitleClick(news._id)}
-                      />
-                      {/* 
-                      <h3 className="category-box">{news.category}</h3> */}
-                      <div>
-                        <h3>{news.title}</h3>
-                        <p>Written by: {news.user?.name}</p>
-                      </div>
-                      {/* <p>{news.content}</p> */}
-                    </div>
-                  </a>
+      <div className="newsContainer">
+        {newsData.map((news) => news.category === user.interestedSport && (
+          <div className="newsBorder" key={news._id}>
+            <a
+              className="newstitle"
+              href={`/home/news/${news._id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleTitleClick(news._id);
+              }}
+            >
+              <div className="newsColumns">
+                <img
+                  className="fixed-size-image"
+                  src={`http://localhost:3001/images/${news.photo}`}
+                  alt={news.title}
+                  onClick={() => handleTitleClick(news._id)}
+                />
+                <div>
+                  <h3>{news.title}</h3>
+                  <p>Written by: {news.user?.name}</p>
                 </div>
-              )
-          )}
-          <div className="newline">
-            <h3>Other News</h3>
-            {newsData.map(
-              (news) =>
-                news.category !== user.interestedSport &&
-                news.category && (
-                  <div className="newsBorder" key={news._id}>
-                    <a
-                      className="newstitle"
-                      href={`/home/news/${news._id}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleTitleClick(news._id);
-                      }}
-                    >
-                      {/* <p>{news.user?.name}</p> */}
-                      <div className="newsColumns">
-                        <img
-                          className="fixed-size-image"
-                          src={`http://localhost:3001/images/${news.photo}`}
-                          alt={news.title}
-                          onClick={() => handleTitleClick(news._id)}
-                        />
-                        <div>
-                          <h3>{news.title}</h3>
-                          <p>Written by: {news.user?.name}</p>
-                        </div>
-                      </div>
-                      {/* <p>{news.content}</p> */}
-                    </a>
-                  </div>
-                )
-            )}
+              </div>
+            </a>
           </div>
-          {/* {newsData.map((news) => (
-        <div key={news._id}>
-          <h3 onClick={() => handleTitleClick(news._id)}>
-            <img
-              className="fixed-size-image"
-              src={`http://localhost:3001/images/${news.photo}`}
-              alt={news.title}
-            />
-            {news.title}
-          </h3>
-          <p>{news.content}</p>
+        ))}
+      </div>
+      <div className="newline">
+        <h3>Other News</h3>
+        <div className="newsContainer">
+          {newsData.map((news) => news.category !== user.interestedSport && news.category && (
+            <div className="newsBorder" key={news._id}>
+              <a
+                className="newstitle"
+                href={`/home/news/${news._id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTitleClick(news._id);
+                }}
+              >
+                <div className="newsColumns">
+                  <img
+                    className="fixed-size-image"
+                    src={`http://localhost:3001/images/${news.photo}`}
+                    alt={news.title}
+                    onClick={() => handleTitleClick(news._id)}
+                  />
+                  <div>
+                    <h3>{news.title}</h3>
+                    <p>Written by: {news.user?.name}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
         </div>
-      ))} */}
-        </>
       </div>
     </div>
-  );
+);
+
 };
 
 export default ApplicantHome;

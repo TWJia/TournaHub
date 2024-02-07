@@ -82,21 +82,21 @@ const UpdateProfile = () => {
   return (
     <div>
       <NavbarA />
-      <div className="d-flex vh-100 justify-content-center align-items-center">
+      <div className="d-flex vh-102 justify-content-center align-items-center"style={{ backgroundColor: '#6b7a8f' }}>
         <div className="w-50 bg-white rounded p-3">
-          <h2>Profile</h2>
+          <h2 style={{ color: 'black' }}>Profile</h2>
           {user && (
             <div>
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
-              <p>Gender: {user.gender}</p>
-              <p>Date of Birth: {user.dob}</p>
-              <p>Interested Sport: {user.interestedSport}</p>
-              <p>Skill Level: {user.skillLevel}</p>
+              <p style={{ color: 'black' }}>Name: {user.name}</p>
+              <p style={{ color: 'black' }}>Email: {user.email}</p>
+              <p style={{ color: 'black' }}>Gender: {user.gender}</p>
+              <p style={{ color: 'black' }}>Date of Birth: {user.dob}</p>
+              <p style={{ color: 'black' }}>Interested Sport: {user.interestedSport}</p>
+              <p style={{ color: 'black' }}>Skill Level: {user.skillLevel}</p>
             </div>
           )}
           <form onSubmit={Update}>
-            <h2>Update Profile</h2>
+            <h2 style={{ color: 'black' }}>Update Profile</h2>
             <div className="mb-2">
               <label htmlFor="">New Name</label>
               <input
@@ -120,7 +120,7 @@ const UpdateProfile = () => {
               />
             </div>
             <div className="mb-2">
-              <label htmlFor="interestedSport">Intersted Sport</label>
+              <label htmlFor="interestedSport">Interested Sport</label>
               <select
                 id="interestedSport"
                 className="form-control"
@@ -157,7 +157,7 @@ const UpdateProfile = () => {
           </div>
 
 
-            <button type="submit" className="btn btn-success">
+            <button type="submit" className="btn" style={{ backgroundColor: '#8496a3', color: 'black' }}>
               Update
             </button>
           </form>

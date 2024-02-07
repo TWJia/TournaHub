@@ -48,13 +48,13 @@ const UserApplicationStatus = () => {
   return (
     <>
       <NavbarA />
-      <div>
+      <div style={{ backgroundColor: '#4a4e65', padding: '25px' }}>
         <h2>Your Application Status</h2>
 
         {applications.length > 0 ? (
           <ul>
             {applications.map((application) => (
-              <div className="Tframe" key={application.tournamentId}>
+              <div className="Tframe" key={application.tournamentId}style={{ backgroundColor: '#f7931e', padding: '10px', marginBottom: '10px' }}>
                 <p>Tournament: {application.tournamentName}</p>
                 <p>Status: {application.action}</p>
               </div>

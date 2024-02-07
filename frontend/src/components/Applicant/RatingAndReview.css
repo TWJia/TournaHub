@@ -22,8 +22,8 @@
   width: 300px;
 }
 .topReviewBox {
-  width: 400px;
-  height: 230px;
+  width: 500px;
+  height: 100px;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
@@ -40,14 +40,16 @@
   font-size: 25px;
   line-height: 25px;
   padding: 10px;
-  color: rgba(2, 60, 123, 0.97);
+  color: rgba(255, 255, 255, 0.97);
 }
 
 .reviewBox {
   padding: 2rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  flex-wrap: wrap;
+  justify-content: center; 
+  align-content: center; 
 }
 
 .usernameSize {
@@ -76,7 +78,9 @@
   font-size: 1.125rem;
   color: rgb(250, 175, 0);
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   -webkit-tap-highlight-color: transparent;
   pointer-events: none;
+  margin: 0 auto;
 }
+

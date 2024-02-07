@@ -26,7 +26,7 @@ function ViewTournament() {
       
       useEffect(() => {
         // Fetch tournaments when the component mounts
-        axios.get('http://localhost:3001/getTournaments')
+        axios.get('http://localhost:3001/getTournamentsNonTO')
           .then((response) => {
             setTournaments(response.data);
           })

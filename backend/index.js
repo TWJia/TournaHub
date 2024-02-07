@@ -48,6 +48,7 @@ const {
   countTournaments,
   handleSearchTournaments,
   handleSearchTournamentNonTO,
+  handleGetSortedTournamentNonTO,
   handleGetSponsorableTournaments,
   sponsorTournament,
 } = require("./controllers/Tournaments");
@@ -235,6 +236,7 @@ app.post(
 app.post("/CreateTournament", handleCreateTournament);
 app.get("/getTournaments", handleGetTournaments);
 app.get("/getTournaments/:userId", handleGetOwnTournaments);
+app.get("/getTournamentsNonTO", handleGetSortedTournamentNonTO);
 
 app.get("/getTournamentDetails/:id", handleGetSingleTournament);
 

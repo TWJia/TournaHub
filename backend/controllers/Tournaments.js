@@ -199,6 +199,18 @@ const handleSearchTournaments = (req, res) => {
     .catch((err) => res.json(err));
 };
 
+const handleGetSortedTournamentNonTO = (req, res) => {
+  TournamentModel.find({}).sort({ tournamentStartDate: 1 })
+    .then(function (tournaments) {
+      res.json(tournaments);
+    })
+    .catch(function (err) {
+      console.error("Error fetching users:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      //res.json(err)
+    });
+};
+
 const handleSearchTournamentNonTO = (req, res) => {
   const { tournamentName } = req.params;
   TournamentModel.find({ tournamentName: { $regex: new RegExp(tournamentName, "i") } })
@@ -577,6 +589,7 @@ module.exports = {
   countTournaments,
   handleSearchTournaments,
   handleSearchTournamentNonTO,
+  handleGetSortedTournamentNonTO,
   handleGetSponsorableTournaments,
   sponsorTournament,
 };

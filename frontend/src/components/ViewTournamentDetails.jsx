@@ -132,7 +132,7 @@ function ViewTournamentDetails() {
         <p>Loading...</p>
       ) : (
 <div>
-          <h1>Sponsor:</h1>
+          <h1>Sponsor</h1>
           {tournamentDetails.tournamentSponsorIcon && (
           <>
             <img

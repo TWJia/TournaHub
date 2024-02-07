@@ -163,6 +163,45 @@ const countTournaments = (req, res) => {
     });
 };
 
+//Sponsorship APIs
+const handleGetSponsorableTournaments = (req, res) => {
+  TournamentModel.find({tournamentSponsor: "None"})
+    .then(function (tournaments) {
+      res.json(tournaments);
+    })
+    .catch(function (err) {
+      console.error("Error fetching tournaments:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      //res.json(err)
+    });
+};
+
+const sponsorTournament = async (req, res) => {
+  const id = req.body.id;
+  let icon = "";
+
+  // Check if a file was uploaded
+  if (req.file && req.file.filename) {
+    icon = req.file.filename;
+  }
+
+  try {
+    const updatedTournament = await TournamentModel.findByIdAndUpdate(
+      { _id: id },
+      {
+        tournamentSponsor: req.body.tournamentSponsor,
+        tournamentSponsorIcon: icon,
+      },
+      { new: true }
+    );
+
+    res.json(updatedTournament);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // const applyForTournament = async (req, res) => {
 //   console.log("Received request to apply for tournament", req.params);
 //   const tournamentId = req.params.tournamentId;
@@ -493,4 +532,6 @@ module.exports = {
   handleUpdateTournamentCollaboratorId,
   handleUpdateTournament,
   countTournaments,
+  handleGetSponsorableTournaments,
+  sponsorTournament,
 };

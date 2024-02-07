@@ -23,6 +23,8 @@ const TournamentSchema = new mongoose.Schema({
   tournamentNumberofmatches: String,
   tournamentStatus: String,
   applications: [MakeUniqueSchema],
+  tournamentSponsor: {type: String, default: "None" },
+  tournamentSponsorIcon: String,
 });
 
 const TournamentModel = mongoose.model("tournaments", TournamentSchema);

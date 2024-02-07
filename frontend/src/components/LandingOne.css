@@ -22,12 +22,13 @@
   flex: 1; 
 }
 
-h5, h6 {
+.landingone-container h5, .landingone-container h6 {
   margin: 0;
   font-family:Georgia, 'Times New Roman', Times, serif;
   color:whitesmoke;
 }
-h1,h3,h4,p,h2 {
+.landingone-container h1, .landingone-container h3, .landingone-container h4,
+.landingone-container p, .landingone-container h2 {
   
   font-family:Georgia, 'Times New Roman', Times, serif;
   color:whitesmoke;

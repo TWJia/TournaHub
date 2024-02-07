@@ -24,6 +24,23 @@ function SponsorshipModels() {
     }
   };
 
+  const handleCheckoutTournament = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/create-checkout-session-tournament");
+
+      const stripe = await stripePromise;
+      const result = await stripe.redirectToCheckout({
+        sessionId: response.data.sessionId,
+      });
+
+      if (result.error) {
+        console.error("Error redirecting to checkout:", result.error);
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error.message);
+    }
+  };
+
   const handleCheckoutArticle = async () => {
     try {
       const response = await axios.post("http://localhost:3001/create-checkout-session-article");
@@ -69,10 +86,26 @@ function SponsorshipModels() {
     </section>
   );
 
+  const ProductDisplayTournament = () => (
+    <section>
+      <div className="product">
+        <div className="description">
+          <h3>Sponsor Tournament</h3>
+          <h5>$50.00</h5>
+          <h6>This sponsorship option allows you to sponsor a tournament. </h6>
+          <h6>After paying, you brand's logo will appear on the top of the tournament details page. Increase your brand visibility with this option!</h6>
+        </div>
+      </div>
+      <button onClick={handleCheckoutTournament}>Make Payment</button>
+    </section>
+  );
+
   return (
     <>
       <NavbarS />
+      <h1>Sponsorship Options:</h1>
       <ProductDisplayIcon />
+      <ProductDisplayTournament/>
       <ProductDisplayArticle />
     </>
   );

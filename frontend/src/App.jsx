@@ -38,6 +38,7 @@ import InvitationPage from "./components/InvitationPage";
 import SponsorshipModels from "./components/SponsorshipModels";
 import PaymentSuccess from "./components/PaymentSuccess";
 import UploadSponsorIcon from "./components/UploadSponsorIcon";
+import SponsorTournament from "./components/SponsorTournament";
 import TournamentApplication from "./components/Applicant/TournamentApplication";
 import AddScoresheet from "./components/AddScoresheet";
 import ViewTournament from "./components/ViewTournament";
@@ -143,6 +144,7 @@ export default function App() {
 
           <Route path="/SponsorshipModels" element={<SponsorshipModels />} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess />} />
+          <Route path="/SponsorTournament" element={<SponsorTournament />} />
           <Route path="/UploadSponsorIcon" element={<UploadSponsorIcon />} />
           <Route path="/AddScoresheet" element={<AddScoresheet />} />
           <Route path="/ViewTournament" element={<ViewTournament />} />

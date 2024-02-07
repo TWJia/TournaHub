@@ -5,6 +5,7 @@ import SelectNavbar from "./SelectNavbar";
 import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
+  const domainName = "http://localhost:3001" ;
   const [tournamentDetails, setTournamentDetails] = useState({});
   const [matchDetails, setMatchDetails] = useState({});
   const [rankingTableDetails, setRankingTableDetails] = useState({});
@@ -131,6 +132,27 @@ function ViewTournamentDetails() {
         <p>Loading...</p>
       ) : (
 <div>
+          <h1>Sponsor</h1>
+          {tournamentDetails.tournamentSponsorIcon && (
+          <>
+            <img
+              width={"150px"}
+              src={`${domainName}/tournamentsponsor/${tournamentDetails.tournamentSponsorIcon}`}
+              alt={tournamentDetails.tournamentSponsorIcon}
+              // onError={(e) => {
+              //   // Handle image load error & display error image
+              //   console.error("Error loading image:", e);
+              //   e.target.src = 'https://i.imgur.com/7qHPfQf.png';
+              // }}
+            />
+            <p><u>This tournament is brought to you by the following sponsor:</u></p>
+            <p>{tournamentDetails.tournamentSponsor}</p>
+          </>
+        )}
+
+        {!tournamentDetails.tournamentSponsorIcon && (
+          <p>This tournament has not been sponsored yet. If interested, sponsor now!</p>
+        )}
           <h1>{tournamentDetails.tournamentName}</h1>
           <p>Sport: {tournamentDetails.tournamentSport}</p>
           <p>Skill Level: {tournamentDetails.tournamentSkillLevel}</p>

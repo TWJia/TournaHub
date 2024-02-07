@@ -22,8 +22,6 @@ const {
 } = require("./controllers/sports");
 const {
   handleGetAllUser,
-  handleGetAllUserIds,
-  handleGetUserDetails,
   handleManageUser,
   getPendingUsers,
   getSingleUser,
@@ -49,6 +47,8 @@ const {
   handleDeleteTournament,
   countTournaments,
   handleSearchTournaments,
+  handleGetSponsorableTournaments,
+  sponsorTournament,
 } = require("./controllers/Tournaments");
 const {
   handleCreateMatches,
@@ -67,6 +67,7 @@ const {
 const {
   IconPayment,
   ArticlePayment,
+  TournamentPayment,
   UploadSponsorIcon,
   fetchSponsorIconsHomePage,
 } = require("./controllers/Sponsor");
@@ -97,6 +98,8 @@ app.use("/verify", express.static("verify"));
 app.use("/sponsoricon", express.static("sponsoricon"));
 // Used for getting scoresheets
 app.use("/scoresheet", express.static("scoresheet"));
+//Used for storing tournament sponsor icons images
+app.use("/tournamentsponsor", express.static("tournamentsponsor"))
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -143,6 +146,19 @@ const scoresheetStorage = multer.diskStorage({
 });
 
 const scoresheetUpload = multer({ storage: scoresheetStorage });
+//For tournament sponsor icons
+const tournamentSponsorStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./tournamentsponsor");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname);
+  },
+});
+
+const tournamentSponsorUpload = multer({ storage: tournamentSponsorStorage });
+//
 
 //APIs
 
@@ -187,8 +203,6 @@ app.get("/searchSports/:name", handleSearchSport);
 app.post("/CreateSport", handleCreateSport);
 // Manage Users APIs
 app.get("/ManageUsers", handleManageUser);
-app.get("/getAllUserIds", handleGetAllUserIds);
-app.post("/getUserDetails", handleGetUserDetails);
 app.get("/PendingUsers", getPendingUsers);
 
 app.get("/getUser/:id", getSingleUser);
@@ -258,6 +272,7 @@ app.get("/getStatus", handleGetStatus);
 
 //Sponsor API
 app.post("/create-checkout-session-icon", IconPayment);
+app.post("/create-checkout-session-tournament", TournamentPayment);
 app.post("/create-checkout-session-article", ArticlePayment);
 app.post(
   "/upload-sponsor-icon",
@@ -268,8 +283,12 @@ app.post(
 //Homepage API
 app.get("/count-user", countUsers);
 app.get("/count-tournaments", countTournaments);
-//currently bugged
+//
 app.get("/fetch-sponsor-icons", fetchSponsorIconsHomePage);
+app.get("/getSponsorableTournaments", handleGetSponsorableTournaments);
+app.post("/sponsorTournament",
+tournamentSponsorUpload.single("icon"), 
+sponsorTournament);
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

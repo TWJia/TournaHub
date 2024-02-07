@@ -63,6 +63,35 @@ const IconPayment = async (req, res) => {
     }
   };
 
+  const TournamentPayment = async (req, res) => {
+    try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "sgd",
+              product_data: {
+                name: "Sponsor a Tournament",
+                images: ["https://i.imgur.com/yE1M01n.png"],
+              },
+              unit_amount: 5000, // Adjust amount (in cents) as needed
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        success_url: `${SESSION_URL}/SponsorTournament`,
+        cancel_url: `${SESSION_URL}/SponsorshipModels`,
+      });
+  
+      res.json({ sessionId: session.id });
+    } catch (error) {
+      console.error("Error creating Checkout session:", error.message);
+      res.status(500).send("Internal Server Error");
+    }
+  };
+
   const UploadSponsorIcon = (req, res) => {
     const { urlLink } = req.body;
     let icon = "";
@@ -89,4 +118,4 @@ const IconPayment = async (req, res) => {
   };
   
 
-  module.exports = { IconPayment, ArticlePayment, UploadSponsorIcon, fetchSponsorIconsHomePage};
+  module.exports = { IconPayment, ArticlePayment, TournamentPayment, UploadSponsorIcon, fetchSponsorIconsHomePage};

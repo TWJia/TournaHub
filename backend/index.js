@@ -48,6 +48,7 @@ const {
   handleGetSingleTournament,
   handleDeleteTournament,
   countTournaments,
+  handleSearchTournaments,
 } = require("./controllers/Tournaments");
 const {
   handleCreateMatches,
@@ -224,6 +225,8 @@ app.get("/getTournamentDetails/:id", handleGetSingleTournament);
 
 app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
+
+app.get("/searchTournaments/:tournamentName", handleSearchTournaments);
 //User: Application API
 // app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
 // app.get("/getOpenTournaments", getOpenTournaments);

@@ -10,17 +10,36 @@ const handleCreateTournament = (req, res) => {
     .catch((err) => res.json(err));
 };
 
-const handleGetTournaments = (req, res) => {
-  TournamentModel.find({})
-    .then(function (tournaments) {
+// const handleGetTournaments = (req, res) => {
+//   TournamentModel.find({})
+//     .then(function (tournaments) {
+//       res.json(tournaments);
+//     })
+//     .catch(function (err) {
+//       console.error("Error fetching tournaments:", err);
+//       res.status(500).json({ error: "Internal Server Error" });
+//       //res.json(err)
+//     });
+// };
+
+const handleGetTournaments = async (req, res) => {
+  try {
+      const { userId } = req.params;
+      let tournaments;
+
+      if (req.query.sortBy === 'tournamentStartDate') {
+          tournaments = await TournamentModel.find({ userId }).sort({ tournamentStartDate: 1 });
+      } else {
+          tournaments = await TournamentModel.find({ userId });
+      }
+
       res.json(tournaments);
-    })
-    .catch(function (err) {
-      console.error("Error fetching tournaments:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      //res.json(err)
-    });
+  } catch (error) {
+      console.error('Error fetching tournaments:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 const handleGetOwnTournaments = async (req, res) => {
   const { userId } = req.params;
@@ -163,6 +182,12 @@ const countTournaments = (req, res) => {
     });
 };
 
+const handleSearchTournaments = (req, res) => {
+  const { tournamentName } = req.params;
+  TournamentModel.find({ tournamentName: { $regex: new RegExp(tournamentName, "i") } })
+    .then((tournaments) => res.json(tournaments))
+    .catch((err) => res.json(err));
+};
 // const applyForTournament = async (req, res) => {
 //   console.log("Received request to apply for tournament", req.params);
 //   const tournamentId = req.params.tournamentId;
@@ -493,4 +518,5 @@ module.exports = {
   handleUpdateTournamentCollaboratorId,
   handleUpdateTournament,
   countTournaments,
+  handleSearchTournaments,
 };

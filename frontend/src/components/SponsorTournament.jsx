@@ -43,7 +43,7 @@ function SponsorTournament(){
     return (
         <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
         <div className="bg-white p-3 rounded w-25">
-            <h2>Upload Sponsor Icon</h2>
+            <h2>Sponsor Tournament</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="mb-3">
                 <label htmlFor="Id">

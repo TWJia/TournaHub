@@ -127,13 +127,14 @@ function ViewTournament() {
     
     const handleSearch = async (searchTerm) => {
       setSearchTerm(searchTerm);
-      
+
       if (searchTerm.trim() === '') {
         setFilteredTournaments([]);
       } else {
         try {
-          const response = await axios.get(`http://localhost:3001/searchTournaments/${searchTerm}`);
-          setFilteredTournaments(response.data);
+          const response = await axios.get(`http://localhost:3001/searchTournaments/${searchTerm}/${user._id}`);
+          console.log(response.data);
+          setFilteredTournaments(response.data)
         } catch (error) {
           console.log(error);
         }
@@ -144,6 +145,7 @@ function ViewTournament() {
       <div> 
       <NavbarTO />    
       {/* Button to navigate to the form page */}
+      <h1>Manage Tournaments:</h1>
       <SearchBar onSearch={handleSearch} />
       <p></p>
       <label htmlFor="statusFilter">Filter by Status: </label>

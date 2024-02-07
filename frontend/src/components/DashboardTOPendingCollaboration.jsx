@@ -207,6 +207,7 @@ const renderTournamentList = () => {
   return (
     <div>
       <NavbarTO />
+      <h1>Collaboration Status: </h1>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="navbar-container">
         <nav>
           <button onClick={() => setCurrentTab("Pending")}>Pending</button>

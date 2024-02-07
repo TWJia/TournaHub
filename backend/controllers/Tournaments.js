@@ -183,11 +183,29 @@ const countTournaments = (req, res) => {
 };
 
 const handleSearchTournaments = (req, res) => {
+  const { tournamentName, id } = req.params;
+  TournamentModel.find({
+    $and: [
+      { tournamentName: { $regex: new RegExp(tournamentName, "i") } },
+      {
+        $or: [
+          { organizerId: id }, 
+          { collaboratorId: id }
+        ]
+      }
+    ]
+  })
+    .then((tournaments) => res.json(tournaments))
+    .catch((err) => res.json(err));
+};
+
+const handleSearchTournamentNonTO = (req, res) => {
   const { tournamentName } = req.params;
   TournamentModel.find({ tournamentName: { $regex: new RegExp(tournamentName, "i") } })
     .then((tournaments) => res.json(tournaments))
     .catch((err) => res.json(err));
 };
+
 //Sponsorship APIs
 const handleGetSponsorableTournaments = (req, res) => {
   TournamentModel.find({tournamentSponsor: "None"})
@@ -558,6 +576,7 @@ module.exports = {
   handleUpdateTournament,
   countTournaments,
   handleSearchTournaments,
+  handleSearchTournamentNonTO,
   handleGetSponsorableTournaments,
   sponsorTournament,
 };

@@ -47,6 +47,7 @@ const {
   handleDeleteTournament,
   countTournaments,
   handleSearchTournaments,
+  handleSearchTournamentNonTO,
   handleGetSponsorableTournaments,
   sponsorTournament,
 } = require("./controllers/Tournaments");
@@ -240,7 +241,10 @@ app.get("/getTournamentDetails/:id", handleGetSingleTournament);
 app.put("/updateTournament/:id", handleUpdateTournament);
 app.delete("/deleteTournament/:id", handleDeleteTournament);
 
-app.get("/searchTournaments/:tournamentName", handleSearchTournaments);
+app.get("/searchTournaments/:tournamentName/:id", handleSearchTournaments);
+app.get("/searchTournamentsNonTO/:tournamentName", handleSearchTournamentNonTO);
+
+
 //User: Application API
 // app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
 // app.get("/getOpenTournaments", getOpenTournaments);

@@ -75,7 +75,7 @@ function ViewApplicants() {
     if (!tournamentId) return;
     try {
       const { data } = await axios.get(
-        `https://tournahub.onrender.com/api/applicationstatus/getApplicationOfTournament/${tournamentId}`
+        `http://localhost:3001/api/applicationstatus/getApplicationOfTournament/${tournamentId}`
       );
       setApplicants(data.message);
     } catch (error) {
@@ -86,7 +86,7 @@ function ViewApplicants() {
   const fetchTournamentData = async () => {
     try {
       const { data } = await axios.get(
-        `https://tournahub.onrender.com/getTournamentDetails/${tournamentId}`
+        `http://localhost:3001/getTournamentDetails/${tournamentId}`
       );
       setTournament(data);
     } catch (error) {

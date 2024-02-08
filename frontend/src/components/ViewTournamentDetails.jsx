@@ -5,7 +5,6 @@ import SelectNavbar from "./SelectNavbar";
 import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
-  const domainName = "${process.env.REACT_APP_BACKEND_URL}";
   const [tournamentDetails, setTournamentDetails] = useState({});
   const [matchDetails, setMatchDetails] = useState({});
   const [rankingTableDetails, setRankingTableDetails] = useState({});
@@ -19,7 +18,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch tournament details when the component mounts
     axios
-      .get(`https://tournahub.onrender.com/getTournamentDetails/${id}`)
+      .get(`http://localhost:3001/getTournamentDetails/${id}`)
       .then((response) => {
         setTournamentDetails(response.data);
       })
@@ -34,7 +33,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch match details when the component mounts
     axios
-      .get(`https://tournahub.onrender.com/getMatches/${id}`)
+      .get(`http://localhost:3001/getMatches/${id}`)
       .then((response) => {
         setMatchDetails(response.data);
       })
@@ -49,7 +48,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch ranking table details when the component mounts
     axios
-      .get(`https://tournahub.onrender.com/getRankingTable/${id}`)
+      .get(`http://localhost:3001/getRankingTable/${id}`)
       .then((response) => {
         setRankingTableDetails(response.data);
       })
@@ -64,7 +63,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch statistics table details when the component mounts
     axios
-      .get(`https://tournahub.onrender.com/getStatistics/${id}`)
+      .get(`http://localhost:3001/getStatistics/${id}`)
       .then((response) => {
         setStatisticsDetails(response.data);
       })
@@ -83,7 +82,7 @@ function ViewTournamentDetails() {
 
   const exportScoresheet = () => {
     window.open(
-      `${process.env.REACT_APP_BACKEND_URL}/scoresheet/${tournamentDetails.tournamentSport}.pdf`,
+      `http://localhost:3001/scoresheet/${tournamentDetails.tournamentSport}.pdf`,
       "_blank",
       "noreferrer"
     );

@@ -13,7 +13,7 @@ function UpdateUsers() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getUser/` + id)
+      .get(`http://localhost:3001/getUser/` + id)
       .then((result) => {
         console.log(result);
         setName(result.data.name);
@@ -28,7 +28,7 @@ function UpdateUsers() {
   const Update = (e) => {
     e.preventDefault();
     axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}/updateUser/` + id, {
+      .put(`http://localhost:3001/updateUser/` + id, {
         name,
         email,
         password,

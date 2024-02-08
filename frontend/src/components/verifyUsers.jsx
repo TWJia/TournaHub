@@ -11,9 +11,7 @@ function VerifyUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/PendingUsers`
-        );
+        const response = await axios.get(`http://localhost:3001/PendingUsers`);
         setUsers(response.data);
       } catch (error) {
         console.log(error);
@@ -26,9 +24,7 @@ function VerifyUsers() {
   const handleApprove = async (id) => {
     if (window.confirm("Confirm approval?")) {
       try {
-        await axios.put(
-          `${process.env.REACT_APP_BACKEND_URL}/approveUser/${id}`
-        );
+        await axios.put(`http://localhost:3001/approveUser/${id}`);
         window.location.reload();
       } catch (error) {
         console.log(error);
@@ -38,7 +34,7 @@ function VerifyUsers() {
 
   const showPDF = (verification) => {
     window.open(
-      `https://tournahub.onrender.com/verify/${verification}`,
+      `http://localhost:3001/verify/${verification}`,
       "_blank",
       "noreferrer"
     );

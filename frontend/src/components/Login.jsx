@@ -8,12 +8,12 @@ function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
-  console.log("URL", process.env.REACT_APP_BACKEND_URL);
+
   axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`https://tournahub.onrender.com/login`, { email, password })
+      .post(`http://localhost:3001/login`, { email, password })
       .then((res) => {
         if (res.data.Status === "Login is successful") {
           if (res.data.usertype === "systemadministrator") {

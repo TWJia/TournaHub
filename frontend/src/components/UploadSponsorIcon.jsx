@@ -13,13 +13,9 @@ function UploadSponsorIcon() {
     formData.append("urlLink", urlLink);
     formData.append("icon", icon);
     const submit = await axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URL}/upload-sponsor-icon`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      )
+      .post(`http://localhost:3001/upload-sponsor-icon`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
       .then((result) => {
         console.log(result);
         alert("Sponsor Icon uploaded sucessfully");

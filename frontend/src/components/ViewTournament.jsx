@@ -43,7 +43,6 @@ function ViewTournament() {
         console.log(`View details for tournament with ID: ${tournamentId}`);
       };
 
-<<<<<<< Updated upstream
       const handleStatusFilterChange = (event) => {
         setStatusFilter(event.target.value);
       };
@@ -66,20 +65,20 @@ function ViewTournament() {
 
 
       return (
-        <div> 
+        <div>
           {SelectNavbar()}
           <h1>Tournament List:</h1>
-          <div>          
-          <SearchBar onSearch={handleSearch} />
-          <label htmlFor="statusFilter">Filter by Status: </label>
-          <select id="statusFilter" value={statusFilter} onChange={handleStatusFilterChange}>
-            <option value="">All</option>
-            <option value="Open for Application">Open for Application</option>
-            <option value="Closed Application">Closed Application</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
+          <div>
+            <SearchBar onSearch={handleSearch} />
+            <label htmlFor="statusFilter">Filter by Status: </label>
+            <select id="statusFilter" value={statusFilter} onChange={handleStatusFilterChange}>
+              <option value="">All</option>
+              <option value="Open for Application">Open for Application</option>
+              <option value="Closed Application">Closed Application</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
           </div>
           <p></p>
           {loading ? (
@@ -131,8 +130,10 @@ function ViewTournament() {
                 )}
             </>
           )}
-=======
-    return (
+        </div>
+      );
+    }
+    {/* return (
         <div style={{ backgroundColor: '#50648c' }}> 
           {SelectNavbar()}
           <h1>Tournament List:</h1> 
@@ -172,8 +173,7 @@ function ViewTournament() {
             </tbody>
           </table>
       )}
->>>>>>> Stashed changes
         </div>
       );
-    }
+    } */}
 export default ViewTournament

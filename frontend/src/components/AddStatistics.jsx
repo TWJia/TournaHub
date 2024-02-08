@@ -53,7 +53,7 @@ function AddStatistics() {
                 />
               </div>
               <div className="mb-2">
-                <label htmlFor="Score">Score</label>
+                <label htmlFor="Score">Score (W/L)</label>
                 <input
                   type="text"
                   id="Score"

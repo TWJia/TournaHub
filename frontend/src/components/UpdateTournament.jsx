@@ -197,6 +197,12 @@ function UpdateTournament() {
                     </div>
                     )}
                     
+                    <p>Venue:</p>
+                    <input
+                    type="text"
+                    value={updatedTournaments.find((tournament) => tournament._id === id)?.tournamentVenue || ''}
+                    onChange={(e) => handleInputChange(e, id, 'tournamentVenue')}
+                    />
                     
                     <p>Details:</p>
                     <input

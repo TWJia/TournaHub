@@ -19,7 +19,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch tournament details when the component mounts
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getTournamentDetails/${id}`)
+      .get(`https://tournahub.onrender.com/getTournamentDetails/${id}`)
       .then((response) => {
         setTournamentDetails(response.data);
       })
@@ -34,7 +34,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch match details when the component mounts
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getMatches/${id}`)
+      .get(`https://tournahub.onrender.com/getMatches/${id}`)
       .then((response) => {
         setMatchDetails(response.data);
       })
@@ -49,7 +49,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch ranking table details when the component mounts
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getRankingTable/${id}`)
+      .get(`https://tournahub.onrender.com/getRankingTable/${id}`)
       .then((response) => {
         setRankingTableDetails(response.data);
       })
@@ -64,7 +64,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch statistics table details when the component mounts
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getStatistics/${id}`)
+      .get(`https://tournahub.onrender.com/getStatistics/${id}`)
       .then((response) => {
         setStatisticsDetails(response.data);
       })

@@ -26,7 +26,7 @@ function ViewTournament() {
   useEffect(() => {
     // Fetch tournaments when the component mounts
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/getTournamentsNonTO`)
+      .get(`https://tournahub.onrender.com/getTournamentsNonTO`)
       .then((response) => {
         setTournaments(response.data);
       })
@@ -55,7 +55,7 @@ function ViewTournament() {
     } else {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/searchTournamentsNonTO/${searchTerm}/`
+          `https://tournahub.onrender.com/searchTournamentsNonTO/${searchTerm}/`
         );
         console.log(response.data);
         setFilteredTournaments(response.data);

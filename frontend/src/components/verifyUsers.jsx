@@ -38,7 +38,7 @@ function VerifyUsers() {
 
   const showPDF = (verification) => {
     window.open(
-      `http://localhost:3001/verify/${verification}`,
+      `https://tournahub.onrender.com/verify/${verification}`,
       "_blank",
       "noreferrer"
     );

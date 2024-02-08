@@ -1,41 +1,50 @@
-import axios from 'axios'
-import React, {useState, useEffect} from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 function UpdateUsers() {
-    const {id} = useParams()
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [usertype, setUserType] = useState('')
-    const [isActive, setIsActive] = useState('')
-    const navigate = useNavigate()
+  const { id } = useParams();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [usertype, setUserType] = useState("");
+  const [isActive, setIsActive] = useState("");
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      axios.get('http://localhost:3001/getUser/'+id)
-      .then(result => {console.log(result)
-            setName(result.data.name)
-            setEmail(result.data.email)
-            setPassword(result.data.password)
-            setUserType(result.data.usertype)
-            setIsActive(result.data.isActive)
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/getUser/` + id)
+      .then((result) => {
+        console.log(result);
+        setName(result.data.name);
+        setEmail(result.data.email);
+        setPassword(result.data.password);
+        setUserType(result.data.usertype);
+        setIsActive(result.data.isActive);
       })
-      .catch(err => console.log(err))
-    }, []) 
-  
-    const Update = (e) => {
-      e.preventDefault();
-      axios.put('http://localhost:3001/updateUser/'+id, {name, email, password, usertype, isActive})
-        .then(result => {
-          console.log(result)
-          alert('User updated successfully')
-          navigate('/ManageUsers')
-        })
-        .catch(err => console.log(err))
-    }
+      .catch((err) => console.log(err));
+  }, []);
 
-    return ( 
-        <div className="d-flex vh-100 justify-content-center align-items-center">
+  const Update = (e) => {
+    e.preventDefault();
+    axios
+      .put(`${process.env.REACT_APP_BACKEND_URL}/updateUser/` + id, {
+        name,
+        email,
+        password,
+        usertype,
+        isActive,
+      })
+      .then((result) => {
+        console.log(result);
+        alert("User updated successfully");
+        navigate("/ManageUsers");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return (
+    <div className="d-flex vh-100 justify-content-center align-items-center">
       <div className="w-50 bg-white rounded p-3">
         <form onSubmit={Update}>
           <h2>Update Users</h2>
@@ -89,11 +98,13 @@ function UpdateUsers() {
               onChange={(e) => setIsActive(e.target.value)}
             />
           </div>
-          <button type ="submit" className="btn btn-success">Update</button>
+          <button type="submit" className="btn btn-success">
+            Update
+          </button>
         </form>
       </div>
     </div>
-     );
+  );
 }
 
 export default UpdateUsers;

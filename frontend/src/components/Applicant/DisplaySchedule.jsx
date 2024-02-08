@@ -222,8 +222,8 @@ const DisplaySchedule = () => {
       popover.style.zIndex = "1000"; // Ensure it appears above other elements
   
       const rect = info.el.getBoundingClientRect();
-      const left = rect.left + window.pageXOffset;
-      const top = rect.bottom + window.pageYOffset + 5; // Adjust as needed
+      const left = rect.right + window.pageXOffset + 5; // Adjust as needed
+      const top = rect.top + window.pageYOffset;
   
       // Set initial position
       popover.style.left = `${left}px`;

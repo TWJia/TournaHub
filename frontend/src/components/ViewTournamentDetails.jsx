@@ -92,7 +92,7 @@ function ViewTournamentDetails() {
     if (Array.isArray(matchDetails) && matchDetails.length > 0) {
       let startY = 20; // Initial y-coordinate
   
-      matchDetails.forEach((match) => {
+      matchDetails.forEach((match, index) => {
         // Calculate required space for each line
         const lines = [
           `Match ${match.MatchNumber}`,
@@ -105,6 +105,16 @@ function ViewTournamentDetails() {
           `${match.Player2} Score: ${match.Player2_Score}`,
           `Winner: ${match.Winner}`,
         ];
+  
+        // Calculate the height needed for this match content
+        const heightNeeded = lines.length * 10 + 20; // Adjust as needed for line spacing and margins
+  
+        // Check if adding this match content would exceed the page height
+        if (startY + heightNeeded > pdfDoc.internal.pageSize.height) {
+          // Add a new page
+          pdfDoc.addPage();
+          startY = 20; // Reset startY for the new page
+        }
   
         // Add lines to the PDF
         lines.forEach((line) => {

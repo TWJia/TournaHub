@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,12 @@ function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
-
+  console.log("URL", process.env.REACT_APP_BACKEND_URL);
   axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-    .post(`${process.env.REACT_APP_BACKEND_URL}/login`, { email, password })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/login`, { email, password })
       .then((res) => {
         if (res.data.Status === "Login is successful") {
           if (res.data.usertype === "systemadministrator") {
@@ -31,18 +31,14 @@ function Login() {
           }
         } else {
           console.log(res.data);
-          if (res.data === "User is suspended"){
-            alert("User is suspended")
-          }
-          else if (res.data === "User is pending verification"){
-            alert("User is pending verification")
-          }
-          else if (res.data === "The password is incorrect"){
-            alert("The password is incorrect")
-            
-          }
-          else{
-            alert("No record exists.")
+          if (res.data === "User is suspended") {
+            alert("User is suspended");
+          } else if (res.data === "User is pending verification") {
+            alert("User is pending verification");
+          } else if (res.data === "The password is incorrect") {
+            alert("The password is incorrect");
+          } else {
+            alert("No record exists.");
           }
         }
       })
@@ -95,14 +91,21 @@ function Login() {
   //   </div>
   // );
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: '#8c99c5'}}>
-      <div className="row w-75 m-0"> 
-        <div className="col-md-6 p-0 d-flex align-items-center justify-content-center"> 
-          <img src="/images/Login.jpeg" alt="Descriptive Alt Text" className="img-fluid h-100" />
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{ backgroundColor: "#8c99c5" }}
+    >
+      <div className="row w-75 m-0">
+        <div className="col-md-6 p-0 d-flex align-items-center justify-content-center">
+          <img
+            src="/images/Login.jpeg"
+            alt="Descriptive Alt Text"
+            className="img-fluid h-100"
+          />
         </div>
-        <div className="col-md-6 p-0 bg-white"> 
+        <div className="col-md-6 p-0 bg-white">
           <div className="p-3 rounded">
-            <h2 style={{ color: 'black' }}>Login</h2>
+            <h2 style={{ color: "black" }}>Login</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email">
@@ -130,16 +133,21 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button type="submit" className="btn w-100 rounded-0" style={{ backgroundColor: '#005b96', color: 'white' }}>
+              <button
+                type="submit"
+                className="btn w-100 rounded-0"
+                style={{ backgroundColor: "#005b96", color: "white" }}
+              >
                 Login
               </button>
-
             </form>
-            <Link to="/ForgetPassword">
-              Forget Password
-            </Link>
-            <p style={{ color: 'black' }}> Don't have an Account?</p>
-            <Link to="/Signup" className= "btn w-100 rounded-0" style={{ backgroundColor: '#005b96', color: 'white' }}>
+            <Link to="/ForgetPassword">Forget Password</Link>
+            <p style={{ color: "black" }}> Don't have an Account?</p>
+            <Link
+              to="/Signup"
+              className="btn w-100 rounded-0"
+              style={{ backgroundColor: "#005b96", color: "white" }}
+            >
               Register
             </Link>
           </div>
@@ -147,8 +155,6 @@ function Login() {
       </div>
     </div>
   );
-  
-  
 }
 
 export default Login;

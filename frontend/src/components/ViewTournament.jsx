@@ -65,20 +65,20 @@ function ViewTournament() {
 
 
       return (
-        <div>
+        <div> 
           {SelectNavbar()}
           <h1>Tournament List:</h1>
-          <div>
-            <SearchBar onSearch={handleSearch} />
-            <label htmlFor="statusFilter">Filter by Status: </label>
-            <select id="statusFilter" value={statusFilter} onChange={handleStatusFilterChange}>
-              <option value="">All</option>
-              <option value="Open for Application">Open for Application</option>
-              <option value="Closed Application">Closed Application</option>
-              <option value="Ongoing">Ongoing</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
+          <div>          
+          <SearchBar onSearch={handleSearch} />
+          <label htmlFor="statusFilter">Filter by Status: </label>
+          <select id="statusFilter" value={statusFilter} onChange={handleStatusFilterChange}>
+            <option value="">All</option>
+            <option value="Open for Application">Open for Application</option>
+            <option value="Closed Application">Closed Application</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
           </div>
           <p></p>
           {loading ? (
@@ -133,47 +133,4 @@ function ViewTournament() {
         </div>
       );
     }
-    {/* return (
-        <div style={{ backgroundColor: '#50648c' }}> 
-          {SelectNavbar()}
-          <h1>Tournament List:</h1> 
-      {loading ? (
-        <p>Loading tournaments...</p>
-      ) : (
-        <table style={{ margin: 'auto', textAlign: 'left', borderCollapse: 'collapse', width: '70%', color: 'white' }}>
-          <thead>
-            <tr>
-              <th>Tournament Name</th>
-              <th>Sport</th>
-              <th>Format</th>
-              <th>Number of Matches</th>
-              <th>Tournament Status</th>
-              <th>View</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tournaments.map(tournament => (
-              <tr key={tournament._id} style={{ borderBottom: '1px solid #ddd' }}>
-                <td style={{ padding: '10px' }}>{tournament.tournamentName}</td>
-                <td style={{ padding: '10px' }}>{tournament.tournamentSport}</td>
-                <td style={{ padding: '10px' }}>{tournament.tournamentFormat}</td>
-                <td style={{ padding: '10px' }}>{tournament.tournamentNumberofmatches}</td>
-                <td style={{ padding: '10px' }}>{tournament.tournamentStatus}</td>
-                <td style={{ padding: '10px' }}>
-                <button
-                onClick={() => handleNavigateToViewTournamentDeatils(tournament._id)}
-                style={{ backgroundColor: '#acb7cd', color: 'black' }}
-                className="btn btn-sm mr-2"
-                >
-                Details
-                </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-      )}
-        </div>
-      );
-    } */}
 export default ViewTournament

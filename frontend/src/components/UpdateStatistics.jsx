@@ -71,7 +71,7 @@ function EditStatistics() {
                   />
                 </p>
                 <p>
-                  Score:{' '}
+                  Score(W/L):{' '}
                   <input
                     type="text"
                     value={updatedStatistics[index]?.Score || statistics.Score}

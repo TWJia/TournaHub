@@ -12,6 +12,7 @@ function CreateTournament() {
   const [tournamentSkillLevel, settournamentSkillLevel] = useState('');
   const [tournamentFormat, settournamentFormat] = useState('Single Elimination');
   const [isCustomFormat, setIsCustomFormat] = useState(false);
+  const [tournamentVenue, settournamentVenue] = useState('');
   const [tournamentDetails, settournamentDetails] = useState('');
   const [tournamentStartDate, settournamentStartDate] = useState('');
   const [tournamentEndDate, settournamentEndDate] = useState('');
@@ -98,6 +99,7 @@ function CreateTournament() {
       { organizerId, 
         tournamentName, tournamentSport, tournamentSkillLevel,
         tournamentFormat : finalTournamentFormat,
+        tournamentVenue,
         tournamentDetails, 
         tournamentStartDate, tournamentEndDate, 
         tournamentNumberofplayers, tournamentNumberofmatches, 
@@ -225,7 +227,16 @@ function CreateTournament() {
         </select>
       </div> */}
 
-
+            <div className="mb-2">
+              <label htmlFor="tournamentVenue">Venue</label>
+              <input
+                type="text"
+                id="tournamentVenue"
+                placeholder="Enter Venue"
+                className="form-control"
+                onChange={(e) => settournamentVenue(e.target.value)}
+              />
+            </div>
             <div className="mb-2">
               <label htmlFor="tournamentDetails">Details</label>
               <input

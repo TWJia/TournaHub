@@ -41,6 +41,10 @@ const RatingAndReview = () => {
   };
 
   const addToReviews = async () => {
+    if (!userInput.trim()) {
+      window.alert("Please write your review before submitting.");
+      return;
+    }
     const body = {
       text: userInput,
       star: value,
@@ -78,7 +82,6 @@ const RatingAndReview = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#707a8a' }}>
     <>
       <NavbarA />
       <div className="middle">
@@ -130,7 +133,6 @@ const RatingAndReview = () => {
         ))}
       </div>
     </>
-    </div>
   );
 };
 

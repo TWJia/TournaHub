@@ -92,7 +92,7 @@ function ViewTournamentDetails() {
     if (Array.isArray(matchDetails) && matchDetails.length > 0) {
       let startY = 20; // Initial y-coordinate
   
-      matchDetails.forEach((match) => {
+      matchDetails.forEach((match, index) => {
         // Calculate required space for each line
         const lines = [
           `Match ${match.MatchNumber}`,
@@ -105,6 +105,16 @@ function ViewTournamentDetails() {
           `${match.Player2} Score: ${match.Player2_Score}`,
           `Winner: ${match.Winner}`,
         ];
+  
+        // Calculate the height needed for this match content
+        const heightNeeded = lines.length * 10 + 20; // Adjust as needed for line spacing and margins
+  
+        // Check if adding this match content would exceed the page height
+        if (startY + heightNeeded > pdfDoc.internal.pageSize.height) {
+          // Add a new page
+          pdfDoc.addPage();
+          startY = 20; // Reset startY for the new page
+        }
   
         // Add lines to the PDF
         lines.forEach((line) => {
@@ -126,7 +136,7 @@ function ViewTournamentDetails() {
 
 
   return (
-    <div style={{ backgroundColor: '#344771' }}>
+    <div>
       {SelectNavbar()}
       {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
         <p>Loading...</p>
@@ -157,6 +167,7 @@ function ViewTournamentDetails() {
           <p>Sport: {tournamentDetails.tournamentSport}</p>
           <p>Skill Level: {tournamentDetails.tournamentSkillLevel}</p>
           <p>Format: {tournamentDetails.tournamentFormat}</p>
+          <p>Venue: {tournamentDetails.tournamentVenue}</p>
           <p>Details: {tournamentDetails.tournamentDetails}</p>
           <p>Start Date: {formatDate(tournamentDetails.tournamentStartDate)}</p>
           <p>End Date: {formatDate(tournamentDetails.tournamentEndDate)}</p>
@@ -164,12 +175,7 @@ function ViewTournamentDetails() {
           <p>Number of Matches: {tournamentDetails.tournamentNumberofmatches}</p>
           <p>Tournament Status: {tournamentDetails.tournamentStatus}</p>
           {/* Display other tournament details as needed */}
-          <button 
-            onClick={exportScoresheet}
-            style={{ backgroundColor: '#bbdcf0', color: 'black' }}
-            className="btn btn-sm mr-2">
-            Export Scoresheet
-          </button>
+          <button onClick={exportScoresheet}>Export Scoresheet</button>
           <h1>Matches</h1>
           {Array.isArray(matchDetails) && matchDetails.length > 0 ? (
             matchDetails.map((match, index) => (
@@ -191,12 +197,7 @@ function ViewTournamentDetails() {
           ) : (
             <p>No match details available.</p>
           )}
-          <button 
-            onClick={exportMatches} 
-            style={{ backgroundColor: '#bbdcf0', color: 'black' }}
-            className="btn btn-sm mr-2">
-            Export Matches
-          </button>
+          <button onClick={exportMatches}>Export Matches</button>
           <div>
             <h1>Ranking Table</h1>
             {Array.isArray(rankingTableDetails) && rankingTableDetails.length > 0 ? (
@@ -219,7 +220,7 @@ function ViewTournamentDetails() {
             statisticsDetails.map((statistics, index) => (
               <div key={index}>
                 <p>Paricipant: {statistics.Participant}</p>
-                <p>Score: {statistics.Score}</p>
+                <p>Score(W/L) : {statistics.Score}</p>
                 <p>Average Score: {statistics.AverageScore}</p>
                 <p>Total Score: {statistics.TotalScore}</p>
                 <p>----------------------------------------</p>

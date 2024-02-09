@@ -5,15 +5,14 @@ import SelectNavbar from "./SelectNavbar";
 import jsPDF from "jspdf";
 
 function ViewTournamentDetails() {
-  const domainName = "http://localhost:3001" ;
   const [tournamentDetails, setTournamentDetails] = useState({});
   const [matchDetails, setMatchDetails] = useState({});
   const [rankingTableDetails, setRankingTableDetails] = useState({});
-  const [statisticsDetails, setStatisticsDetails] = useState({});
   const [loadingTournament, setLoadingTournament] = useState(true);
   const [loadingMatches, setLoadingMatches] = useState(true);
   const [LoadingRankingTable, setLoadingRankingTable] = useState(true);
-  const [LoadingStatistics, setLoadingStatistics] = useState(true);
+  const [statisticsGenerated, setStatisticsGenerated] = useState(false);
+  const [playerStatistics, setPlayerStatistics] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,19 +30,23 @@ function ViewTournamentDetails() {
   }, 
   [id]);
 
-  useEffect(() => {
-    // Fetch match details when the component mounts
-    axios.get(`http://localhost:3001/getMatches/${id}`)
-      .then((response) => {
-        setMatchDetails(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching match details:', error);
-      })
-      .finally(() => {
-        setLoadingMatches(false);
-      });
-  }, [id]);
+  axios.get(`http://localhost:3001/getMatches/${id}`)
+  .then((response) => {
+    const matches = response.data;
+    setMatchDetails(matches);
+    
+    // Check if there are more than one match and statistics have not been generated yet
+    if (matches.length >= 1 && !statisticsGenerated) {
+      generateStatistics(matches);
+      setStatisticsGenerated(true); // Set the flag to true
+    }
+  })
+  .catch((error) => {
+    console.error('Error fetching match details:', error);
+  })
+  .finally(() => {
+    setLoadingMatches(false);
+  }, [id, statisticsGenerated]);
 
   useEffect(() => {
     // Fetch ranking table details when the component mounts
@@ -56,20 +59,6 @@ function ViewTournamentDetails() {
       })
       .finally(() => {
         setLoadingRankingTable(false);
-      });
-  }, [id]);
-
-  useEffect(() => {
-    // Fetch statistics table details when the component mounts
-    axios.get(`http://localhost:3001/getStatistics/${id}`)
-      .then((response) => {
-        setStatisticsDetails(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching ranking table details:', error);
-      })
-      .finally(() => {
-        setLoadingStatistics(false);
       });
   }, [id]);
   
@@ -133,21 +122,74 @@ function ViewTournamentDetails() {
     pdfDoc.save(`${tournamentDetails.tournamentName} Matches.pdf`);
   };
   
+  // Function to generate statistics
+  const generateStatistics = (matches) => {
+  const updatedPlayerStatistics = {};
+
+  // Iterate over each match
+  matches.forEach((match) => {
+    // Update statistics for Player 1
+    if (!updatedPlayerStatistics[match.Player1]) {
+      updatedPlayerStatistics[match.Player1] = {
+        matchesPlayed: 0,
+        matchesWon: 0,
+        pointsScored: 0,
+      };
+    }
+    updatedPlayerStatistics[match.Player1].matchesPlayed++;
+    updatedPlayerStatistics[match.Player1].pointsScored += parseInt(match.Player1_Score);
+    if (match.Winner === match.Player1) {
+      updatedPlayerStatistics[match.Player1].matchesWon++;
+    }
+
+    // Update statistics for Player 2
+    if (!updatedPlayerStatistics[match.Player2]) {
+      updatedPlayerStatistics[match.Player2] = {
+        matchesPlayed: 0,
+        matchesWon: 0,
+        pointsScored: 0,
+      };
+    }
+    updatedPlayerStatistics[match.Player2].matchesPlayed++;
+    updatedPlayerStatistics[match.Player2].pointsScored += parseInt(match.Player2_Score);
+    if (match.Winner === match.Player2) {
+      updatedPlayerStatistics[match.Player2].matchesWon++;
+    }
+  });
+
+  // Calculate additional statistics like win percentage
+  Object.keys(updatedPlayerStatistics).forEach((player) => {
+    const stats = updatedPlayerStatistics[player];
+    stats.winPercentage = (stats.matchesPlayed !== 0) ? (stats.matchesWon / stats.matchesPlayed) * 100 : 0;
+  });
+
+  // Update state with the generated player statistics
+  setPlayerStatistics(updatedPlayerStatistics);
+
+  // Log the generated player statistics
+  console.log('Generated player statistics:', updatedPlayerStatistics);
+};
+
+const sortedPlayerStatistics = Object.keys(playerStatistics).sort((a, b) => {
+  const winPercentageA = playerStatistics[a].winPercentage || 0;
+  const winPercentageB = playerStatistics[b].winPercentage || 0;
+  return winPercentageB - winPercentageA;
+});
 
 
   return (
     <div>
       {SelectNavbar()}
-      {loadingTournament || loadingMatches || LoadingRankingTable || LoadingStatistics ? (
+      {loadingTournament || loadingMatches || LoadingRankingTable ? (
         <p>Loading...</p>
       ) : (
-<div>
+      <div>
           <h1>Sponsor</h1>
           {tournamentDetails.tournamentSponsorIcon && (
           <>
             <img
               width={"150px"}
-              src={`${domainName}/tournamentsponsor/${tournamentDetails.tournamentSponsorIcon}`}
+              src={`http://localhost:3001/tournamentsponsor/${tournamentDetails.tournamentSponsorIcon}`}
               alt={tournamentDetails.tournamentSponsorIcon}
               // onError={(e) => {
               //   // Handle image load error & display error image
@@ -199,40 +241,58 @@ function ViewTournamentDetails() {
           )}
           <button onClick={exportMatches}>Export Matches</button>
           <div>
-            <h1>Ranking Table</h1>
-            {Array.isArray(rankingTableDetails) && rankingTableDetails.length > 0 ? (
-            rankingTableDetails.map((rankingtables, index) => (
-              <div key={index}>
-                <p>Winner: {rankingtables.Winner}</p>
-                <p>Runner-Up: {rankingtables.RunnerUp}</p>
-                {/* Display other ranking table as needed */}
-              </div>
-              
-            ))
-
-          ) : (
-            <p>No ranking table details available.</p>
-          )}
-              </div>
-              <div>
             <h1>Statistics</h1>
-            {Array.isArray(statisticsDetails) && statisticsDetails.length > 0 ? (
-            statisticsDetails.map((statistics, index) => (
-              <div key={index}>
-                <p>Paricipant: {statistics.Participant}</p>
-                <p>Score(W/L) : {statistics.Score}</p>
-                <p>Average Score: {statistics.AverageScore}</p>
-                <p>Total Score: {statistics.TotalScore}</p>
-                <p>----------------------------------------</p>
-                {/* Display other statistics as needed */}
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {playerStatistics && sortedPlayerStatistics.length > 0 ? (
+            <table style={{ borderCollapse: 'collapse', border: '1px solid black', width: '80%', maxWidth: '800px' }}>
+              <thead>
+                <tr>
+                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Player</th>
+                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Played</th>
+                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Won</th>
+                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Points Scored</th>
+                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Win Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPlayerStatistics.map((playerName, index) => (
+                  <tr key={index}>
+                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>{playerName}</td>
+                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesPlayed || 0}</td>
+                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesWon || 0}</td>
+                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].pointsScored || 0}</td>
+                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].winPercentage ? playerStatistics[playerName].winPercentage.toFixed(2) + "%" : "N/A"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : <p>No statistics available.</p>}
+          </div>
+            </div>           
+            <div>
+            <h1> Ranking Table</h1>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              {Array.isArray(rankingTableDetails) && rankingTableDetails.length > 0 ? (
+                <table style={{ borderCollapse: 'collapse', border: '1px solid black', width: '80%', maxWidth: '800px', margin: '0 auto' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'center', width: '50%' }}>Winner</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'center', width: '50%' }}>Runner-Up</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rankingTableDetails.map((rankingtables, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{rankingtables.Winner}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{rankingtables.RunnerUp}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : <p>No ranking table details available.</p>}
+            </div>
+          </div>
               
-            ))
-
-          ) : (
-            <p>No Statistics available.</p>
-          )}
-              </div>
         </div>
       )}
     </div>

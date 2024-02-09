@@ -80,7 +80,7 @@ const {
 } = require("./controllers/Status");
 
 const app = express();
-const PORT = 3001;
+// const PORT = 3001;
 app.use(express.json());
 app.use(
   cors({
@@ -298,7 +298,12 @@ app.post(
 );
 
 //Validation message to see if connection is successful
-app.listen(PORT, function (err) {
-  if (err) console.log("Error in server setup");
-  console.log("Server listening on Port", PORT);
+// app.listen(PORT, function (err) {
+//   if (err) console.log("Error in server setup");
+//   console.log("Server listening on Port", PORT);
+// });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

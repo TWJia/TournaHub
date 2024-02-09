@@ -9,7 +9,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
 export default function LandingOne() {
-  const domainName = "https://tournahub.onrender.com";
+  const domainName = "http://localhost:3001";
   const [userCount, setUserCount] = useState(null);
   const [tournamentCount, setTournamentCount] = useState(null);
   const [reviews, setReviews] = useState([]);

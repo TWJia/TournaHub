@@ -237,7 +237,7 @@ const DisplaySchedule = () => {
   return (
     <div>
       {SelectNavbar()}
-      <NavbarA />
+      {/* <NavbarA /> */}
       <div className="toolbar">
         <button onClick={() => handlePrint()}>Print</button>
         {/* Other buttons and elements */}

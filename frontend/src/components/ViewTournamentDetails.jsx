@@ -18,7 +18,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch tournament details when the component mounts
     axios
-      .get(`http://localhost:3001/getTournamentDetails/${id}`)
+      .get(`https://tournahub.onrender.com/getTournamentDetails/${id}`)
       .then((response) => {
         setTournamentDetails(response.data);
       })
@@ -33,7 +33,7 @@ function ViewTournamentDetails() {
   useEffect(() => {
     // Fetch match details when the component mounts
     axios
-      .get(`http://localhost:3001/getMatches/${id}`)
+      .get(`https://tournahub.onrender.com/getMatches/${id}`)
       .then((response) => {
         setMatchDetails(response.data);
       })

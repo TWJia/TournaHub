@@ -122,45 +122,52 @@ function ViewTournamentDetails() {
     pdfDoc.save(`${tournamentDetails.tournamentName} Matches.pdf`);
   };
   
-  // Function to generate statistics
-  const generateStatistics = (matches) => {
+ // Function to generate statistics
+const generateStatistics = (matches) => {
   const updatedPlayerStatistics = {};
 
   // Iterate over each match
   matches.forEach((match) => {
     // Update statistics for Player 1
-    if (!updatedPlayerStatistics[match.Player1]) {
-      updatedPlayerStatistics[match.Player1] = {
-        matchesPlayed: 0,
-        matchesWon: 0,
-        pointsScored: 0,
-      };
-    }
-    updatedPlayerStatistics[match.Player1].matchesPlayed++;
-    updatedPlayerStatistics[match.Player1].pointsScored += parseInt(match.Player1_Score);
-    if (match.Winner === match.Player1) {
-      updatedPlayerStatistics[match.Player1].matchesWon++;
+    if (match.Player1.trim() !== '') {
+      if (!updatedPlayerStatistics[match.Player1]) {
+        updatedPlayerStatistics[match.Player1] = {
+          matchesPlayed: 0,
+          matchesWon: 0,
+          pointsScored: 0,
+          averagePoints: 0,
+        };
+      }
+      updatedPlayerStatistics[match.Player1].matchesPlayed++;
+      updatedPlayerStatistics[match.Player1].pointsScored += parseInt(match.Player1_Score);
+      if (match.Winner === match.Player1) {
+        updatedPlayerStatistics[match.Player1].matchesWon++;
+      }
     }
 
     // Update statistics for Player 2
-    if (!updatedPlayerStatistics[match.Player2]) {
-      updatedPlayerStatistics[match.Player2] = {
-        matchesPlayed: 0,
-        matchesWon: 0,
-        pointsScored: 0,
-      };
-    }
-    updatedPlayerStatistics[match.Player2].matchesPlayed++;
-    updatedPlayerStatistics[match.Player2].pointsScored += parseInt(match.Player2_Score);
-    if (match.Winner === match.Player2) {
-      updatedPlayerStatistics[match.Player2].matchesWon++;
+    if (match.Player2.trim() !== '') {
+      if (!updatedPlayerStatistics[match.Player2]) {
+        updatedPlayerStatistics[match.Player2] = {
+          matchesPlayed: 0,
+          matchesWon: 0,
+          pointsScored: 0,
+          averagePoints: 0,
+        };
+      }
+      updatedPlayerStatistics[match.Player2].matchesPlayed++;
+      updatedPlayerStatistics[match.Player2].pointsScored += parseInt(match.Player2_Score);
+      if (match.Winner === match.Player2) {
+        updatedPlayerStatistics[match.Player2].matchesWon++;
+      }
     }
   });
 
-  // Calculate additional statistics like win percentage
+  // Calculate additional statistics like win percentage and average points
   Object.keys(updatedPlayerStatistics).forEach((player) => {
     const stats = updatedPlayerStatistics[player];
     stats.winPercentage = (stats.matchesPlayed !== 0) ? (stats.matchesWon / stats.matchesPlayed) * 100 : 0;
+    stats.averagePoints = (stats.matchesPlayed !== 0) ? stats.pointsScored / stats.matchesPlayed : 0;
   });
 
   // Update state with the generated player statistics
@@ -243,31 +250,35 @@ const sortedPlayerStatistics = Object.keys(playerStatistics).sort((a, b) => {
           <div>
             <h1>Statistics</h1>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {playerStatistics && sortedPlayerStatistics.length > 0 ? (
-            <table style={{ borderCollapse: 'collapse', border: '1px solid black', width: '80%', maxWidth: '800px' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Player</th>
-                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Played</th>
-                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Won</th>
-                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Points Scored</th>
-                  <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Win Percentage</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedPlayerStatistics.map((playerName, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>{playerName}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesPlayed || 0}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesWon || 0}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].pointsScored || 0}</td>
-                    <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].winPercentage ? playerStatistics[playerName].winPercentage.toFixed(2) + "%" : "N/A"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : <p>No statistics available.</p>}
-          </div>
+              {playerStatistics && sortedPlayerStatistics.length > 0 ? (
+                <table style={{ borderCollapse: 'collapse', border: '1px solid black', width: '80%', maxWidth: '800px' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Rank</th> {/* New column */}
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Player</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Played</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Matches Won</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Average Points</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Points Scored</th>
+                      <th style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>Win Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedPlayerStatistics.map((playerName, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{index + 1}</td> {/* Display index as rank */}
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'left' }}>{playerName}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesPlayed || 0}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].matchesWon || 0}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].averagePoints.toFixed(2)}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].pointsScored || 0}</td>
+                        <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{playerStatistics[playerName].winPercentage ? playerStatistics[playerName].winPercentage.toFixed(2) + "%" : "N/A"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : <p>No statistics available.</p>}
+            </div>
             </div>           
             <div>
             <h1> Ranking Table</h1>
@@ -291,8 +302,7 @@ const sortedPlayerStatistics = Object.keys(playerStatistics).sort((a, b) => {
                 </table>
               ) : <p>No ranking table details available.</p>}
             </div>
-          </div>
-              
+          </div> 
         </div>
       )}
     </div>

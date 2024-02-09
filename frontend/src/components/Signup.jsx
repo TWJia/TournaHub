@@ -167,12 +167,9 @@ function Signup() {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-102" style={{ backgroundColor: '#8c99c5'}}>
-      <div className="col-md-6 p-0 d-flex align-items-center justify-content-center"> 
-          <img src="/images/Sign Up.jpeg" alt="Descriptive Alt Text" className="img-fluid h-100" /> 
-        </div>
+    <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
       <div className="bg-white p-3 rounded w-25">
-        <h2 style={{ color: 'black' }}>Register</h2>
+        <h2>Register</h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-3">
             <label htmlFor="name">
@@ -234,14 +231,14 @@ function Signup() {
           </div>
           {renderUserField()}
           {renderTOSField()}
-          <button type="submit" className="btn w-100 rounded-0" style={{ backgroundColor: '#005b96', color: 'white' }}>
+          <button type="submit" className="btn btn-success w-100 rounded-0">
             Register
           </button>
         </form>
-        <p style={{ color: 'black' }}>Already have an Account?</p>
+        <p>Already have an Account?</p>
         <Link
           to="/Login"
-          className="btn w-100 rounded-0" style={{ backgroundColor: '#005b96', color: 'white' }}
+          className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none"
         >
           Login
         </Link>

@@ -1,17 +1,17 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import NavbarSA from "./NavbarSA";
-import "./tableContainer.css";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import NavbarSA from './NavbarSA';
+import './tableContainer.css'
 
 function VerifyUsers() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/PendingUsers`);
+        const response = await axios.get('http://localhost:3001/PendingUsers');
         setUsers(response.data);
       } catch (error) {
         console.log(error);
@@ -22,28 +22,24 @@ function VerifyUsers() {
   }, []);
 
   const handleApprove = async (id) => {
-    if (window.confirm("Confirm approval?")) {
+    if (window.confirm('Confirm approval?')) {
       try {
         await axios.put(`http://localhost:3001/approveUser/${id}`);
-        window.location.reload();
+        window.location.reload()
       } catch (error) {
         console.log(error);
       }
     }
-  };
+  }
 
-  const showPDF = (verification) => {
-    window.open(
-      `http://localhost:3001/verify/${verification}`,
-      "_blank",
-      "noreferrer"
-    );
-  };
+  const showPDF=(verification)=>{
+    window.open(`http://localhost:3001/verify/${verification}`, "_blank", "noreferrer")
+  }
 
   return (
     <>
       <div>
-        <NavbarSA />
+      <NavbarSA />
       </div>
       <div className="">
         <div className="">
@@ -80,15 +76,15 @@ function VerifyUsers() {
                     >
                       Show PDF
                     </button>
-                  </td>
-                </tr>
-              ))}
+                </td>
+              </tr>
+            ))}
             </tbody>
           </table>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default VerifyUsers;

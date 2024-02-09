@@ -281,6 +281,8 @@ const DisplaySchedule = () => {
     window.print();
     document.body.innerHTML = originalContent;
   }
+
+
   return (
     <div>
       {SelectNavbar()}

@@ -90,7 +90,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-
+app.use(cors());
 // setup db
 require("./utils/db");
 
@@ -101,7 +101,7 @@ app.use("/sponsoricon", express.static("sponsoricon"));
 // Used for getting scoresheets
 app.use("/scoresheet", express.static("scoresheet"));
 //Used for storing tournament sponsor icons images
-app.use("/tournamentsponsor", express.static("tournamentsponsor"))
+app.use("/tournamentsponsor", express.static("tournamentsponsor"));
 
 //Reviews API
 app.use("/api/reviews", require("./routes/Reviews"));
@@ -246,7 +246,6 @@ app.delete("/deleteTournament/:id", handleDeleteTournament);
 app.get("/searchTournaments/:tournamentName/:id", handleSearchTournaments);
 app.get("/searchTournamentsNonTO/:tournamentName", handleSearchTournamentNonTO);
 
-
 //User: Application API
 // app.post("/applyForTournament/:tournamentId/:userId", applyForTournament);
 // app.get("/getOpenTournaments", getOpenTournaments);
@@ -292,9 +291,11 @@ app.get("/count-tournaments", countTournaments);
 //
 app.get("/fetch-sponsor-icons", fetchSponsorIconsHomePage);
 app.get("/getSponsorableTournaments", handleGetSponsorableTournaments);
-app.post("/sponsorTournament",
-tournamentSponsorUpload.single("icon"), 
-sponsorTournament);
+app.post(
+  "/sponsorTournament",
+  tournamentSponsorUpload.single("icon"),
+  sponsorTournament
+);
 
 //Validation message to see if connection is successful
 app.listen(PORT, function (err) {

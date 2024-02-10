@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavbarTO from "./NavbarTO";
+import "./DashboardTOPendingCollaboration.css";
 
 function DashboardTOPendingCollaboration() {
   const [user, setUser] = useState([]);
@@ -168,12 +169,13 @@ const renderTournamentList = () => {
   }
 
   return (
-    <table style={{ margin: 'auto', width: '50%', textAlign: 'left' }}>
+    <table className="dashboard-table">
       <thead>
         <tr>
           <th>Tournament</th>
           <th>Details</th>
           <th>Status</th>
+          {currentTab === 'Pending' && <th>Action</th>}
         </tr>
       </thead>
       <tbody>
@@ -188,38 +190,47 @@ const renderTournamentList = () => {
                   <span key={index}>{s.collaboratorStatus}</span>
                 ))}
             </td>
-            <td>
-              {/* Conditionally render buttons based on currentTab */}
-              {currentTab === 'Pending' && (
-                <>
-                  <button onClick={() => handleAccept(tournament._id)}>Accept</button>
-                  <button onClick={() => handleReject(tournament._id)}>Reject</button>
-                </>
-              )}
-            </td>
+            {currentTab === 'Pending' && (
+              <td>
+                <button
+                  className="accept-button"
+                  onClick={() => handleAccept(tournament._id)}
+                >
+                  Accept
+                </button>
+                <button
+                  className="reject-button"
+                  onClick={() => handleReject(tournament._id)}
+                >
+                  Reject
+                </button>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
     </table>
   );
-};
+}  
 
-  return (
-    <div>
-      <NavbarTO />
+return (
+  <div>
+    <NavbarTO />
+    <div className="collaboration-status">
       <h1>Collaboration Status: </h1>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="navbar-container">
+      <div className="navbar-container">
         <nav>
           <button onClick={() => setCurrentTab("Pending")}>Pending</button>
           <button onClick={() => setCurrentTab("Accepted")}>Accepted</button>
           <button onClick={() => setCurrentTab("Rejected")}>Rejected</button>
         </nav>
       </div>
-      <div>
-      {renderTournamentList()}
-      </div>
     </div>
-  );
+    <div>
+      {renderTournamentList()}
+    </div>
+  </div>
+);
 }
 
 export default DashboardTOPendingCollaboration;

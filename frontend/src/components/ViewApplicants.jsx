@@ -1,65 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import axios from "axios";
-// import NavbarTO from "./NavbarTO";
-
-// function ViewApplicants() {
-//   const { tournamentId } = useParams();
-//   const [tournament, setTournament] = useState(null);
-//   const [applicants, setApplicants] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const fetchApplicationsOfTournaments = async () => {
-//     if (!tournamentId) return;
-//     try {
-//       const { data } = await axios.get(
-//         `http://localhost:3001/api/applicationstatus/getApplicationOfTournament/${tournamentId}`
-//       );
-//       setApplicants(data.message);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-//   const fetchTournamenData = async () => {
-//     try {
-//       const { data } = await axios.get(
-//         `http://localhost:3001/getTournamentDetails/${tournamentId}`
-//       );
-//       setTournament(data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-//   useEffect(() => {
-//     if (!tournamentId) return;
-//     fetchApplicationsOfTournaments();
-//     fetchTournamenData();
-//   }, [tournamentId]);
-
-//   return (
-//     <>
-//       <NavbarTO />
-//       <div className="d-flex justify-content-center align-items-center">
-//         <h2>Applicants for {tournament?.tournamentName}</h2>
-
-//         {applicants?.length > 0 ? (
-//           <ul>
-//             {applicants.map((applicantions) => (
-//               <div key={applicantions._id}>
-//                 <p>username :{applicantions?.user?.name}</p>
-//                 <p>email :{applicantions?.user?.email}</p>
-//               </div>
-//             ))}
-//           </ul>
-//         ) : (
-//           <p>No applicants for this tournament.</p>
-//         )}
-//       </div>
-//     </>
-//   );
-// }
-// export default ViewApplicants;
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -70,6 +8,10 @@ function ViewApplicants() {
   const [tournament, setTournament] = useState(null);
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatedPlayer, setUpdatedPlayer] = useState(null);
+  const [error, setError] = useState(null);
+
+
 
   const fetchApplicationsOfTournaments = async () => {
     if (!tournamentId) return;
@@ -79,7 +21,7 @@ function ViewApplicants() {
       );
       setApplicants(data.message);
     } catch (error) {
-      console.log(error);
+      setError("Error fetching applicants: " + error.message);
     }
   };
 
@@ -90,7 +32,7 @@ function ViewApplicants() {
       );
       setTournament(data);
     } catch (error) {
-      console.log(error);
+      setError("Error fetching tournament data: " + error.message);
     }
   };
 
@@ -101,10 +43,56 @@ function ViewApplicants() {
         { action }
       );
       fetchApplicationsOfTournaments();
+  
+      if (action === "APPROVED") {
+        const updatedApplicants = applicants.map((application) => {
+          if (application._id === applicationId) {
+            return {
+              ...application,
+              action: action,
+            };
+          }
+          return application;
+        });
+  
+        // Update state with the new array of applicants
+        setApplicants(updatedApplicants);
+  
+        // Retrieve userId from the approved application
+        const approvedApplication = updatedApplicants.find(
+          (application) => application._id === applicationId
+        );
+  
+        if (approvedApplication && approvedApplication.user) {
+          const userId = approvedApplication.user._id;
+          const tournamentPlayersCount = tournament.tournamentPlayers.length;
+          const tournamentMaxPlayers = parseInt(tournament.tournamentNumberofplayers);
+  
+          const tournamentPlayers = [...tournament.tournamentPlayers, userId];
+  
+          // Update tournament players
+          await axios.put(
+            `http://localhost:3001/updateTournamentPlayers/${tournamentId}`,
+            { tournamentPlayers }
+          );
+  
+          // // Check if the tournament is now full
+          // if (tournamentPlayersCount + 1 >= tournamentMaxPlayers) {
+          //   // Update tournament status to 'Closed Application'
+          //   await axios.put(
+          //     `http://localhost:3001/updateClosedTournamentStatus/${tournamentId}`,
+          //     { tournamentStatus: "Closed Application" }
+          //   );
+          //   console.log("Tournament status updated to 'Closed Application'");
+          // }
+          console.log("Tournament updated successfully");
+        }
+      }
     } catch (error) {
-      console.log(error);
+      setError("Error updating application status: " + error.message);
     }
   };
+  
 
   useEffect(() => {
     if (!tournamentId) return;

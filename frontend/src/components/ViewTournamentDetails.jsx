@@ -220,7 +220,7 @@ function ViewTournamentDetails() {
     <div className="container">
     {SelectNavbar()}
     
-    {loadingTournament || loadingMatches || LoadingRankingTable ? (
+    {loadingTournament || loadingMatches || LoadingRankingTable || loadingUsers ? (
       <p>Loading...</p>
       ) : (
         <>

@@ -113,6 +113,9 @@ const RatingAndReview = () => {
       </div>
 
       <h4>Your Review History</h4>
+    {loading ? (
+      <p>Loading...</p>
+    ) : (
       <div className="reviewBox">
         {allReviews.map((review) => (
           <div className="usernameSize" key={review._id}>
@@ -132,8 +135,8 @@ const RatingAndReview = () => {
           </div>
         ))}
       </div>
-    </>
-  );
-};
-
+    )}
+  </>
+);
+}
 export default RatingAndReview;

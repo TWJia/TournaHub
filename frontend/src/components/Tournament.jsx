@@ -48,7 +48,10 @@ function ViewTournament() {
   const handleNavigateInvitationPage = (tournamentId) => {
     navigate(`/InvitationPage/${tournamentId}`);
   };
-  
+  const handleNavigateToScheduleGuide = (tournamentId) => {
+    navigate(`/ScheduleGuide/${tournamentId}`);
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
@@ -243,6 +246,7 @@ function ViewTournament() {
                   <div className="additional-buttons">
                   <button onClick={() => handleNavigateViewApplicants(tournament._id)} className="btn btn-sm btn-info">View Applicants</button>
                   <button onClick={() => handleNavigateInvitationPage(tournament._id)} className="btn btn-sm btn-info">Send Invite</button>
+                  <button onClick={() => handleNavigateToScheduleGuide(tournament._id)} className="btn btn-sm btn-success mr-2">Schedule Guide</button>
                   </div>
                   </td>
                   </tr>

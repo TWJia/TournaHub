@@ -6,6 +6,7 @@ const ApplicantHome = () => {
   const [newsData, setNewsData] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [LoadingNews, setLoadingNews] = useState(true);
   // axios.defaults.withCredentials = true;
 
   useEffect(() => {
@@ -35,6 +36,9 @@ const ApplicantHome = () => {
     } catch (error) {
       console.log(error);
     }
+    finally {
+      setLoadingNews(false);
+    }
   };
   const handleTitleClick = (newsId) => {
     if (newsId) {
@@ -46,6 +50,9 @@ const ApplicantHome = () => {
     <div>
       <h3>Recommended News For you</h3>
       <div>
+      {loading || LoadingNews ? (
+      <p>Loading...</p>
+      ) : (
         <>
           {newsData.map(
             (news) =>
@@ -126,7 +133,7 @@ const ApplicantHome = () => {
         </div>
       ))} */}
         </>
-      </div>
+      )}</div>
     </div>
   );
 };

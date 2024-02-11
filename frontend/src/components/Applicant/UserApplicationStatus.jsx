@@ -39,7 +39,7 @@ const UserApplicationStatus = () => {
         const response = await axios.get(
           `http://localhost:3001/api/applicationstatus/getUserApplications/${user?._id}`
         );
-        setApplications(response.data);
+        setApplications(response.data); // Update here
       } catch (error) {
         console.error("Error fetching user applications:", error);
       }

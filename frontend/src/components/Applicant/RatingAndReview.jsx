@@ -82,61 +82,60 @@ const RatingAndReview = () => {
   };
 
   return (
-    <>
-      <NavbarA />
-      <div className="middle">
-        <h2 className="book_now_text">Rate us</h2>
-        <h4 className="book_now_text">Tell us about your experience</h4>
-        <Box
-          sx={{
-            "& > legend": { mt: 2 },
-          }}
-        >
-          <div className="text">Ratings:</div>
-          <Rating
-            name="simple-controlled"
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
+    <div style={{ backgroundColor: "#707a8a" }}>
+      <>
+        <NavbarA />
+        <div className="middle">
+          <h2 className="book_now_text">Rate us</h2>
+          <h4 className="book_now_text">Tell us about your experience</h4>
+          <Box
+            sx={{
+              "& > legend": { mt: 2 },
             }}
-          />
-        </Box>
-        <textarea
-          className="topReviewBox"
-          placeholder="Describe your experience"
-          onChange={(e) => setUserInput(e.target.value)}
-          value={userInput}
-        />
-        <button className="mainBtns" onClick={addToReviews}>
-          Submit
-        </button>
-      </div>
-
-      <h4>Your Review History</h4>
-    {loading ? (
-      <p>Loading...</p>
-    ) : (
-      <div className="reviewBox">
-        {allReviews.map((review) => (
-          <div className="usernameSize" key={review._id}>
-            <h4>{review.user?.name}</h4>
+          >
+            <div className="text">Ratings:</div>
             <Rating
-              className="star"
               name="simple-controlled"
-              value={review.star}
-              readOnly
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
             />
-            <p>{review.text}</p>
-            {user?._id === review.user?._id && (
-              <button onClick={() => handleDeleteReview(review._id)}>
-                Delete
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    )}
-  </>
-);
-}
+          </Box>
+          <textarea
+            className="topReviewBox"
+            placeholder="Describe your experience"
+            onChange={(e) => setUserInput(e.target.value)}
+            value={userInput}
+          />
+          <button className="mainBtns" onClick={addToReviews}>
+            Submit
+          </button>
+        </div>
+
+        <h4>Your Review History</h4>
+        <div className="reviewBox">
+          {allReviews.map((review) => (
+            <div className="usernameSize" key={review._id}>
+              <h4>{review.user?.name}</h4>
+              <Rating
+                className="star"
+                name="simple-controlled"
+                value={review.star}
+                readOnly
+              />
+              <p>{review.text}</p>
+              {user?._id === review.user?._id && (
+                <button onClick={() => handleDeleteReview(review._id)}>
+                  Delete
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </>
+    </div>
+  );
+};
+
 export default RatingAndReview;

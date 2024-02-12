@@ -5,6 +5,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NewsDetails.css";
 import { ShareSocial } from "react-share-social";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const NewsDetails = ({ match }) => {
   const [news, setNews] = useState(null);
@@ -189,16 +190,23 @@ const NewsDetails = ({ match }) => {
   console.log("all comments", allComments);
 
   const handleCommentDelete = async (commentId) => {
-    try {
-      await axios.delete(`http://localhost:3001/api/news/comment/${commentId}`);
-      setAllComments(
-        allComments.filter((comment) => comment._id !== commentId)
-      );
-    } catch (error) {
-      console.log(error);
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
+
+    if (confirmed) {
+      try {
+        await axios.delete(
+          `http://localhost:3001/api/news/comment/${commentId}`
+        );
+        setAllComments(
+          allComments.filter((comment) => comment._id !== commentId)
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-
   return (
     <div>
       {SelectNavbar()}
@@ -238,8 +246,12 @@ const NewsDetails = ({ match }) => {
                   <p>{comment.comments}</p>
 
                   {comment.user?._id === user?._id && (
-                    <button onClick={() => handleCommentDelete(comment._id)}>
-                      Delete Comment
+                    <button
+                      className="btn btn-danger btn-sm p-1"
+                      onClick={() => handleCommentDelete(comment._id)}
+                    >
+                      <DeleteIcon />
+                      Delete
                     </button>
                   )}
                 </p>

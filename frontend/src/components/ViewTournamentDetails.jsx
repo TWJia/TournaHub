@@ -349,10 +349,12 @@ function ViewTournamentDetails() {
                   />
                   Players
                 </h1>
-                {tournamentDetails.tournamentPlayers &&
-                  tournamentDetails.tournamentPlayers.map((player, index) => (
-                    <p key={index}>{getUserName(player)}</p>
-                  ))}
+                <div className="sporty">
+                  {tournamentDetails.tournamentPlayers &&
+                    tournamentDetails.tournamentPlayers.map((player, index) => (
+                      <p key={index}>{getUserName(player)}</p>
+                    ))}
+                </div>
               </div>
             </div>
           </div>
